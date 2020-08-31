@@ -46,9 +46,8 @@ export default function RecipeSearch() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     width: "90%",
-    maxHeight: 50,
+    height: 50,
     borderWidth: 1,
     borderRadius: 10,
     borderColor: "green",
@@ -58,7 +57,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginLeft: "5%",
     marginRight: "5%",
-    marginTop: "20%",
+    marginTop: "7%",
   },
   inputBox: {
     flex: 1,
