@@ -2,23 +2,21 @@ import React from 'react';
 import { View, StyleSheet, ActivityIndicator } from 'react-native';
 import firebase from 'firebase';
 
-class LoadingScreen extends React.Component {
+function LoadingScreen() {
     componentDidMount() {
-      firebase.auth().onAuthStateChanged(user => {
-          if (user) {
-          this.props.navigation.navigate('App');
-          } else {
-          this.props.navigation.navigate('SignIn');
-          }
-      });
+        firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                this.props.navigation.navigate('App');
+            } else {
+                this.props.navigation.navigate.('SignIn');
+            }
+        });
     }
-    render() {
-        return (
+    return (
         <View style={styles.container}>
             <ActivityIndicator size="large" />
         </View>
-        );
-    }
+    );
 }
 
 const styles = StyleSheet.create({
