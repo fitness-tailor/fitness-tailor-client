@@ -9,9 +9,9 @@ import {
   Image,
   Button,
 } from "react-native";
-import RecipeFinder from "./recipe-finder";
-import NutritionCard from "./nutrition-card";
-import TotalCaloriePercentage from "./total-nutrition";
+import RecipeFinder from "./Nutrition/RecipeFinder";
+import NutritionCard from "./Nutrition/NutritionCard";
+import TotalCaloriePercentage from "./Nutrition/TotalNutrition";
 import axios from "axios";
 
 export default function NutritionScreen() {
