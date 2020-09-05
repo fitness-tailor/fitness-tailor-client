@@ -1,8 +1,9 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { createAppContainer, createSwitchNavigator } from 'react-navigation';
-import AuthNavigator from './navigation/AuthNavigator';
-import HomeScreen from './screens/HomeScreen.js';
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { createAppContainer, createSwitchNavigator } from "react-navigation";
+import AuthNavigator from "./navigation/AuthNavigator";
+import HomeScreen from "./screens/HomeScreen.js";
+import NutritionScreen from "./screens/NutritionScreen.js";
 // Firebase App (the core Firebase SDK) is always required and
 // must be listed before other Firebase SDKs
 import * as firebase from "firebase/app";
@@ -20,11 +21,13 @@ const firebaseConfig = {
   storageBucket: "fitness-tailor.appspot.com",
   messagingSenderId: "822343603827",
   appId: "1:822343603827:web:76a6256a0fa23496913c06",
-  measurementId: "G-48BDZ94KZ2"
+  measurementId: "G-48BDZ94KZ2",
 };
 
 // Initialize Firebase
-firebase.initializeApp(firebaseConfig);
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 
 export default createAppContainer(
   createSwitchNavigator(
@@ -33,7 +36,7 @@ export default createAppContainer(
       Auth: AuthNavigator,
     },
     {
-      initialRouteName: 'Auth',
+      initialRouteName: "Auth",
     }
   )
 );

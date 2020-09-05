@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   StyleSheet,
   View,
@@ -10,21 +10,21 @@ import {
   ActivityIndicator,
   Keyboard,
   TouchableWithoutFeedback,
-  Platform
-} from 'react-native';
-import 'firebase/firestore';
-import firebase from 'firebase';
+  Platform,
+} from "react-native";
+import "firebase/firestore";
+import firebase from "firebase";
 
 class SignUpScreen extends React.Component {
   state = {
-    displayName: '',
-    email: '',
-    password: '',
-    error: '',
-    loading: false
+    displayName: "",
+    email: "",
+    password: "",
+    error: "",
+    loading: false,
   };
   onLoginSuccess() {
-    this.props.navigation.navigate('App');
+    this.props.navigation.navigate("App");
   }
 
   onLoginFailure(errorMessage) {
@@ -35,7 +35,7 @@ class SignUpScreen extends React.Component {
     if (this.state.loading) {
       return (
         <View>
-          <ActivityIndicator size={'large'} />
+          <ActivityIndicator size={"large"} />
         </View>
       );
     }
@@ -45,77 +45,92 @@ class SignUpScreen extends React.Component {
       .auth()
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then(this.onLoginSuccess.bind(this))
-      .catch(error => {
-          let errorCode = error.code;
-          let errorMessage = error.message;
-          if (errorCode == 'auth/weak-password') {
-              this.onLoginFailure.bind(this)('Password is too weak!');
-          } else {
-              this.onLoginFailure.bind(this)(errorMessage);
-          }
+      .catch((error) => {
+        let errorCode = error.code;
+        let errorMessage = error.message;
+        if (errorCode == "auth/weak-password") {
+          this.onLoginFailure.bind(this)("Password is too weak!");
+        } else {
+          this.onLoginFailure.bind(this)(errorMessage);
+        }
       });
-      Segment.identify(this.state.email);
-      Segment.trackWithProperties("User SignIn", {
-        accountType: "CustomEmailAuth",
-        email:this.state.email
-      });
+    Segment.identify(this.state.email);
+    Segment.trackWithProperties("User SignIn", {
+      accountType: "CustomEmailAuth",
+      email: this.state.email,
+    });
   }
 
   render() {
     return (
-      <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss()}}>
+      <TouchableWithoutFeedback
+        onPress={() => {
+          Keyboard.dismiss();
+        }}
+      >
         <SafeAreaView style={{ flex: 1 }}>
           <KeyboardAvoidingView style={styles.container}>
-            <Text style={{ fontSize: 32, fontWeight: '700', color: 'black' }}>
+            <Text style={{ fontSize: 32, fontWeight: "700", color: "black" }}>
               Fitness Tailor
             </Text>
             <View style={styles.form}>
               <TextInput
                 style={styles.input}
                 placeholder="Name"
+                autoCapitalize="none"
                 placeholderTextColor="#B1B1B1"
                 returnKeyType="next"
                 textContentType="name"
                 value={this.state.displayName}
-                onChangeText={displayName => this.setState({ displayName })}
+                onChangeText={(displayName) => this.setState({ displayName })}
               />
               <TextInput
                 style={styles.input}
                 placeholder="Email"
+                autoCapitalize="none"
                 placeholderTextColor="#B1B1B1"
                 returnKeyType="next"
                 keyboardType="email-address"
                 textContentType="emailAddress"
                 value={this.state.email}
-                onChangeText={email => this.setState({ email })}
+                onChangeText={(email) => this.setState({ email })}
               />
               <TextInput
                 style={styles.input}
                 placeholder="Password"
+                autoCapitalize="none"
                 placeholderTextColor="#B1B1B1"
                 returnKeyType="done"
                 textContentType="newPassword"
                 secureTextEntry={true}
                 value={this.state.password}
-                onChangeText={password => this.setState({ password })}
+                onChangeText={(password) => this.setState({ password })}
               />
             </View>
             {this.renderLoading()}
             <Text
               style={{
                 fontSize: 12,
-                textAlign: 'center',
-                color: 'red',
-                width: '85%'
+                textAlign: "center",
+                color: "red",
+                width: "85%",
               }}
             >
               {this.state.error}
             </Text>
-            <TouchableOpacity style={{ width: '85%', marginTop: 10 }} onPress={() => this.signInWithEmail()} >
-                <Text>Sign Up</Text>
+            <TouchableOpacity
+              style={{ width: "85%", marginTop: 10 }}
+              onPress={() => this.signInWithEmail()}
+            >
+              <Text>Sign Up</Text>
             </TouchableOpacity>
             <View style={{ marginTop: 10 }}>
-              <Text style={{ fontWeight: '200', fontSize: 17, textAlign: 'center' }} onPress={() => { this.props.navigation.navigate('SignIn') }} >
+              <Text
+                style={{ fontWeight: "200", fontSize: 17, textAlign: "center" }}
+                onPress={() => {
+                  this.props.navigation.navigate("SignIn");
+                }}
+              >
                 Already have an account?
               </Text>
             </View>
@@ -128,20 +143,20 @@ class SignUpScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
   },
   form: {
-    width: '85%',
-    marginTop: 15
+    width: "85%",
+    marginTop: 15,
   },
   input: {
     fontSize: 15,
-    borderColor: 'black',
+    borderColor: "black",
     borderBottomWidth: 1,
     paddingBottom: 1.5,
-    marginTop: 25
-  }
+    marginTop: 25,
+  },
 });
 export default SignUpScreen;
