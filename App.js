@@ -34,6 +34,7 @@ export default createAppContainer(
     {
       App: HomeScreen,
       Auth: AuthNavigator,
+      Nutrition: NutritionScreen,
     },
     {
       initialRouteName: "Auth",

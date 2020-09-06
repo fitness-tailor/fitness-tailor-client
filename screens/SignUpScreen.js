@@ -23,6 +23,7 @@ class SignUpScreen extends React.Component {
     error: "",
     loading: false,
   };
+
   onLoginSuccess() {
     this.props.navigation.navigate("App");
   }

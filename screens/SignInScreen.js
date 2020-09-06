@@ -23,6 +23,7 @@ class SignInScreen extends React.Component {
   };
 
   onLoginSuccess() {
+    console.log(this.props);
     this.props.navigation.navigate("App");
   }
 

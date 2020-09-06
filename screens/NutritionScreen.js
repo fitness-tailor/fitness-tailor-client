@@ -14,7 +14,7 @@ import NutritionCard from "./Nutrition/NutritionCard";
 import TotalCaloriePercentage from "./Nutrition/TotalNutrition";
 import axios from "axios";
 
-export default function NutritionScreen() {
+const NutritionScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -38,7 +38,9 @@ export default function NutritionScreen() {
       </View>
     </SafeAreaView>
   );
-}
+};
+
+export default NutritionScreen;
 
 const styles = StyleSheet.create({
   container: {
