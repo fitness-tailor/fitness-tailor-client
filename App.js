@@ -4,6 +4,7 @@ import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import AuthNavigator from "./navigation/AuthNavigator";
 import HomeScreen from "./screens/HomeScreen.js";
 import NutritionScreen from "./screens/NutritionScreen.js";
+import RecipeListScreen from "./screens/RecipeListScreen.js";
 // Firebase App (the core Firebase SDK) is always required and
 // must be listed before other Firebase SDKs
 import * as firebase from "firebase/app";
@@ -35,6 +36,7 @@ export default createAppContainer(
       App: HomeScreen,
       Auth: AuthNavigator,
       Nutrition: NutritionScreen,
+      RecipeList: RecipeListScreen,
     },
     {
       initialRouteName: "Auth",
