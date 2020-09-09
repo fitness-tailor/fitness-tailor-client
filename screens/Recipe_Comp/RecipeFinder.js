@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import searchImage from "../../assets/search_button.png";
 import axios from "axios";
+import config from "../../assets/API_KEYS.json";
 
 export default function RecipeSearch() {
   const [recipe, setRecipe] = useState("");
@@ -21,9 +22,14 @@ export default function RecipeSearch() {
   };
 
   const fetchRecipesOnPress = (recipe) => {
-    // TODO: Implement fetching from recipe database here
-    // use "recipe" keyword to fetch recipes from API
-    // console.log(recipe);
+    var res = recipe.replace(/ /g, "%20");
+    axios.get(`https://api.edamam.com/search?q=${res}&app_id=${config.RECIPE_API_KEYS.APP_ID}&app_key=${config.RECIPE_API_KEYS.APP_KEY}`)
+    .then((res) => {
+      console.log(res)
+    })
+    .catch((err) => {
+      console.log(err)
+    })
   };
 
   return (
