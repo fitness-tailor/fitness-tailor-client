@@ -9,18 +9,13 @@ import {
   Image,
   Button,
 } from "react-native";
-import RecipeFinder from "./Nutrition/RecipeFinder";
-import NutritionCard from "./Nutrition/NutritionCard";
-import TotalCaloriePercentage from "./Nutrition/TotalNutrition";
+import NutritionCard from "./Nutrition_Comp/NutritionCard";
+import TotalCaloriePercentage from "./Nutrition_Comp/TotalNutrition";
 import axios from "axios";
 
-const NutritionScreen = () => {
+const NutritionScreen = (props) => {
   return (
     <SafeAreaView style={styles.container}>
-      <View>
-        <RecipeFinder />
-      </View>
-
       <View style={styles.percentageContainer}>
         <TotalCaloriePercentage />
       </View>
@@ -35,6 +30,18 @@ const NutritionScreen = () => {
         <View style={styles.oneCardContainer}>
           <NutritionCard />
         </View>
+        <Button
+          title="Go Home"
+          onPress={() => {
+            props.navigation.navigate("App");
+          }}
+        />
+        <Button
+          title="Go to Recipe List"
+          onPress={() => {
+            props.navigation.navigate("RecipeList");
+          }}
+        />
       </View>
     </SafeAreaView>
   );

@@ -30,6 +30,12 @@ class HomeScreen extends React.Component {
               this.props.navigation.navigate("Nutrition");
             }}
           />
+          <Button
+            title="Go to Recipe List"
+            onPress={() => {
+              this.props.navigation.navigate("RecipeList");
+            }}
+          />
         </View>
       </SafeAreaView>
     );
