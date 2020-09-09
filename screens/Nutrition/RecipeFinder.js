@@ -8,7 +8,7 @@ import {
   Image,
   Button,
 } from "react-native";
-import searchImage from "../assets/search_button.png";
+import searchImage from "../../assets/search_button.png";
 import axios from "axios";
 
 export default function RecipeSearch() {
