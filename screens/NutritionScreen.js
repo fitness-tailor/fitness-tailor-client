@@ -12,8 +12,12 @@ import {
 import NutritionCard from "./Nutrition_Comp/NutritionCard";
 import TotalCaloriePercentage from "./Nutrition_Comp/TotalNutrition";
 import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
 
 const NutritionScreen = (props) => {
+  const counter = useSelector((state) => state.counter);
+  const dispatch = useDispatch();
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.percentageContainer}>
@@ -24,12 +28,16 @@ const NutritionScreen = (props) => {
         <View style={styles.oneCardContainer}>
           <NutritionCard />
         </View>
-        <View style={styles.oneCardContainer}>
-          <NutritionCard />
+        <View>
+          <Text style={{ fontSize: 30 }}>{counter}</Text>
         </View>
-        <View style={styles.oneCardContainer}>
-          <NutritionCard />
-        </View>
+
+        <Button
+          onPress={() => dispatch({ type: "ADD_COUNTER" })}
+          title={"Add Counter"}
+          style={styles.oneCardContainer}
+        />
+
         <Button
           title="Go Home"
           onPress={() => {

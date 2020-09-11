@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@react-navigation/bottom-tabs": "^5.8.0",
+    "@react-navigation/native": "^5.7.3",
     "@reduxjs/toolkit": "^1.4.0",
     "axios": "^0.20.0",
     "expo": "~38.0.8",

@@ -8,6 +8,9 @@ import RecipeListScreen from "./screens/RecipeListScreen.js";
 // Firebase App (the core Firebase SDK) is always required and
 // must be listed before other Firebase SDKs
 import * as firebase from "firebase/app";
+import { Provider } from "react-redux";
+import store from "./redux/store.js";
+import { NavigationContainer } from "@react-navigation/native";
 
 // Add the Firebase services that you want to use
 import "firebase/auth";
@@ -30,7 +33,7 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 
-export default createAppContainer(
+const AppContainer = createAppContainer(
   createSwitchNavigator(
     {
       App: HomeScreen,
@@ -43,3 +46,17 @@ export default createAppContainer(
     }
   )
 );
+
+class App extends React.Component {
+  render() {
+    return (
+      <Provider store={store}>
+        <NavigationContainer>
+          <AppContainer />
+        </NavigationContainer>
+      </Provider>
+    );
+  }
+}
+
+export default App;
