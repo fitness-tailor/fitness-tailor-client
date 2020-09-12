@@ -27,16 +27,32 @@ export default function NutritionCard() {
         {/* Recipe Name */}
         <View style={styles.nameContainer}>
           <Text
-            style={[styles.fontSize, styles.centeredText, styles.normalFont]}
+            style={[
+              styles.fontSize,
+              styles.centeredText,
+              styles.normalFont,
+              styles.baseText,
+            ]}
           >
-            Pasta Con Vongole and Ciabatta and Marinara
+            Pasta Marinara Pasta Marinara Pasta Marinara Pasta Marinara Pasta
+            Marinara
           </Text>
+        </View>
+
+        {/* Recipe Serving Size */}
+        <View style={styles.servingContainer}>
+          <View style={styles.servingTotal}>
+            <Text style={[styles.fontSize, styles.baseText]}>
+              <Text style={styles.boldFont}>Serving Size: </Text>
+              100 g
+            </Text>
+          </View>
         </View>
 
         {/* Recipe Calories */}
         <View style={styles.caloriesContainer}>
           <View style={styles.calTotal}>
-            <Text style={styles.fontSize}>
+            <Text style={[styles.fontSize, styles.baseText]}>
               <Text style={styles.boldFont}>calories: </Text>
               90
             </Text>
@@ -44,18 +60,37 @@ export default function NutritionCard() {
         </View>
       </View>
 
-      <View style={styles.cardDivider} />
-
       {/* Buttons */}
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.button}>
-          <Text style={[styles.fontSize, styles.editButton]}>Edit</Text>
+        <TouchableOpacity
+          style={[styles.buttonStyles, { backgroundColor: "#17aeff" }]}
+          activeOpacity="0.6"
+        >
+          <Text
+            style={[
+              styles.fontSize,
+              styles.editButton,
+              styles.boldFont,
+              styles.baseText,
+            ]}
+          >
+            Edit
+          </Text>
         </TouchableOpacity>
 
-        <View style={styles.buttonDivider} />
-
-        <TouchableOpacity style={styles.button}>
-          <Text style={[styles.fontSize, styles.deleteButton]}>Delete</Text>
+        <TouchableOpacity
+          style={[styles.buttonStyles, { backgroundColor: "#E71D36" }]}
+        >
+          <Text
+            style={[
+              styles.fontSize,
+              styles.editButton,
+              styles.boldFont,
+              styles.baseText,
+            ]}
+          >
+            Delete
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -67,24 +102,42 @@ const styles = StyleSheet.create({
   boldFont: { fontWeight: "bold" },
   normalFont: { fontWeight: "normal" },
   centeredText: { textAlign: "center" },
+  baseText: { fontFamily: "Menlo" },
   container: {
     width: "100%",
-    minHeight: "26%",
-    flexDirection: "row",
+    height: 250,
+    flexDirection: "column",
     justifyContent: "space-around",
   },
   cardDivider: {
-    borderRightWidth: 1,
-    height: "98.5%",
+    borderRightWidth: 0.5,
+    height: "100%",
   },
   recipeContainer: {
-    flex: 3,
+    flex: 4,
+    flexDirection: "column",
+    alignItems: "center",
   },
+  // ==================================
+  // Name Styles
+  // ==================================
   nameContainer: {
-    flex: 2,
     justifyContent: "center",
-    padding: 6,
+    flex: 2,
     borderBottomWidth: 0.25,
+    width: "100%",
+    paddingHorizontal: 20,
+    paddingHorizontal: 10,
+  },
+  // ==================================
+  // Serving Styles
+  // ==================================
+  servingContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    flex: 1,
+    borderBottomWidth: 0.25,
+    width: "100%",
   },
   // ==================================
   // Calories Styles
@@ -94,11 +147,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     justifyContent: "space-around",
-    padding: 6,
+    borderBottomWidth: 0.25,
+    width: "100%",
   },
   calTotal: {
-    flex: 1,
-    minHeight: "100%",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -109,19 +161,24 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "space-around",
+    flexDirection: "row",
+    height: "100%",
   },
-  button: {
-    width: "100%",
+  buttonStyles: {
+    flex: 2,
     justifyContent: "center",
-    flex: 0.49,
+    borderWidth: 0.25,
+    paddingVertical: 5,
+    marginHorizontal: 20,
+    borderRadius: 20,
   },
   editButton: {
     textAlign: "center",
-    color: "blue",
+    color: "white",
   },
   buttonDivider: {
-    width: "100%",
-    borderBottomWidth: 0.75,
+    height: "100%",
+    borderWidth: 0.25,
   },
   deleteButton: {
     textAlign: "center",
