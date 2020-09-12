@@ -25,7 +25,12 @@ export default function RecipeSearch() {
     var res = recipe.replace(/ /g, "%20");
     axios.get(`https://api.edamam.com/search?q=${res}&app_id=${config.RECIPE_API_KEYS.APP_ID}&app_key=${config.RECIPE_API_KEYS.APP_KEY}`)
     .then((res) => {
-      console.log(res)
+      // console.log(res.data)
+      console.log(res.data.hits[2].recipe.label)
+      console.log(res.data.hits[2].recipe.calories)
+      console.log(res.data.hits[2].recipe.totalNutrients)
+      console.log(res.data.hits[2].recipe.totalDaily)
+      console.log(res.data.hits[2].recipe.digest)
     })
     .catch((err) => {
       console.log(err)
