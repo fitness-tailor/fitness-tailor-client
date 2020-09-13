@@ -53,20 +53,16 @@ function RecipeSearch(props) {
         maxLength={50}
         autoCorrect={false}
         onChangeText={(recipe) => setRecipe(recipe)}
-        defaultValue={recipe}
       />
-      <TouchableOpacity onPress={() => fetchRecipesOnPress(recipe)}>
+      <TouchableOpacity
+        style={styles.buttonBox}
+        onPress={() => fetchRecipesOnPress(recipe)}
+      >
         <Image source={searchImage} style={styles.searchButton} />
       </TouchableOpacity>
     </View>
   );
 }
-
-const mapStateToProps = (state) => ({
-  isLoading: state.recipeList.isLoading,
-  recipes: state.recipeList.recipes,
-  error: state.recipeList.error,
-});
 
 function mapDispatchToProps(dispatch) {
   return {
@@ -74,22 +70,22 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(RecipeSearch);
+export default connect(null, mapDispatchToProps)(RecipeSearch);
 
 const styles = StyleSheet.create({
   container: {
-    height: 50,
+    flex: 1,
+    minWidth: "90%",
     borderWidth: 1,
     borderRadius: 10,
     borderColor: "green",
     backgroundColor: "#fff",
     flexDirection: "row",
-    alignItems: "flex-start",
     justifyContent: "center",
     marginTop: "7%",
   },
   inputBox: {
-    flex: 1,
+    flex: 5.5,
     height: 50,
     justifyContent: "center",
     fontSize: 20,
@@ -97,10 +93,13 @@ const styles = StyleSheet.create({
     borderRightWidth: 0.2,
     borderColor: "green",
   },
+  buttonBox: {
+    flex: 1,
+  },
   searchButton: {
     height: 45,
     width: 45,
-    marginRight: 5,
-    marginLeft: 5,
+    borderRadius: 10,
+    marginLeft: "10%",
   },
 });

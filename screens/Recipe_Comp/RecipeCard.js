@@ -11,28 +11,32 @@ import {
 } from "react-native";
 import axios from "axios";
 
-const RecipeCard = () => {
-  const editNutritionData = () => {
-    // TODO: add function to edit nutrition data
-    // HINT: axios put/update
-  };
+const RecipeCard = (props) => {
+  const [name, setName] = useState(props.recipe.recipe.label);
+  const [servingSize, setServingSize] = useState(props.recipe.recipe.yield);
+  const [calories, setCalories] = useState(props.recipe.recipe.calories);
+  const [totalNutrients, setTotalNutrients] = useState(
+    props.recipe.recipe.totalNutrients
+  );
+  const [dailyValues, setDailyValues] = useState(
+    props.recipe.recipe.totalDaily
+  );
 
-  const deleteNutritionData = () => {
-    // TODO: add function to delete nutrition data
-    // HINT: axios delete
+  const addToJournal = () => {
+    // TODO: add function that adds to users nutrition journal
   };
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.recipeContainer}>
         <View style={styles.recipeName}>
-          <Text style={[styles.boldFont, { fontSize: 24 }]}>Pad See Ew</Text>
+          <Text style={[styles.boldFont, { fontSize: 24 }]}>{name}</Text>
         </View>
 
         <View style={styles.nutrientsContainer}>
           <View style={styles.nutrientTitleWrapper}>
             <View style={[styles.nutrientTitle, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>Serving Size</Text>
+              <Text style={styles.recipeFont}>Yield</Text>
             </View>
 
             <View style={[styles.nutrientTitle, styles.bottomPadding]}>
@@ -86,113 +90,162 @@ const RecipeCard = () => {
 
           <View style={styles.nutrientAmountWrapper}>
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>5mg</Text>
+              <Text style={[styles.recipeFont, styles.boldFont]}>
+                {servingSize}
+              </Text>
             </View>
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>5mg</Text>
+              <Text style={styles.recipeFont}>{Math.round(calories)}</Text>
             </View>
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>5mg</Text>
+              <Text style={styles.recipeFont}>
+                {Math.round(totalNutrients.FAT.quantity)}
+              </Text>
             </View>
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>5mg</Text>
+              <Text style={styles.recipeFont}>
+                {Math.round(totalNutrients.FASAT.quantity)}
+              </Text>
             </View>
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>5mg</Text>
+              <Text style={styles.recipeFont}>
+                {Math.round(totalNutrients.FATRN.quantity)}
+              </Text>
             </View>
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>1000mg</Text>
+              <Text style={styles.recipeFont}>
+                {Math.round(totalNutrients.FAMS.quantity)}
+              </Text>
             </View>
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>5mg</Text>
+              <Text style={styles.recipeFont}>
+                {Math.round(totalNutrients.FAPU.quantity)}
+              </Text>
             </View>
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>5mg</Text>
+              <Text style={styles.recipeFont}>
+                {Math.round(totalNutrients.CHOLE.quantity)}
+              </Text>
             </View>
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>5mg</Text>
+              <Text style={styles.recipeFont}>
+                {Math.round(totalNutrients.NA.quantity)}
+              </Text>
             </View>
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>5mg</Text>
+              <Text style={styles.recipeFont}>
+                {Math.round(totalNutrients.CHOCDF.quantity)}
+              </Text>
             </View>
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>5mg</Text>
+              <Text style={styles.recipeFont}>
+                {Math.round(totalNutrients.FIBTG.quantity)}
+              </Text>
             </View>
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>5mg</Text>
+              <Text style={styles.recipeFont}>
+                {Math.round(totalNutrients.SUGAR.quantity)}
+              </Text>
             </View>
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>5mg</Text>
+              <Text style={styles.recipeFont}>
+                {Math.round(totalNutrients.PROCNT.quantity)}
+              </Text>
             </View>
           </View>
 
           <View style={styles.nutrientPercentageWrapper}>
             <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>2%</Text>
+              <Text style={styles.recipeFont}>None</Text>
             </View>
 
             <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>2%</Text>
+              <Text style={styles.recipeFont}>Later </Text>
             </View>
 
             <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>100%</Text>
+              <Text style={styles.recipeFont}>
+                {" "}
+                {`${Math.round(dailyValues.FAT.quantity)}%`}
+              </Text>
             </View>
 
             <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>2%</Text>
+              <Text style={styles.recipeFont}>
+                {" "}
+                {`${Math.round(dailyValues.FASAT.quantity)}%`}
+              </Text>
             </View>
 
             <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>2%</Text>
+              <Text style={styles.recipeFont}>NONE</Text>
             </View>
 
             <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>2%</Text>
+              <Text style={styles.recipeFont}>NONE</Text>
             </View>
 
             <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>2%</Text>
+              <Text style={styles.recipeFont}>NONE </Text>
             </View>
 
             <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>2%</Text>
+              <Text style={styles.recipeFont}>
+                {" "}
+                {`${Math.round(dailyValues.CHOLE.quantity)}%`}
+              </Text>
             </View>
 
             <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>2%</Text>
+              <Text style={styles.recipeFont}>
+                {" "}
+                {`${Math.round(dailyValues.NA.quantity)}%`}
+              </Text>
             </View>
 
             <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>2%</Text>
+              <Text style={styles.recipeFont}>
+                {" "}
+                {`${Math.round(dailyValues.CHOCDF.quantity)}%`}
+              </Text>
             </View>
 
             <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>2%</Text>
+              <Text style={styles.recipeFont}>
+                {" "}
+                {`${Math.round(dailyValues.FIBTG.quantity)}%`}
+              </Text>
             </View>
 
             <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>2%</Text>
+              <Text style={styles.recipeFont}>NONE</Text>
             </View>
 
             <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>2%</Text>
+              <Text style={styles.recipeFont}>
+                {" "}
+                {`${Math.round(dailyValues.PROCNT.quantity)}%`}
+              </Text>
             </View>
           </View>
         </View>
-        <TouchableOpacity style={styles.addButtonContainer} activeOpacity="0.5">
+        <TouchableOpacity
+          style={styles.addButtonContainer}
+          onPress={() => addToJournal()}
+          activeOpacity="0.5"
+        >
           <Text style={styles.addButtonText}>Add To Journal</Text>
         </TouchableOpacity>
       </View>
