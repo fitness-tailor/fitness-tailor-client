@@ -28,20 +28,20 @@ const NutritionScreen = (props) => {
         <View style={styles.oneCardContainer}>
           <NutritionCard />
         </View>
-
-        <Button
-          title="Go Home"
-          onPress={() => {
-            props.navigation.navigate("App");
-          }}
-        />
-        <Button
-          title="Go to Recipe List"
-          onPress={() => {
-            props.navigation.navigate("RecipeList");
-          }}
-        />
       </View>
+
+      <Button
+        title="Go Home"
+        onPress={() => {
+          props.navigation.navigate("App");
+        }}
+      />
+      <Button
+        title="Go to Recipe List"
+        onPress={() => {
+          props.navigation.navigate("RecipeList");
+        }}
+      />
     </SafeAreaView>
   );
 };
@@ -61,13 +61,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   cardsContainer: {
-    marginTop: "4%",
+    marginTop: "5%",
     alignItems: "center",
     width: "90%",
   },
   oneCardContainer: {
     borderWidth: 1,
-    marginBottom: "3%",
+    marginBottom: "4%",
     width: "100%",
     borderRadius: 10,
   },
