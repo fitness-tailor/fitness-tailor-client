@@ -9,44 +9,35 @@ import {
   Image,
   Button,
 } from "react-native";
-import NutritionCard from "./Nutrition_Comp/NutritionCard";
-import TotalCaloriePercentage from "./Nutrition_Comp/TotalNutrition";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 
-const NutritionScreen = (props) => {
+const Playground = (props) => {
   const counter = useSelector((state) => state.counter);
   const dispatch = useDispatch();
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.percentageContainer}>
-        <TotalCaloriePercentage />
+      <View>
+        <Text style={{ fontSize: 30, alignItems: "center" }}>{counter}</Text>
       </View>
 
-      <View style={styles.cardsContainer}>
-        <View style={styles.oneCardContainer}>
-          <NutritionCard />
-        </View>
-
-        <Button
-          title="Go Home"
-          onPress={() => {
-            props.navigation.navigate("App");
-          }}
-        />
-        <Button
-          title="Go to Recipe List"
-          onPress={() => {
-            props.navigation.navigate("RecipeList");
-          }}
-        />
-      </View>
+      <Button
+        onPress={() => dispatch({ type: "ADD_COUNTER" })}
+        title={"Add Counter"}
+        style={styles.oneCardContainer}
+      />
+      <Button
+        title="Go Home"
+        onPress={() => {
+          props.navigation.navigate("App");
+        }}
+      />
     </SafeAreaView>
   );
 };
 
-export default NutritionScreen;
+export default Playground;
 
 const styles = StyleSheet.create({
   container: {

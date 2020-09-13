@@ -13,3 +13,4 @@ web-build/
 .DS_Store
 
 assets/API_KEYS.js
+assets/API_KEYS.json

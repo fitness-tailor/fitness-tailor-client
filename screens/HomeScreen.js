@@ -36,6 +36,12 @@ class HomeScreen extends React.Component {
               this.props.navigation.navigate("RecipeList");
             }}
           />
+          <Button
+            title="Go to Redux Playground"
+            onPress={() => {
+              this.props.navigation.navigate("Playground");
+            }}
+          />
         </View>
       </SafeAreaView>
     );
