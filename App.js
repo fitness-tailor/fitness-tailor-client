@@ -1,13 +1,18 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
+
 import AuthNavigator from "./navigation/AuthNavigator";
 import HomeScreen from "./screens/HomeScreen.js";
 import NutritionScreen from "./screens/NutritionScreen.js";
 import RecipeListScreen from "./screens/RecipeListScreen.js";
+import ReduxPlayground from "./screens/ReduxPlayground.js";
 // Firebase App (the core Firebase SDK) is always required and
 // must be listed before other Firebase SDKs
 import * as firebase from "firebase/app";
+import { Provider } from "react-redux";
+import store from "./redux/store.js";
+import { NavigationContainer } from "@react-navigation/native";
 
 // Add the Firebase services that you want to use
 import "firebase/auth";
@@ -30,16 +35,31 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 
-export default createAppContainer(
+const AppContainer = createAppContainer(
   createSwitchNavigator(
     {
       App: HomeScreen,
       Auth: AuthNavigator,
       Nutrition: NutritionScreen,
       RecipeList: RecipeListScreen,
+      Playground: ReduxPlayground,
     },
     {
       initialRouteName: "Auth",
     }
   )
 );
+
+class App extends React.Component {
+  render() {
+    return (
+      <Provider store={store}>
+        <NavigationContainer>
+          <AppContainer />
+        </NavigationContainer>
+      </Provider>
+    );
+  }
+}
+
+export default App;
