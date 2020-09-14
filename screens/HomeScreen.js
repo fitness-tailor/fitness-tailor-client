@@ -1,23 +1,23 @@
 import React from "react";
-import { StyleSheet, Text, View, SafeAreaView, Button } from "react-native";
+import {connect} from "react-redux";
 import firebase from "firebase";
+import { StyleSheet, Text, View, SafeAreaView, Button } from "react-native";
+import { getUser } from "../redux/actions/authActions.js"
 
 class HomeScreen extends React.Component {
-  state = { user: {} };
+  constructor(props) {
+    super(props)
+  }
 
   componentDidMount() {
-    firebase.auth().onAuthStateChanged((user) => {
-      if (user != null) {
-        this.setState({ user: user });
-      }
-    });
+    this.props.fetchUser();
   }
 
   render() {
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.container}>
-          <Text>{this.state.user.email}</Text>
+          <Text>{this.props.user.email}</Text>
           <Button
             title="Log Off"
             onPress={() => {
@@ -55,4 +55,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
-export default HomeScreen;
+
+const mapStateToProps = (state) => ({
+  isLoading: state.auth.isLoading,
+  user: state.auth.user,
+  error: state.auth.error,
+});
+
+function mapDispatchToProps(dispatch) {
+  return {
+    fetchUser: () => dispatch(getUser()),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

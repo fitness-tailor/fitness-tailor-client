@@ -21,8 +21,6 @@ const RecipeListScreen = (props) => {
     // aha;
   });
 
-  console.log(props);
-
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
