@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
+import { addCounter } from "../redux/actions/playgroundActions.js";
 
 const Playground = (props) => {
   const counter = useSelector((props) => props.playground.counter);

@@ -15,7 +15,7 @@ const fetchRecipeList = () => {
 const fetchRecipeListSuccess = (recipes) => {
   return {
     type: FETCH_RECIPE_LIST_SUCCESS,
-    payload: recipes,
+    payload: recipes, // [{}, {}, {}]
   };
 };
 
@@ -32,7 +32,7 @@ export const getRecipes = (recipe) => {
     dispatch(fetchRecipeList());
     axios
       .get(
-        `https://api.edamam.com/search?q=${recipeQuery}&app_id=${config.RECIPE_API_KEYS.APP_ID}&app_key=${config.RECIPE_API_KEYS.APP_KEY}&from=0&to=3`
+        `https://api.edamam.com/search?q=${recipeQuery}&app_id=${config.RECIPE_API_KEYS.APP_ID}&app_key=${config.RECIPE_API_KEYS.APP_KEY}&from=0&to=1`
       )
       .then((res) => {
         const recipeList = res.data.hits; // contains array of recipe list
