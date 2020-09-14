@@ -15,7 +15,7 @@ const fetchRecipeList = () => {
 const fetchRecipeListSuccess = (recipes) => {
   return {
     type: FETCH_RECIPE_LIST_SUCCESS,
-    payload: recipes, // [{}, {}, {}]
+    payload: recipes,
   };
 };
 

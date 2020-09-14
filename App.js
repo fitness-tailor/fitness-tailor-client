@@ -12,7 +12,6 @@ import ReduxPlayground from "./screens/ReduxPlayground.js";
 import * as firebase from "firebase/app";
 import { Provider } from "react-redux";
 import store from "./redux/store.js";
-// import { NavigationContainer } from "@react-navigation/native";
 
 // Add the Firebase services that you want to use
 import "firebase/auth";
@@ -54,9 +53,7 @@ class App extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        {/* <NavigationContainer> */}
         <AppContainer />
-        {/* </NavigationContainer> */}
       </Provider>
     );
   }
