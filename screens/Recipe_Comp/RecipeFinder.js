@@ -8,33 +8,40 @@ import {
   Image,
   Button,
 } from "react-native";
+import { connect } from "react-redux";
 import searchImage from "../../assets/search_button.png";
 import axios from "axios";
 import config from "../../assets/API_KEYS.json";
+import { getRecipes } from "../../redux/actions/recipeListActions.js";
 
-export default function RecipeSearch() {
+function RecipeSearch(props) {
   const [recipe, setRecipe] = useState("");
 
-  const fetchRecipesOnEnter = ({ nativeEvent }) => {
-    // TODO: Implement fetching from recipe database here
-    // use "nativeEvent.text" keyword to fetch recipes from API
-    // console.log(nativeEvent.text);
-  };
-
   const fetchRecipesOnPress = (recipe) => {
-    var res = recipe.replace(/ /g, "%20");
-    axios.get(`https://api.edamam.com/search?q=${res}&app_id=${config.RECIPE_API_KEYS.APP_ID}&app_key=${config.RECIPE_API_KEYS.APP_KEY}`)
-    .then((res) => {
-      // console.log(res.data)
-      console.log(res.data.hits[2].recipe.label)
-      console.log(res.data.hits[2].recipe.calories)
-      console.log(res.data.hits[2].recipe.totalNutrients)
-      console.log(res.data.hits[2].recipe.totalDaily)
-      console.log(res.data.hits[2].recipe.digest)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+    props.fetchRecipesFromAPI(recipe);
+    // var res = recipe.replace(/ /g, "%20");
+    // axios
+    //   .get(
+    //     `https://api.edamam.com/search?q=${res}&app_id=${config.RECIPE_API_KEYS.APP_ID}&app_key=${config.RECIPE_API_KEYS.APP_KEY}&from=0&to=3`
+    //   )
+    //   .then((res) => {
+    //     // console.log(res.data)
+    //     console.log("All Foods:", res.data);
+    //     console.log("API Data Label:", res.data.hits[2].recipe.label);
+    //     console.log("API Data Calories:", res.data.hits[2].recipe.calories);
+    //     console.log(
+    //       "API Data Nutrients:",
+    //       res.data.hits[2].recipe.totalNutrients
+    //     );
+    //     console.log(
+    //       "API Data Total Daily:",
+    //       res.data.hits[2].recipe.totalDaily
+    //     );
+    //     console.log("API Data Digest:", res.data.hits[2].recipe.digest);
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
   };
 
   return (
@@ -44,8 +51,8 @@ export default function RecipeSearch() {
         value={recipe}
         placeholder="Search Any Recipe"
         maxLength={50}
+        autoCorrect={false}
         onChangeText={(recipe) => setRecipe(recipe)}
-        onSubmitEditing={(event) => fetchRecipesOnEnter(event)}
         defaultValue={recipe}
       />
       <TouchableOpacity onPress={() => fetchRecipesOnPress(recipe)}>
@@ -54,6 +61,20 @@ export default function RecipeSearch() {
     </View>
   );
 }
+
+const mapStateToProps = (state) => ({
+  isLoading: state.recipeList.isLoading,
+  recipes: state.recipeList.recipes,
+  error: state.recipeList.error,
+});
+
+function mapDispatchToProps(dispatch) {
+  return {
+    fetchRecipesFromAPI: (recipe) => dispatch(getRecipes(recipe)),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(RecipeSearch);
 
 const styles = StyleSheet.create({
   container: {

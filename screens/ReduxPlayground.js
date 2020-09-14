@@ -13,7 +13,7 @@ import axios from "axios";
 import { useSelector, useDispatch } from "react-redux";
 
 const Playground = (props) => {
-  const counter = useSelector((state) => state.counter);
+  const counter = useSelector((props) => props.playground.counter);
   const dispatch = useDispatch();
 
   return (
@@ -23,7 +23,7 @@ const Playground = (props) => {
       </View>
 
       <Button
-        onPress={() => dispatch({ type: "ADD_COUNTER" })}
+        onPress={() => dispatch(addCounter())}
         title={"Add Counter"}
         style={styles.oneCardContainer}
       />

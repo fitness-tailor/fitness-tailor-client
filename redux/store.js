@@ -1,9 +1,18 @@
-import { createStore } from "redux";
-import rootReducer from "./reducers/combinedReducers.js";
+import { createStore, applyMiddleware } from "redux";
+import { composeWithDevTools } from "redux-devtools-extension";
+import rootReducer from "./reducers/index.js";
+import thunk from "redux-thunk";
+import logger from "redux-logger";
+
+const middlewares = [thunk, logger];
 
 const reduxStore = createStore(
   rootReducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  composeWithDevTools(applyMiddleware(...middlewares))
 );
+
+reduxStore.subscribe(reduxStore.getState);
+
+// console.log(reduxStore.getState());
 
 export default reduxStore;
