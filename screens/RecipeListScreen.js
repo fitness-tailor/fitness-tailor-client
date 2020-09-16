@@ -32,7 +32,7 @@ const RecipeListScreen = (props) => {
           {props.recipes.map((recipe, key) => {
             return (
               <View style={styles.oneCardContainer}>
-                <RecipeCard recipe={recipe} key={key} />
+                <RecipeCard recipe={recipe} key={key} user={props.user}/>
               </View>
             );
           })}
@@ -59,6 +59,7 @@ const mapStateToProps = (state) => ({
   isLoading: state.recipeList.isLoading,
   recipes: state.recipeList.recipes,
   error: state.recipeList.error,
+  user: state.auth.user,
 });
 
 function mapDispatchToProps(dispatch) {

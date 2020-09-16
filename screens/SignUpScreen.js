@@ -45,6 +45,12 @@ class SignUpScreen extends React.Component {
     await firebase
       .auth()
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
+      .then((result) => {
+        const user = firebase.auth().currentUser;
+        return user.updateProfile({
+          displayName: this.state.displayName
+        })
+      })
       .then(this.onLoginSuccess.bind(this))
       .catch((error) => {
         let errorCode = error.code;
