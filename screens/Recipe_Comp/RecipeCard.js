@@ -10,7 +10,6 @@ import {
   Button,
 } from "react-native";
 import axios from "axios";
-import { useSelector } from 'react-redux';
 import firebase from 'firebase';
 
 const RecipeCard = (props) => {
