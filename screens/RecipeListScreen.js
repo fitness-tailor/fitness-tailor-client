@@ -32,7 +32,7 @@ const RecipeListScreen = (props) => {
           {props.recipes.map((recipe, key) => {
             return (
               <View style={styles.oneCardContainer}>
-                <RecipeCard recipe={recipe} key={key} />
+                <RecipeCard recipe={recipe} key={key}/>
               </View>
             );
           })}

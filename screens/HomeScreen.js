@@ -17,6 +17,7 @@ class HomeScreen extends React.Component {
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.container}>
+          <Text>{this.props.user.displayName}</Text>
           <Text>{this.props.user.email}</Text>
           <Button
             title="Log Off"
