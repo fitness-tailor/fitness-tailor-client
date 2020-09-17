@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import axios from "axios";
 import firebase from 'firebase';
+import {connect} from 'react-redux';
 
 const RecipeCard = (props) => {
   const [name, setName] = useState(props.recipe.recipe.label);
@@ -24,11 +25,7 @@ const RecipeCard = (props) => {
   );
 
   const addToJournal = () => {
-    console.log(props.user)
-    // TODO: add function that adds to users nutrition journal
-    //need user info
-    //writedata to firebase with user info and this recipe card
-    firebase.database().ref('users/' + props.user.displayName).set({
+    firebase.database().ref('users/' + props.displayName).set({
       journal: name,
     })
   };
@@ -260,7 +257,12 @@ const RecipeCard = (props) => {
   );
 };
 
-export default RecipeCard;
+
+const mapStateToProps = (state) => ({
+  displayName: state.auth.user.displayName,
+});
+
+export default connect(mapStateToProps, null)(RecipeCard);
 
 const styles = StyleSheet.create({
   fontSize: { fontSize: 18 },
