@@ -19,29 +19,6 @@ function RecipeSearch(props) {
 
   const fetchRecipesOnPress = (recipe) => {
     props.fetchRecipesFromAPI(recipe);
-    // var res = recipe.replace(/ /g, "%20");
-    // axios
-    //   .get(
-    //     `https://api.edamam.com/search?q=${res}&app_id=${config.RECIPE_API_KEYS.APP_ID}&app_key=${config.RECIPE_API_KEYS.APP_KEY}&from=0&to=3`
-    //   )
-    //   .then((res) => {
-    //     // console.log(res.data)
-    //     console.log("All Foods:", res.data);
-    //     console.log("API Data Label:", res.data.hits[2].recipe.label);
-    //     console.log("API Data Calories:", res.data.hits[2].recipe.calories);
-    //     console.log(
-    //       "API Data Nutrients:",
-    //       res.data.hits[2].recipe.totalNutrients
-    //     );
-    //     console.log(
-    //       "API Data Total Daily:",
-    //       res.data.hits[2].recipe.totalDaily
-    //     );
-    //     console.log("API Data Digest:", res.data.hits[2].recipe.digest);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
   };
 
   return (
@@ -74,8 +51,6 @@ export default connect(null, mapDispatchToProps)(RecipeSearch);
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    minWidth: "90%",
     borderWidth: 1,
     borderRadius: 10,
     borderColor: "green",

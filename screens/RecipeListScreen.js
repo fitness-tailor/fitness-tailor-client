@@ -16,17 +16,26 @@ import axios from "axios";
 import { connect } from "react-redux";
 
 const RecipeListScreen = (props) => {
+  const [recipeList, setRecipeList] = useState(props.recipes);
+  console.log(recipeList);
   useEffect(() => {
-    // haha;
-    // aha;
+    displayRecipes(recipeList);
   });
 
-  console.log(props);
+  const displayRecipes = (list) => {
+    list.map((recipe, key) => {
+      return (
+        <View style={styles.oneCardContainer}>
+          <RecipeCard recipe={recipe} key={key} />
+        </View>
+      );
+    });
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
-        <View>
+        <View style={styles.searchContainer}>
           <RecipeFinder />
         </View>
 
@@ -63,23 +72,19 @@ const mapStateToProps = (state) => ({
   error: state.recipeList.error,
 });
 
-function mapDispatchToProps(dispatch) {
-  return {
-    fetchRecipesFromAPI: (recipe) => dispatch(getRecipes(recipe)),
-  };
-}
-
 export default connect(mapStateToProps, null)(RecipeListScreen);
 
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    borderWidth: 1,
-    // width: "100%",
+    width: "100%",
   },
   scrollView: {
     paddingHorizontal: "4%",
     padding: 0,
+  },
+  searchContainer: {
+    minWidth: "100%",
   },
   cardsContainer: {
     marginTop: "6%",
