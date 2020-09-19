@@ -140,10 +140,11 @@ const RecipeCard = (props) => {
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
               <Text style={styles.recipeFont}>
-                {displayData(
+                {/* {displayData(
                   totalNutrients.FATRN.quantity,
                   totalNutrients.FATRN.unit
-                )}
+                )} */}
+                NONE
               </Text>
             </View>
 
