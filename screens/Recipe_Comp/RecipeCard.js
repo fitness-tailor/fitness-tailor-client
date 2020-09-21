@@ -12,15 +12,12 @@ import {
 import axios from "axios";
 
 const RecipeCard = (props) => {
-  const [name, setName] = useState(props.recipe.recipe.label);
-  const [servingSize, setServingSize] = useState(props.recipe.recipe.yield);
-  const [calories, setCalories] = useState(props.recipe.recipe.calories);
-  const [totalNutrients, setTotalNutrients] = useState(
-    props.recipe.recipe.totalNutrients
-  );
-  const [dailyValues, setDailyValues] = useState(
-    props.recipe.recipe.totalDaily
-  );
+  let { recipe } = props.recipe;
+  const [name, setName] = useState(recipe.label);
+  const [servingSize, setServingSize] = useState(recipe.yield);
+  const [calories, setCalories] = useState(recipe.calories);
+  const [totalNutrients, setTotalNutrients] = useState(recipe.totalNutrients);
+  const [dailyValues, setDailyValues] = useState(recipe.totalDaily);
 
   const addToJournal = () => {
     // TODO: add function that adds to users nutrition journal
