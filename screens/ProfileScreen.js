@@ -39,7 +39,7 @@ const ProfileScreen = (props) => {
         "Please enter only numbers"
       )
     } else {
-      firebase.database().ref('users/' + props.displayName).set({
+      firebase.database().ref('users/' + props.displayName).update({
         weight: weight,
         heightFeet: heightFeet,
         heightInch: heightInch,
@@ -49,6 +49,9 @@ const ProfileScreen = (props) => {
         let userLbs = parseInt(weight);
         let BMI = ((userLbs/(userInchSquared))*703);
         setBMI(BMI.toFixed(2));
+        firebase.database().ref('users/' + props.displayName).update({
+          BMI: bmi,
+        })
       })
     }
   };
