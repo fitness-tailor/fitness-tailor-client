@@ -17,6 +17,7 @@ const ProfileScreen = (props) => {
     const [heightFeet, setHeightFeet] = useState('');
     const [heightInch, setHeightInch] = useState('');
     const [weight, setWeight] = useState('');
+    const [bmi, setBMI] = useState('');
 
 
   const numbersOnly = (input) => {
@@ -43,8 +44,11 @@ const ProfileScreen = (props) => {
         heightFeet: heightFeet,
         heightInch: heightInch,
       })
-      .then((res) => {
-        console.log('successful update')
+      .then(() => {
+        let userInchSquared = Math.pow((parseInt(heightFeet)*12) + parseInt(heightInch), 2)
+        let userLbs = parseInt(weight);
+        let BMI = ((userLbs/(userInchSquared))*703);
+        setBMI(BMI.toFixed(2));
       })
     }
   };
@@ -53,6 +57,9 @@ const ProfileScreen = (props) => {
     <SafeAreaView style={styles.container}>
       <Text>
         Hello {props.displayName}, please enter your height and weight.
+      </Text>
+      <Text>
+        Your BMI is {bmi}
       </Text>
       <View style={styles.userInput}>
         <View styles={styles.userHeight}>
@@ -88,6 +95,9 @@ const ProfileScreen = (props) => {
 
 const mapStateToProps = (state) => ({
   displayName: state.auth.user.displayName,
+  weight: state.auth.user.weight,
+  heightFeet: state.auth.user.heightFeet,
+  heightInch: state.auth.user.heightInch,
 });
 
 export default connect(mapStateToProps, null)(ProfileScreen);
