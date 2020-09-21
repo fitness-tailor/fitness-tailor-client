@@ -14,15 +14,12 @@ import firebase from 'firebase';
 import {connect} from 'react-redux';
 
 const RecipeCard = (props) => {
-  const [name, setName] = useState(props.recipe.recipe.label);
-  const [servingSize, setServingSize] = useState(props.recipe.recipe.yield);
-  const [calories, setCalories] = useState(props.recipe.recipe.calories);
-  const [totalNutrients, setTotalNutrients] = useState(
-    props.recipe.recipe.totalNutrients
-  );
-  const [dailyValues, setDailyValues] = useState(
-    props.recipe.recipe.totalDaily
-  );
+  let { recipe } = props.recipe;
+  const [name, setName] = useState(recipe.label);
+  const [servingSize, setServingSize] = useState(recipe.yield);
+  const [calories, setCalories] = useState(recipe.calories);
+  const [totalNutrients, setTotalNutrients] = useState(recipe.totalNutrients);
+  const [dailyValues, setDailyValues] = useState(recipe.totalDaily);
 
   const addToJournal = () => {
     firebase.database().ref('users/' + props.displayName).set({
@@ -53,7 +50,11 @@ const RecipeCard = (props) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.recipeContainer}>
         <View style={styles.recipeName}>
-          <Text style={[styles.boldFont, { fontSize: 24 }]}>{name}</Text>
+          <Text
+            style={[styles.boldFont, { fontFamily: "Menlo", fontSize: 24 }]}
+          >
+            {name}
+          </Text>
         </View>
 
         <View style={styles.nutrientsContainer}>
@@ -284,7 +285,9 @@ const RecipeCard = (props) => {
           onPress={() => addToJournal()}
           activeOpacity="0.5"
         >
-          <Text style={styles.addButtonText}>Add To Journal</Text>
+          <Text style={[styles.addButtonText, styles.baseText]}>
+            Add To Journal
+          </Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -303,6 +306,7 @@ const styles = StyleSheet.create({
   boldFont: { fontWeight: "bold" },
   normalFont: { fontWeight: "normal" },
   centeredText: { textAlign: "center" },
+  baseText: { fontFamily: "Menlo" },
   bottomPadding: { paddingBottom: 2 },
   container: {
     width: "100%",
