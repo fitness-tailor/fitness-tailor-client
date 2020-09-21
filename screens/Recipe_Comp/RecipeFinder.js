@@ -6,19 +6,16 @@ import {
   TextInput,
   TouchableOpacity,
   Image,
-  Button,
 } from "react-native";
 import { connect } from "react-redux";
 import searchImage from "../../assets/search_button.png";
-import axios from "axios";
-import config from "../../assets/API_KEYS.json";
 import { getRecipes } from "../../redux/actions/recipeListActions.js";
 
 function RecipeSearch(props) {
   const [recipe, setRecipe] = useState("");
 
   const fetchRecipesOnPress = (recipe) => {
-    props.fetchRecipesFromAPI(recipe);
+    props.getRecipes(recipe.replace(/%20/g, ""));
   };
 
   return (
@@ -41,18 +38,16 @@ function RecipeSearch(props) {
   );
 }
 
-function mapDispatchToProps(dispatch) {
+const mapDispatchToProps = (dispatch) => {
   return {
-    fetchRecipesFromAPI: (recipe) => dispatch(getRecipes(recipe)),
+    getRecipes: (recipe) => dispatch(getRecipes(recipe)),
   };
-}
+};
 
 export default connect(null, mapDispatchToProps)(RecipeSearch);
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    minWidth: "90%",
     borderWidth: 1,
     borderRadius: 10,
     borderColor: "green",

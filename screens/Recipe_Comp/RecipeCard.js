@@ -30,6 +30,25 @@ const RecipeCard = (props) => {
     })
   };
 
+  // handle calories as edge case
+
+  // return value if it exists or is 0
+  // N/A is pretty useless in this case
+
+  // MY PROBLEM: If val is not defined in my recipe object, this function DOES NOT execute whatsoever and gives me an array.
+  // Proposal 1: Once we fetch results, we could add an empty object into daily values that contains nothing. But 8g would return 0%.
+  // Proposal 2: We add another function that calculates the daily values percentage by ourselves, instead of relying on data. We'd have to some scientific research for this.
+  const displayData = (val, unit = "%") => {
+    if (val === undefined) {
+      return "N/A";
+    }
+
+    if (val === calories) {
+      return Math.round(val);
+    }
+    return val || val === 0 ? Math.round(val) + ` ${unit}` : "N/A";
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.recipeContainer}>
@@ -100,97 +119,131 @@ const RecipeCard = (props) => {
             </View>
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>{Math.round(calories)}</Text>
-            </View>
-
-            <View style={[styles.nutrientAmount, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>
-                {Math.round(totalNutrients.FAT.quantity)}
+              <Text style={[styles.recipeFont, styles.boldFont]}>
+                {displayData(calories)}
               </Text>
             </View>
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
               <Text style={styles.recipeFont}>
-                {Math.round(totalNutrients.FASAT.quantity)}
+                {displayData(
+                  totalNutrients.FAT.quantity,
+                  totalNutrients.FAT.unit
+                )}
               </Text>
             </View>
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
               <Text style={styles.recipeFont}>
-                {Math.round(totalNutrients.FATRN.quantity)}
+                {displayData(
+                  totalNutrients.FASAT.quantity,
+                  totalNutrients.FASAT.unit
+                )}
               </Text>
             </View>
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
               <Text style={styles.recipeFont}>
-                {Math.round(totalNutrients.FAMS.quantity)}
+                {/* {displayData(
+                  totalNutrients.FATRN.quantity,
+                  totalNutrients.FATRN.unit
+                )} */}
+                NONE
               </Text>
             </View>
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
               <Text style={styles.recipeFont}>
-                {Math.round(totalNutrients.FAPU.quantity)}
+                {displayData(
+                  totalNutrients.FAMS.quantity,
+                  totalNutrients.FAMS.unit
+                )}
               </Text>
             </View>
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
               <Text style={styles.recipeFont}>
-                {Math.round(totalNutrients.CHOLE.quantity)}
+                {displayData(
+                  totalNutrients.FAPU.quantity,
+                  totalNutrients.FAPU.unit
+                )}
               </Text>
             </View>
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
               <Text style={styles.recipeFont}>
-                {Math.round(totalNutrients.NA.quantity)}
+                {displayData(
+                  totalNutrients.CHOLE.quantity,
+                  totalNutrients.CHOLE.unit
+                )}
               </Text>
             </View>
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
               <Text style={styles.recipeFont}>
-                {Math.round(totalNutrients.CHOCDF.quantity)}
+                {displayData(
+                  totalNutrients.NA.quantity,
+                  totalNutrients.NA.unit
+                )}
               </Text>
             </View>
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
               <Text style={styles.recipeFont}>
-                {Math.round(totalNutrients.FIBTG.quantity)}
+                {displayData(
+                  totalNutrients.CHOCDF.quantity,
+                  totalNutrients.CHOCDF.unit
+                )}
               </Text>
             </View>
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
               <Text style={styles.recipeFont}>
-                {Math.round(totalNutrients.SUGAR.quantity)}
+                {displayData(
+                  totalNutrients.FIBTG.quantity,
+                  totalNutrients.FIBTG.unit
+                )}
               </Text>
             </View>
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
               <Text style={styles.recipeFont}>
-                {Math.round(totalNutrients.PROCNT.quantity)}
+                {displayData(
+                  totalNutrients.SUGAR.quantity,
+                  totalNutrients.SUGAR.unit
+                )}
+              </Text>
+            </View>
+
+            <View style={[styles.nutrientAmount, styles.bottomPadding]}>
+              <Text style={styles.recipeFont}>
+                {displayData(
+                  totalNutrients.PROCNT.quantity,
+                  totalNutrients.PROCNT.unit
+                )}
               </Text>
             </View>
           </View>
 
           <View style={styles.nutrientPercentageWrapper}>
             <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>None</Text>
+              <Text style={styles.recipeFont}>NONE</Text>
             </View>
 
             <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>Later </Text>
+              <Text style={styles.recipeFont}>LATER</Text>
             </View>
 
             <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>
-                {" "}
-                {`${Math.round(dailyValues.FAT.quantity)}%`}
-              </Text>
+              <Text style={styles.recipeFont}>NONE </Text>
             </View>
 
             <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>
-                {" "}
-                {`${Math.round(dailyValues.FASAT.quantity)}%`}
-              </Text>
+              <Text style={styles.recipeFont}>NONE </Text>
+            </View>
+
+            <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
+              <Text style={styles.recipeFont}>NONE</Text>
             </View>
 
             <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
@@ -206,31 +259,15 @@ const RecipeCard = (props) => {
             </View>
 
             <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>
-                {" "}
-                {`${Math.round(dailyValues.CHOLE.quantity)}%`}
-              </Text>
+              <Text style={styles.recipeFont}>NONE </Text>
             </View>
 
             <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>
-                {" "}
-                {`${Math.round(dailyValues.NA.quantity)}%`}
-              </Text>
+              <Text style={styles.recipeFont}>NONE </Text>
             </View>
 
             <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>
-                {" "}
-                {`${Math.round(dailyValues.CHOCDF.quantity)}%`}
-              </Text>
-            </View>
-
-            <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>
-                {" "}
-                {`${Math.round(dailyValues.FIBTG.quantity)}%`}
-              </Text>
+              <Text style={styles.recipeFont}>NONE </Text>
             </View>
 
             <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
@@ -238,10 +275,7 @@ const RecipeCard = (props) => {
             </View>
 
             <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>
-                {" "}
-                {`${Math.round(dailyValues.PROCNT.quantity)}%`}
-              </Text>
+              <Text style={styles.recipeFont}>NONE </Text>
             </View>
           </View>
         </View>

@@ -1,41 +1,44 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   StyleSheet,
   Text,
   SafeAreaView,
   ScrollView,
   View,
-  TextInput,
-  TouchableOpacity,
-  Image,
+  ActivityIndicator,
   Button,
 } from "react-native";
 import RecipeFinder from "./Recipe_Comp/RecipeFinder";
 import RecipeCard from "./Recipe_Comp/RecipeCard";
-import axios from "axios";
 import { connect } from "react-redux";
 
+// Recipe List Component
 const RecipeListScreen = (props) => {
-  useEffect(() => {
-    // haha;
-    // aha;
-  });
-
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
-        <View>
+        <View style={styles.searchContainer}>
           <RecipeFinder />
         </View>
 
         <View style={styles.cardsContainer}>
-          {props.recipes.map((recipe, key) => {
-            return (
-              <View style={styles.oneCardContainer}>
-                <RecipeCard recipe={recipe} key={key}/>
-              </View>
-            );
-          })}
+          {props.isLoading ? (
+            <View style={styles.messageContainer}>
+              <ActivityIndicator size={"large"} />
+            </View>
+          ) : props.error ? (
+            <View style={styles.messageContainer}>
+              <Text style={styles.errorMessage}>{props.error}</Text>
+            </View>
+          ) : (
+            props.recipes.map((recipe, key) => {
+              return (
+                <View style={styles.oneCardContainer}>
+                  <RecipeCard recipe={recipe} key={key} />
+                </View>
+              );
+            })
+          )}
         </View>
 
         <Button
@@ -61,27 +64,31 @@ const mapStateToProps = (state) => ({
   error: state.recipeList.error,
 });
 
-function mapDispatchToProps(dispatch) {
-  return {
-    fetchRecipesFromAPI: (recipe) => dispatch(getRecipes(recipe)),
-  };
-}
-
 export default connect(mapStateToProps, null)(RecipeListScreen);
 
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    borderWidth: 1,
-    // width: "100%",
+    width: "100%",
   },
   scrollView: {
     paddingHorizontal: "4%",
     padding: 0,
   },
+  searchContainer: {
+    minWidth: "100%",
+  },
   cardsContainer: {
     marginTop: "6%",
     alignItems: "center",
+  },
+  messageContainer: {
+    padding: 5,
+    margin: 5,
+  },
+  errorMessage: {
+    fontSize: 20,
+    color: "red",
   },
   oneCardContainer: {
     borderWidth: 1,
