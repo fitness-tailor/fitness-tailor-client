@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  Alert,
   StyleSheet,
   Text,
   SafeAreaView,
@@ -17,14 +18,35 @@ const ProfileScreen = (props) => {
     const [heightInch, setHeightInch] = useState('');
     const [weight, setWeight] = useState('');
 
+
+  const numbersOnly = (input) => {
+    let numbers = '1234567890';
+    for (var i = 0; i < input.length; i++) {
+      if(numbers.indexOf(input[i]) === -1) {
+        return false;
+      }
+    }
+  };
+
   const updateUserInfo = () => {
-    firebase.database().ref('users/' + props.displayName).set({
-      weight: weight,
-      height: `${heightFeet}' ${heightInch}"`
-    })
-    .then((res) => {
-      console.log('successful update')
-    })
+    if(heightFeet.length === 0 || heightInch.length === 0 || weight.length === 0) {
+      Alert.alert(
+        "Please enter all information"
+      )
+    } else if (numbersOnly(heightFeet) === false || numbersOnly(heightInch) === false || numbersOnly(weight) === false ) {
+      Alert.alert(
+        "Please enter only numbers"
+      )
+    } else {
+      firebase.database().ref('users/' + props.displayName).set({
+        weight: weight,
+        heightFeet: heightFeet,
+        heightInch: heightInch,
+      })
+      .then((res) => {
+        console.log('successful update')
+      })
+    }
   };
 
   return (
@@ -34,15 +56,15 @@ const ProfileScreen = (props) => {
       </Text>
       <View style={styles.userInput}>
         <View styles={styles.userHeight}>
-            <TextInput placeholder='Feet' pattern="[0-9]" style={styles.userInput} value={heightFeet} onChangeText={text => setHeightFeet(text)} />
+            <TextInput placeholder='Feet' keyboardType={'numeric'} style={styles.userInput} value={heightFeet} onChangeText={text => setHeightFeet(text)} />
             <Text>Feet</Text>
         </View>
         <View styles={styles.userHeight}>
-            <TextInput placeholder='Inches' style={styles.userInput} value={heightInch} onChangeText={text => setHeightInch(text)} /><Text>Inches</Text>
+            <TextInput placeholder='Inches' keyboardType={'numeric'} style={styles.userInput} value={heightInch} onChangeText={text => setHeightInch(text)} /><Text>Inches</Text>
         </View>
 
         <View style={styles.userWeight}>
-          <TextInput placeholder='Weight' value={weight} onChangeText={text => setWeight(text)} /><Text>lbs</Text>
+          <TextInput placeholder='Weight' keyboardType={'numeric'} value={weight} onChangeText={text => setWeight(text)} /><Text>lbs</Text>
         </View>
 
         <Button title="Done" onPress={updateUserInfo} />
@@ -68,7 +90,7 @@ const mapStateToProps = (state) => ({
   displayName: state.auth.user.displayName,
 });
 
-export default connect(mapStateToProps)(ProfileScreen);
+export default connect(mapStateToProps, null)(ProfileScreen);
 
 const styles = StyleSheet.create({
   container: {
