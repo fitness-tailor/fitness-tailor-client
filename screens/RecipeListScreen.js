@@ -14,6 +14,7 @@ import { connect } from "react-redux";
 
 // Recipe List Component
 const RecipeListScreen = (props) => {
+  console.log(props.error);
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
@@ -26,9 +27,11 @@ const RecipeListScreen = (props) => {
             <View style={styles.messageContainer}>
               <ActivityIndicator size={"large"} />
             </View>
-          ) : props.error ? (
+          ) : props.error.length ? (
             <View style={styles.messageContainer}>
-              <Text style={styles.errorMessage}>{props.error}</Text>
+              <Text style={styles.errorMessage}>
+                Failed to get results. Try again!
+              </Text>
             </View>
           ) : (
             props.recipes.map((recipe, key) => {
@@ -88,6 +91,8 @@ const styles = StyleSheet.create({
   },
   errorMessage: {
     fontSize: 20,
+    paddingHorizontal: 20,
+    textAlign: "center",
     color: "red",
   },
   oneCardContainer: {

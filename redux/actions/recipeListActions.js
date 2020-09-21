@@ -28,7 +28,7 @@ const fetchRecipeListError = (error) => {
 
 export const getRecipes = (recipe) => {
   return (dispatch) => {
-    const recipeQuery = recipe.replace(/ /g, "%20");
+    const recipeQuery = recipe.replace(/%20/g, " ");
     dispatch(fetchRecipeList());
     axios
       .get(
@@ -39,7 +39,7 @@ export const getRecipes = (recipe) => {
         dispatch(fetchRecipeListSuccess(recipeList)); // change 'recipes' in our state to list of recipe that was fetched
       })
       .catch((err) => {
-        const errorMsg = error.message;
+        const errorMsg = err.message;
         dispatch(fetchRecipeListError(errorMsg)); // change 'error' value in our state to error message received
       });
   };

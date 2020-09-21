@@ -16,6 +16,7 @@ const recipeListReducers = (state = recipeListState, action) => {
       return {
         ...state,
         isLoading: true,
+        error: "",
       };
     // Reset loading state if request is successful
     // Place data fetched from api to recipes in redux/global state
