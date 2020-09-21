@@ -14,7 +14,6 @@ import { connect } from "react-redux";
 
 // Recipe List Component
 const RecipeListScreen = (props) => {
-  console.log(props.error);
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
