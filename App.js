@@ -6,6 +6,7 @@ import AuthNavigator from "./navigation/AuthNavigator";
 import HomeScreen from "./screens/HomeScreen.js";
 import NutritionScreen from "./screens/NutritionScreen.js";
 import RecipeListScreen from "./screens/RecipeListScreen.js";
+import ProfileScreen from "./screens/ProfileScreen.js";
 import ReduxPlayground from "./screens/ReduxPlayground.js";
 // Firebase App (the core Firebase SDK) is always required and
 // must be listed before other Firebase SDKs
@@ -41,6 +42,7 @@ const AppContainer = createAppContainer(
       Auth: AuthNavigator,
       Nutrition: NutritionScreen,
       RecipeList: RecipeListScreen,
+      Profile: ProfileScreen,
       Playground: ReduxPlayground,
     },
     {

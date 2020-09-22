@@ -38,6 +38,12 @@ class HomeScreen extends React.Component {
             }}
           />
           <Button
+            title="Go to Profile"
+            onPress={() => {
+              this.props.navigation.navigate("Profile");
+            }}
+          />
+          <Button
             title="Go to Redux Playground"
             onPress={() => {
               this.props.navigation.navigate("Playground");
