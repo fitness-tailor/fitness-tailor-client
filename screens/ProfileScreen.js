@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Alert,
   StyleSheet,
@@ -19,6 +19,14 @@ const ProfileScreen = (props) => {
     const [weight, setWeight] = useState('');
     const [bmi, setBMI] = useState('');
 
+  useEffect(() => {
+    firebase.database().ref('users/' + props.displayName).on('value', function(snapshot) {
+      setHeightFeet(snapshot.val().heightFeet);
+      setHeightInch(snapshot.val().heightInch);
+      setWeight(snapshot.val().weight);
+      setBMI(snapshot.val().BMI);
+    })
+  }, []);
 
   const numbersOnly = (input) => {
     let numbers = '1234567890';
@@ -98,9 +106,6 @@ const ProfileScreen = (props) => {
 
 const mapStateToProps = (state) => ({
   displayName: state.auth.user.displayName,
-  weight: state.auth.user.weight,
-  heightFeet: state.auth.user.heightFeet,
-  heightInch: state.auth.user.heightInch,
 });
 
 export default connect(mapStateToProps, null)(ProfileScreen);
@@ -118,12 +123,9 @@ const styles = StyleSheet.create({
   },
   userInput: {
   marginTop: "5%",
-  // alignItems: "left",
   width: "40%",
   },
   userWeight: {
     marginTop: "5%",
-    // flex: 1,
-    // flexDirection: "row",
   }
 });
