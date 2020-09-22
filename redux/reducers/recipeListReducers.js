@@ -2,7 +2,6 @@ let recipeListState = {
   isLoading: false,
   recipes: [],
   error: "",
-  query: "",
 };
 
 // if ((action.type = "FETCH_RECIPE_LIST"));
@@ -17,6 +16,7 @@ const recipeListReducers = (state = recipeListState, action) => {
         ...state,
         isLoading: true,
         error: "",
+        recipes: [],
       };
     // Reset loading state if request is successful
     // Place data fetched from api to recipes in redux/global state

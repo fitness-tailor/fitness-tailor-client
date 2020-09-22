@@ -4,7 +4,8 @@ import {
   FETCH_RECIPE_LIST_ERROR,
 } from "./actionTypes.js";
 import axios from "axios";
-import config from "../../assets/API_KEYS.json";
+import { RECIPE_API_KEYS } from "../../assets/API_KEYS.json";
+let { USDA_API_KEY } = RECIPE_API_KEYS;
 
 const fetchRecipeList = () => {
   return {
@@ -28,14 +29,15 @@ const fetchRecipeListError = (error) => {
 
 export const getRecipes = (recipe) => {
   return (dispatch) => {
-    const recipeQuery = recipe.replace(/%20/g, " ");
+    const recipeQuery = recipe.replace(/ /g, "%20");
     dispatch(fetchRecipeList());
+    // POSSIBLE TODO: Allow user to change page size
     axios
       .get(
-        `https://api.edamam.com/search?q=${recipeQuery}&app_id=${config.RECIPE_API_KEYS.APP_ID}&app_key=${config.RECIPE_API_KEYS.APP_KEY}&from=0&to=1`
+        `https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${USDA_API_KEY}&query=${recipeQuery}&pageSize=1&sortBy=score&sortOrder=desc&dataType=Branded`
       )
       .then((res) => {
-        const recipeList = res.data.hits; // contains array of recipe list
+        const recipeList = res.data.foods; // contains array of recipe list
         dispatch(fetchRecipeListSuccess(recipeList)); // change 'recipes' in our state to list of recipe that was fetched
       })
       .catch((err) => {
