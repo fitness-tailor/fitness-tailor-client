@@ -80,7 +80,6 @@ const ProfileScreen = (props) => {
 
       <Picker
         selectedValue={gender}
-        style={{height: 100}}
         itemStyle={{height: 100}}
         onValueChange={(itemValue) => setGender(itemValue)}
       >
