@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Alert,
   StyleSheet,
@@ -10,6 +10,7 @@ import {
   Image,
   Button,
 } from "react-native";
+import {Picker} from '@react-native-community/picker';
 import { connect } from "react-redux";
 import firebase from 'firebase';
 
@@ -18,7 +19,17 @@ const ProfileScreen = (props) => {
     const [heightInch, setHeightInch] = useState('');
     const [weight, setWeight] = useState('');
     const [bmi, setBMI] = useState('');
+    const [gender, setGender] = useState('');
 
+  useEffect(() => {
+    firebase.database().ref('users/' + props.displayName).on('value', function(snapshot) {
+      setHeightFeet(snapshot.val().heightFeet);
+      setHeightInch(snapshot.val().heightInch);
+      setWeight(snapshot.val().weight);
+      setGender(snapshot.val().gender);
+      setBMI(snapshot.val().BMI);
+    })
+  }, []);
 
   const numbersOnly = (input) => {
     let numbers = '1234567890';
@@ -43,6 +54,7 @@ const ProfileScreen = (props) => {
         weight: weight,
         heightFeet: heightFeet,
         heightInch: heightInch,
+        gender: gender,
       })
       .then(() => {
         let userInchSquared = Math.pow((parseInt(heightFeet)*12) + parseInt(heightInch), 2)
@@ -65,6 +77,18 @@ const ProfileScreen = (props) => {
         Your BMI is {bmi}
       </Text>
       <View style={styles.userInput}>
+
+      <Picker
+        selectedValue={gender}
+        itemStyle={{height: 100}}
+        onValueChange={(itemValue) => setGender(itemValue)}
+      >
+        <Picker.Item label="Male" value="male" />
+        <Picker.Item label="Female" value="female" />
+      </Picker>
+
+
+
         <View styles={styles.userHeight}>
             <TextInput placeholder='Feet' keyboardType={'numeric'} style={styles.userInput} value={heightFeet} onChangeText={text => setHeightFeet(text)} />
             <Text>Feet</Text>
@@ -98,9 +122,6 @@ const ProfileScreen = (props) => {
 
 const mapStateToProps = (state) => ({
   displayName: state.auth.user.displayName,
-  weight: state.auth.user.weight,
-  heightFeet: state.auth.user.heightFeet,
-  heightInch: state.auth.user.heightInch,
 });
 
 export default connect(mapStateToProps, null)(ProfileScreen);
@@ -118,12 +139,9 @@ const styles = StyleSheet.create({
   },
   userInput: {
   marginTop: "5%",
-  // alignItems: "left",
   width: "40%",
   },
   userWeight: {
     marginTop: "5%",
-    // flex: 1,
-    // flexDirection: "row",
   }
 });
