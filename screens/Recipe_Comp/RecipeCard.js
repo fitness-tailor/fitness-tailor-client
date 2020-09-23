@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -10,48 +10,121 @@ import {
   Button,
 } from "react-native";
 import axios from "axios";
-import firebase from 'firebase';
-import {connect} from 'react-redux';
+import firebase from "firebase";
+import { connect } from "react-redux";
 
-const RecipeCard = (props) => {
-  let { recipe } = props.recipe;
-  const [name, setName] = useState(recipe.label);
-  const [servingSize, setServingSize] = useState(recipe.yield);
-  const [calories, setCalories] = useState(recipe.calories);
-  const [totalNutrients, setTotalNutrients] = useState(recipe.totalNutrients);
-  const [dailyValues, setDailyValues] = useState(recipe.totalDaily);
+const RecipeCard = ({ recipe }) => {
+  const [name, setName] = useState(recipe.description);
+  const [totalNutrients, setTotalNutrients] = useState({});
+
+  useEffect(() => {
+    let data = parseNutritionData(recipe.foodNutrients);
+    setTotalNutrients(data);
+  }, []);
+
+  // useEffect(() => {
+  //   console.log("CALORIES HERE", totalNutrients.CALORIES);
+  // }, [totalNutrients]);
 
   const addToJournal = () => {
-    firebase.database().ref('users/' + props.displayName).set({
-      journal: name,
-    })
+    firebase
+      .database()
+      .ref("users/" + props.displayName)
+      .set({
+        journal: name,
+      });
   };
 
-  // handle calories as edge case
+  const parseNutritionData = (nutritionArray) => {
+    let parsedObject = {
+      CALORIES: {},
+      TOTAL_FAT: {},
+      SAT_FAT: {},
+      TRANS_FAT: {},
+      CHOLESTEROL: {},
+      SODIUM: {},
+      CARBS: {},
+      FIBER: {},
+      TOTAL_SUGAR: {},
+      PROTEIN: {},
+    };
 
-  // return value if it exists or is 0
-  // N/A is pretty useless in this case
+    let {
+      CALORIES,
+      TOTAL_FAT,
+      SAT_FAT,
+      TRANS_FAT,
+      CHOLESTEROL,
+      SODIUM,
+      CARBS,
+      FIBER,
+      TOTAL_SUGAR,
+      PROTEIN,
+    } = parsedObject;
 
-  // MY PROBLEM: If val is not defined in my recipe object, this function DOES NOT execute whatsoever and gives me an array.
-  // Proposal 1: Once we fetch results, we could add an empty object into daily values that contains nothing. But 8g would return 0%.
-  // Proposal 2: We add another function that calculates the daily values percentage by ourselves, instead of relying on data. We'd have to some scientific research for this.
-  const displayData = (val, unit = "%") => {
-    if (val === undefined) {
-      return "N/A";
+    for (var i = 0; i < nutritionArray.length; i++) {
+      switch (nutritionArray[i].nutrientId) {
+        case 1008:
+          CALORIES.value = Math.round(nutritionArray[i].value);
+          break;
+        case 1004:
+          TOTAL_FAT.value = Math.round(nutritionArray[i].value);
+          TOTAL_FAT.unit = nutritionArray[i].unitName.toLowerCase();
+          break;
+        case 1258:
+          SAT_FAT.value = Math.round(nutritionArray[i].value);
+          SAT_FAT.unit = nutritionArray[i].unitName.toLowerCase();
+          break;
+        case 1257:
+          TRANS_FAT.value = Math.round(nutritionArray[i].value);
+          TRANS_FAT.unit = nutritionArray[i].unitName.toLowerCase();
+          break;
+        case 1253:
+          CHOLESTEROL.value = Math.round(nutritionArray[i].value);
+          CHOLESTEROL.unit = nutritionArray[i].unitName.toLowerCase();
+          break;
+        case 1093:
+          SODIUM.value = Math.round(nutritionArray[i].value);
+          SODIUM.unit = nutritionArray[i].unitName.toLowerCase();
+          break;
+        case 1005:
+          CARBS.value = Math.round(nutritionArray[i].value);
+          CARBS.unit = nutritionArray[i].unitName.toLowerCase();
+          break;
+        case 1079:
+          FIBER.value = Math.round(nutritionArray[i].value);
+          FIBER.unit = nutritionArray[i].unitName.toLowerCase();
+          break;
+        case 2000:
+          TOTAL_SUGAR.value = Math.round(nutritionArray[i].value);
+          TOTAL_SUGAR.unit = nutritionArray[i].unitName.toLowerCase();
+          break;
+        case 1003:
+          PROTEIN.value = Math.round(nutritionArray[i].value);
+          PROTEIN.unit = nutritionArray[i].unitName.toLowerCase();
+          break;
+        default:
+          continue;
+      }
     }
-
-    if (val === calories) {
-      return Math.round(val);
-    }
-    return val || val === 0 ? Math.round(val) + ` ${unit}` : "N/A";
+    return parsedObject;
   };
 
-  return (
+  // only render if nutrients is not an empty object
+  return JSON.stringify(totalNutrients) === "{}" ? null : (
     <SafeAreaView style={styles.container}>
       <View style={styles.recipeContainer}>
         <View style={styles.recipeName}>
           <Text
-            style={[styles.boldFont, { fontFamily: "Menlo", fontSize: 24 }]}
+            style={[
+              styles.boldFont,
+              {
+                fontFamily: "Menlo",
+                fontSize: 24,
+                textAlign: "center",
+                paddingVertical: 4,
+              },
+            ]}
           >
             {name}
           </Text>
@@ -60,7 +133,10 @@ const RecipeCard = (props) => {
         <View style={styles.nutrientsContainer}>
           <View style={styles.nutrientTitleWrapper}>
             <View style={[styles.nutrientTitle, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>Yield</Text>
+              <Text style={[styles.recipeFont, styles.baseText]}>Name</Text>
+            </View>
+            <View style={[styles.nutrientTitle, styles.bottomPadding]}>
+              <Text style={styles.recipeFont}>Serving Size</Text>
             </View>
 
             <View style={[styles.nutrientTitle, styles.bottomPadding]}>
@@ -77,14 +153,6 @@ const RecipeCard = (props) => {
 
             <View style={[styles.nutrientTitle, styles.bottomPadding]}>
               <Text style={styles.recipeFont}>Trans. Fat</Text>
-            </View>
-
-            <View style={[styles.nutrientTitle, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>Polyunsat. Fat</Text>
-            </View>
-
-            <View style={[styles.nutrientTitle, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>Monounsat. Fat</Text>
             </View>
 
             <View style={[styles.nutrientTitle, styles.bottomPadding]}>
@@ -114,133 +182,85 @@ const RecipeCard = (props) => {
 
           <View style={styles.nutrientAmountWrapper}>
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
-              <Text style={[styles.recipeFont, styles.boldFont]}>
-                {servingSize}
-              </Text>
+              <Text style={[styles.recipeFont, styles.baseText]}>DV</Text>
+            </View>
+
+            <View style={[styles.nutrientAmount, styles.bottomPadding]}>
+              <Text style={[styles.recipeFont, styles.boldFont]}>100g </Text>
             </View>
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
               <Text style={[styles.recipeFont, styles.boldFont]}>
-                {displayData(calories)}
+                {totalNutrients.CALORIES.value}
               </Text>
             </View>
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
               <Text style={styles.recipeFont}>
-                {displayData(
-                  totalNutrients.FAT.quantity,
-                  totalNutrients.FAT.unit
-                )}
+                {`${totalNutrients.TOTAL_FAT.value} ${totalNutrients.TOTAL_FAT.unit}`}
               </Text>
             </View>
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
               <Text style={styles.recipeFont}>
-                {displayData(
-                  totalNutrients.FASAT.quantity,
-                  totalNutrients.FASAT.unit
-                )}
+                {`${totalNutrients.SAT_FAT.value} ${totalNutrients.TOTAL_FAT.unit}`}
               </Text>
             </View>
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
               <Text style={styles.recipeFont}>
-                {/* {displayData(
-                  totalNutrients.FATRN.quantity,
-                  totalNutrients.FATRN.unit
-                )} */}
-                NONE
+                {`${totalNutrients.TRANS_FAT.value} ${totalNutrients.TRANS_FAT.unit}`}
               </Text>
             </View>
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
               <Text style={styles.recipeFont}>
-                {displayData(
-                  totalNutrients.FAMS.quantity,
-                  totalNutrients.FAMS.unit
-                )}
+                {`${totalNutrients.CHOLESTEROL.value} ${totalNutrients.CHOLESTEROL.unit}`}
               </Text>
             </View>
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
               <Text style={styles.recipeFont}>
-                {displayData(
-                  totalNutrients.FAPU.quantity,
-                  totalNutrients.FAPU.unit
-                )}
+                {`${totalNutrients.SODIUM.value} ${totalNutrients.SODIUM.unit}`}
               </Text>
             </View>
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
               <Text style={styles.recipeFont}>
-                {displayData(
-                  totalNutrients.CHOLE.quantity,
-                  totalNutrients.CHOLE.unit
-                )}
+                {`${totalNutrients.CARBS.value} ${totalNutrients.CARBS.unit}`}
               </Text>
             </View>
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
               <Text style={styles.recipeFont}>
-                {displayData(
-                  totalNutrients.NA.quantity,
-                  totalNutrients.NA.unit
-                )}
+                {`${totalNutrients.FIBER.value} ${totalNutrients.FIBER.unit}`}
               </Text>
             </View>
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
               <Text style={styles.recipeFont}>
-                {displayData(
-                  totalNutrients.CHOCDF.quantity,
-                  totalNutrients.CHOCDF.unit
-                )}
+                {`${totalNutrients.TOTAL_SUGAR.value} ${totalNutrients.TOTAL_SUGAR.unit}`}
               </Text>
             </View>
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
               <Text style={styles.recipeFont}>
-                {displayData(
-                  totalNutrients.FIBTG.quantity,
-                  totalNutrients.FIBTG.unit
-                )}
-              </Text>
-            </View>
-
-            <View style={[styles.nutrientAmount, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>
-                {displayData(
-                  totalNutrients.SUGAR.quantity,
-                  totalNutrients.SUGAR.unit
-                )}
-              </Text>
-            </View>
-
-            <View style={[styles.nutrientAmount, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>
-                {displayData(
-                  totalNutrients.PROCNT.quantity,
-                  totalNutrients.PROCNT.unit
-                )}
+                {`${totalNutrients.PROTEIN.value} ${totalNutrients.PROTEIN.unit}`}
               </Text>
             </View>
           </View>
 
           <View style={styles.nutrientPercentageWrapper}>
             <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
+              <Text style={[styles.recipeFont, styles.baseText]}>% DV</Text>
+            </View>
+
+            <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
               <Text style={styles.recipeFont}>NONE</Text>
             </View>
 
             <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
               <Text style={styles.recipeFont}>LATER</Text>
-            </View>
-
-            <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>NONE </Text>
-            </View>
-
-            <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>NONE </Text>
             </View>
 
             <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
@@ -293,7 +313,6 @@ const RecipeCard = (props) => {
     </SafeAreaView>
   );
 };
-
 
 const mapStateToProps = (state) => ({
   displayName: state.auth.user.displayName,
@@ -358,7 +377,7 @@ const styles = StyleSheet.create({
   // ============================
   nutrientPercentageWrapper: {
     borderWidth: 0.5,
-    flex: 1,
+    flex: 0.8,
   },
   nutrientPercentage: {
     borderBottomWidth: 0.5,
