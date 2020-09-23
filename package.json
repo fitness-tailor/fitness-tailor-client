@@ -8,6 +8,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-native-community/picker": "^1.8.0",
     "@react-navigation/bottom-tabs": "^5.8.0",
     "@reduxjs/toolkit": "^1.4.0",
     "axios": "^0.20.0",

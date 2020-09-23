@@ -10,6 +10,7 @@ import {
   Image,
   Button,
 } from "react-native";
+import {Picker} from '@react-native-community/picker';
 import { connect } from "react-redux";
 import firebase from 'firebase';
 
@@ -18,12 +19,14 @@ const ProfileScreen = (props) => {
     const [heightInch, setHeightInch] = useState('');
     const [weight, setWeight] = useState('');
     const [bmi, setBMI] = useState('');
+    const [gender, setGender] = useState('');
 
   useEffect(() => {
     firebase.database().ref('users/' + props.displayName).on('value', function(snapshot) {
       setHeightFeet(snapshot.val().heightFeet);
       setHeightInch(snapshot.val().heightInch);
       setWeight(snapshot.val().weight);
+      setGender(snapshot.val().gender);
       setBMI(snapshot.val().BMI);
     })
   }, []);
@@ -51,6 +54,7 @@ const ProfileScreen = (props) => {
         weight: weight,
         heightFeet: heightFeet,
         heightInch: heightInch,
+        gender: gender,
       })
       .then(() => {
         let userInchSquared = Math.pow((parseInt(heightFeet)*12) + parseInt(heightInch), 2)
@@ -73,6 +77,19 @@ const ProfileScreen = (props) => {
         Your BMI is {bmi}
       </Text>
       <View style={styles.userInput}>
+
+      <Picker
+        selectedValue={gender}
+        style={{height: 100}}
+        itemStyle={{height: 100}}
+        onValueChange={(itemValue) => setGender(itemValue)}
+      >
+        <Picker.Item label="Male" value="male" />
+        <Picker.Item label="Female" value="female" />
+      </Picker>
+
+
+
         <View styles={styles.userHeight}>
             <TextInput placeholder='Feet' keyboardType={'numeric'} style={styles.userInput} value={heightFeet} onChangeText={text => setHeightFeet(text)} />
             <Text>Feet</Text>
