@@ -7,8 +7,8 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
 import { connect } from "react-redux";
-import searchImage from "../../assets/search_button.png";
 import { getRecipes } from "../../redux/actions/recipeListActions.js";
 
 function RecipeSearch(props) {
@@ -32,7 +32,7 @@ function RecipeSearch(props) {
         style={styles.buttonBox}
         onPress={() => fetchRecipesOnPress(recipe)}
       >
-        <Image source={searchImage} style={styles.searchButton} />
+        <Ionicons name="md-search" size={45} color="black" />
       </TouchableOpacity>
     </View>
   );
@@ -67,11 +67,7 @@ const styles = StyleSheet.create({
   },
   buttonBox: {
     flex: 1,
-  },
-  searchButton: {
-    height: 45,
-    width: 45,
-    borderRadius: 10,
-    marginLeft: "10%",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
