@@ -6,7 +6,6 @@ import {
   ScrollView,
   View,
   ActivityIndicator,
-  Button,
 } from "react-native";
 import RecipeFinder from "./Recipe_Comp/RecipeFinder";
 import RecipeCard from "./Recipe_Comp/RecipeCard";
@@ -42,19 +41,6 @@ const RecipeListScreen = (props) => {
             })
           )}
         </View>
-
-        <Button
-          title="Go Home"
-          onPress={() => {
-            props.navigation.navigate("App");
-          }}
-        />
-        <Button
-          title="Go to Nutrition"
-          onPress={() => {
-            props.navigation.navigate("Nutrition");
-          }}
-        />
       </ScrollView>
     </SafeAreaView>
   );

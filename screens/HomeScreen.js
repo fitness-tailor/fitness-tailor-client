@@ -1,12 +1,12 @@
 import React from "react";
-import {connect} from "react-redux";
+import { connect } from "react-redux";
 import firebase from "firebase";
 import { StyleSheet, Text, View, SafeAreaView, Button } from "react-native";
-import { getUser } from "../redux/actions/authActions.js"
+import { getUser } from "../redux/actions/authActions.js";
 
 class HomeScreen extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
   }
 
   componentDidMount() {
@@ -23,30 +23,6 @@ class HomeScreen extends React.Component {
             title="Log Off"
             onPress={() => {
               firebase.auth().signOut();
-            }}
-          />
-          <Button
-            title="Go to Nutrition"
-            onPress={() => {
-              this.props.navigation.navigate("Nutrition");
-            }}
-          />
-          <Button
-            title="Go to Recipe List"
-            onPress={() => {
-              this.props.navigation.navigate("RecipeList");
-            }}
-          />
-          <Button
-            title="Go to Profile"
-            onPress={() => {
-              this.props.navigation.navigate("Profile");
-            }}
-          />
-          <Button
-            title="Go to Redux Playground"
-            onPress={() => {
-              this.props.navigation.navigate("Playground");
             }}
           />
         </View>

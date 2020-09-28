@@ -1,23 +1,9 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  SafeAreaView,
-  View,
-  TextInput,
-  TouchableOpacity,
-  Image,
-  Button,
-} from "react-native";
+import { StyleSheet, Text, SafeAreaView, View } from "react-native";
 import NutritionCard from "./Nutrition_Comp/NutritionCard";
 import TotalCaloriePercentage from "./Nutrition_Comp/TotalNutrition";
-import axios from "axios";
-import { useSelector, useDispatch } from "react-redux";
 
 const NutritionScreen = (props) => {
-  const counter = useSelector((state) => state.counter);
-  const dispatch = useDispatch();
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.percentageContainer}>
@@ -29,19 +15,6 @@ const NutritionScreen = (props) => {
           <NutritionCard />
         </View>
       </View>
-
-      <Button
-        title="Go Home"
-        onPress={() => {
-          props.navigation.navigate("App");
-        }}
-      />
-      <Button
-        title="Go to Recipe List"
-        onPress={() => {
-          props.navigation.navigate("RecipeList");
-        }}
-      />
     </SafeAreaView>
   );
 };
