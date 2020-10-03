@@ -10,31 +10,32 @@ import {
 import RecipeFinder from "./Recipe_Comp/RecipeFinder";
 import RecipeCard from "./Recipe_Comp/RecipeCard";
 import { connect } from "react-redux";
+import styles from "./styles.js";
 
 // Recipe List Component
 const RecipeListScreen = (props) => {
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView style={styles.scrollView}>
-        <View style={styles.searchContainer}>
+    <SafeAreaView style={styles.containerRecipeList}>
+      <ScrollView style={styles.scrollViewRecipeList}>
+        <View style={styles.searchContainerRecipeList}>
           <RecipeFinder />
         </View>
 
-        <View style={styles.cardsContainer}>
+        <View style={styles.cardsContainerRecipeList}>
           {props.isLoading ? (
-            <View style={styles.messageContainer}>
+            <View style={styles.messageContainerRecipeList}>
               <ActivityIndicator size={"large"} />
             </View>
           ) : props.error.length ? (
-            <View style={styles.messageContainer}>
-              <Text style={styles.errorMessage}>
+            <View style={styles.messageContainerRecipeList}>
+              <Text style={styles.errorMessageRecipeList}>
                 Failed to get results. Try again!
               </Text>
             </View>
           ) : (
             props.recipes.map((recipe, key) => {
               return (
-                <View style={styles.oneCardContainer}>
+                <View style={styles.oneCardContainerRecipeList}>
                   <RecipeCard recipe={recipe} key={key} />
                 </View>
               );
@@ -53,37 +54,3 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, null)(RecipeListScreen);
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: "center",
-    width: "100%",
-  },
-  scrollView: {
-    paddingHorizontal: "4%",
-    padding: 0,
-  },
-  searchContainer: {
-    minWidth: "100%",
-  },
-  cardsContainer: {
-    marginTop: "6%",
-    alignItems: "center",
-  },
-  messageContainer: {
-    padding: 5,
-    margin: 5,
-  },
-  errorMessage: {
-    fontSize: 20,
-    paddingHorizontal: 20,
-    textAlign: "center",
-    color: "red",
-  },
-  oneCardContainer: {
-    borderWidth: 1,
-    marginBottom: "5%",
-    width: "100%",
-    borderRadius: 10,
-  },
-});

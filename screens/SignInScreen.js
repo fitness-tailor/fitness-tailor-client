@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import "firebase/firestore";
 import firebase from "firebase";
+import styles from "./styles.js";
 
 class SignInScreen extends React.Component {
   state = {
@@ -75,13 +76,13 @@ class SignInScreen extends React.Component {
         }}
       >
         <SafeAreaView style={{ flex: 1 }}>
-          <KeyboardAvoidingView style={styles.container}>
+          <KeyboardAvoidingView style={styles.containerSignIn}>
             <Text style={{ fontSize: 32, fontWeight: "700", color: "black" }}>
               Fitness Tailor
             </Text>
-            <View style={styles.form}>
+            <View style={styles.formSignIn}>
               <TextInput
-                style={styles.input}
+                style={styles.inputSignIn}
                 placeholder="Email"
                 autoCapitalize="none"
                 placeholderTextColor="#B1B1B1"
@@ -92,7 +93,7 @@ class SignInScreen extends React.Component {
                 onChangeText={(email) => this.setState({ email })}
               />
               <TextInput
-                style={styles.input}
+                style={styles.inputSignIn}
                 placeholder="Password"
                 autoCapitalize="none"
                 placeholderTextColor="#B1B1B1"
@@ -145,24 +146,6 @@ class SignInScreen extends React.Component {
       </TouchableWithoutFeedback>
     );
   }
-}
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  form: {
-    width: "85%",
-    marginTop: 15,
-  },
-  input: {
-    fontSize: 15,
-    borderColor: "black",
-    borderBottomWidth: 1,
-    paddingBottom: 1.5,
-    marginTop: 25,
-  },
-});
+};
+
 export default SignInScreen;
