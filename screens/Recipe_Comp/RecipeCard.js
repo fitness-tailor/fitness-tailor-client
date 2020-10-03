@@ -16,17 +16,25 @@ import { connect } from "react-redux";
 const RecipeCard = ({ recipe }) => {
   const [name, setName] = useState(recipe.description);
   const [totalNutrients, setTotalNutrients] = useState({});
+  const [isEditing, setIsEditing] = useState(false);
+
+  const [servingSize, setServingSize] = useState(100);
+  const [servingUnit, setServingUnit] = useState("g");
+
   const [calendar, setCalendar] = useState({
     month: null,
     date: null,
     year: null,
   });
+  let { month, date, year } = calendar;
 
+  // handles parsing nutririon object
   useEffect(() => {
-    let data = parseNutritionData(recipe.foodNutrients);
-    setTotalNutrients(data);
+    let nutritionData = parseNutritionData(recipe.foodNutrients);
+    setTotalNutrients(nutritionData);
   }, []);
 
+  // handles calendar display
   useEffect(() => {
     let [month, date, year] = new Date().toLocaleDateString().split("/");
     year = year.substring(2);
@@ -44,6 +52,10 @@ const RecipeCard = ({ recipe }) => {
 
   const parseNutritionData = (nutritionArray) => {
     let parsedObject = {
+      SERVING_SIZE: {
+        value: 100,
+        unit: "g",
+      },
       CALORIES: {},
       TOTAL_FAT: {},
       SAT_FAT: {},
@@ -114,10 +126,33 @@ const RecipeCard = ({ recipe }) => {
           continue;
       }
     }
+
+    // loops over object for undefined values
+    for (let key in parsedObject) {
+      if (JSON.stringify(parsedObject[key]) === "{}") {
+        parsedObject[key].value = "";
+        parsedObject[key].unit = "";
+      }
+    }
+
     return parsedObject;
   };
 
-  let { month, date, year } = calendar;
+  // Function can handle serving size in 'g'/grams only
+  // TODO: make function handle other units "cups, oz, quarts"
+  // handle more units after completing 3 mentioned above.
+  const handleServingSize = (inputValue) => {
+    if (inputValue) {
+      let valueList = inputValue.split(" ");
+      console.log(valueList);
+    }
+  };
+
+  const handleEditing = () => {
+    if (isEditing) handleServingSize(String(servingSize));
+    setIsEditing(!isEditing);
+  };
+
   // only render if nutrients is not an empty object
   return JSON.stringify(totalNutrients) === "{}" ? null : (
     <SafeAreaView style={styles.container}>
@@ -194,7 +229,9 @@ const RecipeCard = ({ recipe }) => {
             </View>
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
-              <Text style={[styles.recipeFont, styles.boldFont]}>100g </Text>
+              <Text style={[styles.recipeFont, styles.boldFont]}>
+                {`${totalNutrients.SERVING_SIZE.value} ${totalNutrients.SERVING_SIZE.unit}`}
+              </Text>
             </View>
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
@@ -309,18 +346,41 @@ const RecipeCard = ({ recipe }) => {
           </View>
         </View>
 
-        <View style={styles.buttonContainer}>
-          <View style={styles.buttonSpacing}>
+        <View style={styles.buttonsContainer}>
+          <View style={styles.oneButtonContainer}>
             <TouchableOpacity
               style={styles.editButton}
-              onPress={() => addToJournal()}
+              onPress={() => handleEditing()}
               activeOpacity="0.5"
             >
-              <Text style={styles.buttonText}>Edit</Text>
+              <Text style={styles.buttonText}>
+                {!isEditing ? "Edit" : "Done Editing"}
+              </Text>
             </TouchableOpacity>
+            <Text style={styles.buttonText}>Serving Size</Text>
+
+            <View style={styles.editDisplay}>
+              {!isEditing && (
+                <Text
+                  style={styles.buttonText}
+                >{`${totalNutrients.SERVING_SIZE.value} ${totalNutrients.SERVING_SIZE.unit}`}</Text>
+              )}
+
+              {isEditing && (
+                <TextInput
+                  style={styles.inputBox}
+                  value={servingSize}
+                  keyboardType="numeric"
+                  placeholder={`${servingSize}`}
+                  placeholderTextColor="#696969"
+                  maxLength={5}
+                  onChangeText={(val) => setServingSize(val)}
+                />
+              )}
+            </View>
           </View>
 
-          <View style={styles.buttonSpacing}>
+          <View style={styles.oneButtonContainer}>
             <TouchableOpacity
               style={styles.addButton}
               onPress={() => addToJournal()}
@@ -329,7 +389,9 @@ const RecipeCard = ({ recipe }) => {
               <Text style={styles.buttonText}>Add To</Text>
             </TouchableOpacity>
             <Text style={styles.buttonText}>Date</Text>
-            <Text style={styles.buttonText}>{`${month}/${date}/${year}`}</Text>
+            <Text
+              style={[styles.buttonText, { marginTop: 5, marginBottom: 3 }]}
+            >{`${month}/${date}/${year}`}</Text>
           </View>
         </View>
       </View>
@@ -408,12 +470,13 @@ const styles = StyleSheet.create({
   // ============================
   // Add Button
   // ============================
-  buttonContainer: {
+  buttonsContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
-    marginVertical: "3%",
+    marginTop: "3%",
+    marginBottom: "5%",
   },
-  buttonSpacing: {
+  oneButtonContainer: {
     flex: 1,
   },
   editButton: {
@@ -422,6 +485,20 @@ const styles = StyleSheet.create({
     backgroundColor: "limegreen",
     borderWidth: 2,
     borderRadius: 10,
+  },
+  editDisplay: {
+    marginTop: 5,
+    justifyContent: "center",
+  },
+  inputBox: {
+    justifyContent: "center",
+    textAlign: "center",
+    flex: 1,
+    width: "80%",
+    marginHorizontal: "10%",
+    fontSize: 16,
+    borderWidth: 1,
+    marginTop: 2,
   },
   addButton: {
     padding: "4%",
@@ -434,7 +511,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontFamily: "Menlo",
     fontWeight: "bold",
-    fontSize: 20,
+    fontSize: 18,
     color: "#000000",
   },
 });
