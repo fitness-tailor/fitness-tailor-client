@@ -13,6 +13,7 @@ import {
 import {Picker} from '@react-native-community/picker';
 import { connect } from "react-redux";
 import firebase from 'firebase';
+import styles from "./styles.js";
 
 const ProfileScreen = (props) => {
     const [heightFeet, setHeightFeet] = useState('');
@@ -69,14 +70,14 @@ const ProfileScreen = (props) => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.containerProfile}>
       <Text>
         Hello {props.displayName}, please enter your height and weight.
       </Text>
       <Text>
         Your BMI is {bmi}
       </Text>
-      <View style={styles.userInput}>
+      <View style={styles.userInputProfile}>
 
       <Picker
         selectedValue={gender}
@@ -89,15 +90,15 @@ const ProfileScreen = (props) => {
 
 
 
-        <View styles={styles.userHeight}>
+        <View styles={styles.userHeightProfile}>
             <TextInput placeholder='Feet' keyboardType={'numeric'} style={styles.userInput} value={heightFeet} onChangeText={text => setHeightFeet(text)} />
             <Text>Feet</Text>
         </View>
-        <View styles={styles.userHeight}>
+        <View styles={styles.userHeightProfile}>
             <TextInput placeholder='Inches' keyboardType={'numeric'} style={styles.userInput} value={heightInch} onChangeText={text => setHeightInch(text)} /><Text>Inches</Text>
         </View>
 
-        <View style={styles.userWeight}>
+        <View style={styles.userWeightProfile}>
           <TextInput placeholder='Weight' keyboardType={'numeric'} value={weight} onChangeText={text => setWeight(text)} /><Text>lbs</Text>
         </View>
 
@@ -125,23 +126,3 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, null)(ProfileScreen);
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  userHeight: {
-    flex: 1,
-    flexDirection: 'row',
-  },
-  userInput: {
-  marginTop: "5%",
-  width: "40%",
-  },
-  userWeight: {
-    marginTop: "5%",
-  }
-});

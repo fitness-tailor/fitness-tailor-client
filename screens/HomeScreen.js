@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import firebase from "firebase";
 import { StyleSheet, Text, View, SafeAreaView, Button } from "react-native";
 import { getUser } from "../redux/actions/authActions.js";
+import styles from "./styles.js";
 
 class HomeScreen extends React.Component {
   constructor(props) {
@@ -16,7 +17,7 @@ class HomeScreen extends React.Component {
   render() {
     return (
       <SafeAreaView style={{ flex: 1 }}>
-        <View style={styles.container}>
+        <View style={styles.containerHome}>
           <Text>{this.props.user.displayName}</Text>
           <Text>{this.props.user.email}</Text>
           <Button
@@ -30,14 +31,6 @@ class HomeScreen extends React.Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
 
 const mapStateToProps = (state) => ({
   isLoading: state.auth.isLoading,
