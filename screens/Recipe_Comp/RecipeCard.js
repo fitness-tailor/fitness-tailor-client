@@ -300,15 +300,28 @@ const RecipeCard = ({ recipe }) => {
             </View>
           </View>
         </View>
-        <TouchableOpacity
-          style={styles.addButtonContainer}
-          onPress={() => addToJournal()}
-          activeOpacity="0.5"
-        >
-          <Text style={[styles.addButtonText, styles.baseText]}>
-            Add To Journal
-          </Text>
-        </TouchableOpacity>
+
+        <View style={styles.buttonContainer}>
+          <View style={styles.buttonSpacing}>
+            <TouchableOpacity
+              style={styles.editButton}
+              onPress={() => addToJournal()}
+              activeOpacity="0.5"
+            >
+              <Text style={styles.buttonText}>Edit</Text>
+            </TouchableOpacity>
+          </View>
+
+          <View style={styles.buttonSpacing}>
+            <TouchableOpacity
+              style={styles.addButton}
+              onPress={() => addToJournal()}
+              activeOpacity="0.5"
+            >
+              <Text style={styles.buttonText}>Add To</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -338,7 +351,7 @@ const styles = StyleSheet.create({
   recipeContainer: {
     alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: "2%",
+    paddingHorizontal: "3%",
     paddingTop: "2%",
     width: "100%",
   },
@@ -385,15 +398,33 @@ const styles = StyleSheet.create({
   // ============================
   // Add Button
   // ============================
-  addButtonContainer: {
-    paddingVertical: "2%",
-    paddingHorizontal: "6%",
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
     marginVertical: "3%",
-    backgroundColor: "#24a0ed",
-    borderRadius: 5,
   },
-  addButtonText: {
-    fontSize: 26,
-    color: "#ffffff",
+  buttonSpacing: {
+    flex: 1,
+  },
+  editButton: {
+    padding: "4%",
+    margin: "5%",
+    backgroundColor: "limegreen",
+    borderWidth: 2,
+    borderRadius: 10,
+  },
+  addButton: {
+    padding: "4%",
+    margin: "5%",
+    backgroundColor: "deepskyblue",
+    borderWidth: 2,
+    borderRadius: 10,
+  },
+  buttonText: {
+    fontFamily: "Menlo",
+    fontWeight: "bold",
+    fontSize: 20,
+    textAlign: "center",
+    color: "#000000",
   },
 });
