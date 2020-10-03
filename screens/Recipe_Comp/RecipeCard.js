@@ -16,15 +16,22 @@ import { connect } from "react-redux";
 const RecipeCard = ({ recipe }) => {
   const [name, setName] = useState(recipe.description);
   const [totalNutrients, setTotalNutrients] = useState({});
+  const [calendar, setCalendar] = useState({
+    month: null,
+    date: null,
+    year: null,
+  });
 
   useEffect(() => {
     let data = parseNutritionData(recipe.foodNutrients);
     setTotalNutrients(data);
   }, []);
 
-  // useEffect(() => {
-  //   console.log("CALORIES HERE", totalNutrients.CALORIES);
-  // }, [totalNutrients]);
+  useEffect(() => {
+    let [month, date, year] = new Date().toLocaleDateString().split("/");
+    year = year.substring(2);
+    setCalendar({ month, date, year });
+  }, []);
 
   const addToJournal = () => {
     firebase
@@ -110,6 +117,7 @@ const RecipeCard = ({ recipe }) => {
     return parsedObject;
   };
 
+  let { month, date, year } = calendar;
   // only render if nutrients is not an empty object
   return JSON.stringify(totalNutrients) === "{}" ? null : (
     <SafeAreaView style={styles.container}>
@@ -320,6 +328,8 @@ const RecipeCard = ({ recipe }) => {
             >
               <Text style={styles.buttonText}>Add To</Text>
             </TouchableOpacity>
+            <Text style={styles.buttonText}>Date</Text>
+            <Text style={styles.buttonText}>{`${month}/${date}/${year}`}</Text>
           </View>
         </View>
       </View>
@@ -370,7 +380,7 @@ const styles = StyleSheet.create({
   // ============================
   nutrientTitleWrapper: {
     borderWidth: 0.5,
-    flex: 2,
+    flex: 1.5,
   },
   nutrientTitle: {
     borderBottomWidth: 0.5,
@@ -421,10 +431,10 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   buttonText: {
+    textAlign: "center",
     fontFamily: "Menlo",
     fontWeight: "bold",
     fontSize: 20,
-    textAlign: "center",
     color: "#000000",
   },
 });
