@@ -23,13 +23,22 @@ const ProfileScreen = (props) => {
     const [gender, setGender] = useState('');
 
   useEffect(() => {
-    firebase.database().ref('users/' + props.displayName).on('value', function(snapshot) {
-      setHeightFeet(snapshot.val().heightFeet);
-      setHeightInch(snapshot.val().heightInch);
-      setWeight(snapshot.val().weight);
-      setGender(snapshot.val().gender);
-      setBMI(snapshot.val().BMI);
-    })
+    firebase.database().ref('users/' + props.displayName)
+    .on('value', function(snapshot) {
+      if(snapshot.val() === null) {
+        setHeightFeet('0');
+        setHeightInch('0');
+        setWeight('0');
+        setGender('0');
+        setBMI('0');
+      } else {
+        setHeightFeet(snapshot.val().heightFeet);
+        setHeightInch(snapshot.val().heightInch);
+        setWeight(snapshot.val().weight);
+        setGender(snapshot.val().gender);
+        setBMI(snapshot.val().BMI);
+      }
+    });
   }, []);
 
   const numbersOnly = (input) => {

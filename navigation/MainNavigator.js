@@ -5,6 +5,7 @@ import { Ionicons } from "@expo/vector-icons";
 import HomeScreen from "../screens/HomeScreen";
 import NutritionScreen from "../screens/NutritionScreen";
 import RecipeListScreen from "../screens/RecipeListScreen";
+import ProfileScreen from "../screens/ProfileScreen";
 import ReduxPlayground from "../screens/ReduxPlayground";
 
 const Tab = createBottomTabNavigator();
@@ -24,6 +25,9 @@ function MainNavigator() {
               iconName = "md-journal";
               break;
             case "Recipe List":
+              iconName = "md-search";
+              break;
+            case "Profile":
               iconName = "md-search";
               break;
             case "Playground":
@@ -46,6 +50,7 @@ function MainNavigator() {
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Nutrition" component={NutritionScreen} />
       <Tab.Screen name="Recipe List" component={RecipeListScreen} />
+      <Tab.Screen name="Profile" component={ProfileScreen} />
       <Tab.Screen name="Playground" component={ReduxPlayground} />
     </Tab.Navigator>
   );
