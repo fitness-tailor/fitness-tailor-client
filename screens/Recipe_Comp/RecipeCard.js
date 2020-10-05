@@ -12,14 +12,14 @@ import {
 import axios from "axios";
 import firebase from "firebase";
 import { connect } from "react-redux";
+import RNPickerSelect from "react-native-picker-select";
 
 const RecipeCard = ({ recipe }) => {
   const [name, setName] = useState(recipe.description);
   const [totalNutrients, setTotalNutrients] = useState({});
   const [isEditing, setIsEditing] = useState(false);
-
-  const [servingSize, setServingSize] = useState(100);
-  const [servingUnit, setServingUnit] = useState("g");
+  const [servingSize, setServingSize] = useState(null);
+  const [servingUnit, setServingUnit] = useState(null);
 
   const [calendar, setCalendar] = useState({
     month: null,
@@ -138,19 +138,51 @@ const RecipeCard = ({ recipe }) => {
     return parsedObject;
   };
 
-  // Function can handle serving size in 'g'/grams only
-  // TODO: make function handle other units "cups, oz, quarts"
-  // handle more units after completing 3 mentioned above.
-  const handleServingSize = (inputValue) => {
-    if (inputValue) {
-      let valueList = inputValue.split(" ");
-      console.log(valueList);
+  const handleServingSize = (size, unit) => {
+    // changes value inside parsed nutrition object
+    totalNutrients.SERVING_SIZE.value = size;
+    totalNutrients.SERVING_SIZE.unit = unit;
+
+    // resets state values
+    setServingSize(null);
+    setServingUnit(null);
+  };
+
+  // TODO: create new function for converting to other units. i.e.) "cups, oz, quarts".
+
+  const checkForEmptyInputs = () => {
+    if (!servingUnit && !servingSize) {
+      alert("Please Input Serving Unit and Yield");
+    } else if (!servingUnit) {
+      alert("Please Input Serving Units");
+    } else if (!servingSize) {
+      alert("Please Input Serving Yield");
     }
   };
 
   const handleEditing = () => {
-    if (isEditing) handleServingSize(String(servingSize));
+    // Don't submit data if input fields are empty
+    if (isEditing && (!servingUnit || !servingSize)) {
+      checkForEmptyInputs();
+      return;
+    } else if (isEditing) {
+      handleServingSize(servingSize, servingUnit);
+    }
+
     setIsEditing(!isEditing);
+  };
+
+  const unitList = [
+    { label: "g", value: "g" },
+    { label: "oz", value: "oz" },
+    { label: "cup", value: "cup" },
+    { label: "qt", value: "qt" },
+    { label: "lbs", value: "lbs" },
+  ];
+
+  const placeholderForPicker = {
+    label: "Select unit",
+    value: null,
   };
 
   // only render if nutrients is not an empty object
@@ -350,31 +382,43 @@ const RecipeCard = ({ recipe }) => {
           <View style={styles.oneButtonContainer}>
             <TouchableOpacity
               style={styles.editButton}
-              onPress={() => handleEditing()}
+              onPress={handleEditing}
               activeOpacity="0.5"
             >
               <Text style={styles.buttonText}>
-                {!isEditing ? "Edit" : "Done Editing"}
+                {!isEditing ? "Convert" : "Done?"}
               </Text>
             </TouchableOpacity>
-            <Text style={styles.buttonText}>Serving Size</Text>
 
             <View style={styles.editDisplay}>
               {!isEditing && (
+                <Text style={styles.buttonText}>Serving Size</Text>
+              )}
+
+              {!isEditing && (
                 <Text
-                  style={styles.buttonText}
+                  style={[styles.buttonText, { marginTop: 5, marginBottom: 3 }]}
                 >{`${totalNutrients.SERVING_SIZE.value} ${totalNutrients.SERVING_SIZE.unit}`}</Text>
               )}
 
               {isEditing && (
                 <TextInput
-                  style={styles.inputBox}
+                  style={styles.servingValueBox}
                   value={servingSize}
-                  keyboardType="numeric"
-                  placeholder={`${servingSize}`}
+                  placeholder={"Set Yield"}
                   placeholderTextColor="#696969"
-                  maxLength={5}
+                  keyboardType={"numeric"}
                   onChangeText={(val) => setServingSize(val)}
+                />
+              )}
+
+              {isEditing && (
+                <RNPickerSelect
+                  selectedValue={servingUnit}
+                  placeholder={placeholderForPicker}
+                  style={pickerStyles}
+                  onValueChange={(unit) => setServingUnit(unit)}
+                  items={unitList}
                 />
               )}
             </View>
@@ -388,10 +432,13 @@ const RecipeCard = ({ recipe }) => {
             >
               <Text style={styles.buttonText}>Add To</Text>
             </TouchableOpacity>
-            <Text style={styles.buttonText}>Date</Text>
-            <Text
-              style={[styles.buttonText, { marginTop: 5, marginBottom: 3 }]}
-            >{`${month}/${date}/${year}`}</Text>
+
+            <View style={styles.editDisplay}>
+              <Text style={styles.buttonText}>Date</Text>
+              <Text
+                style={[styles.buttonText, { marginTop: 5, marginBottom: 3 }]}
+              >{`${month}/${date}/${year}`}</Text>
+            </View>
           </View>
         </View>
       </View>
@@ -475,34 +522,39 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     marginTop: "3%",
     marginBottom: "5%",
+    height: 130,
   },
   oneButtonContainer: {
     flex: 1,
   },
   editButton: {
     padding: "4%",
-    margin: "5%",
+    marginHorizontal: "5%",
+    marginTop: "5%",
+    marginBottom: "2%",
     backgroundColor: "limegreen",
     borderWidth: 2,
     borderRadius: 10,
   },
   editDisplay: {
+    display: "flex",
     marginTop: 5,
     justifyContent: "center",
   },
-  inputBox: {
+  servingValueBox: {
     justifyContent: "center",
     textAlign: "center",
-    flex: 1,
-    width: "80%",
+    paddingVertical: 4,
+    marginVertical: 4,
     marginHorizontal: "10%",
+    width: "80%",
     fontSize: 16,
     borderWidth: 1,
-    marginTop: 2,
   },
   addButton: {
     padding: "4%",
     margin: "5%",
+    marginBottom: "2%",
     backgroundColor: "deepskyblue",
     borderWidth: 2,
     borderRadius: 10,
@@ -512,6 +564,32 @@ const styles = StyleSheet.create({
     fontFamily: "Menlo",
     fontWeight: "bold",
     fontSize: 18,
+    color: "#000000",
+  },
+});
+
+const pickerStyles = StyleSheet.create({
+  inputIOS: {
+    justifyContent: "center",
+    textAlign: "center",
+    paddingHorizontal: 4,
+    paddingVertical: 4,
+    marginTop: 2,
+    marginHorizontal: "10%",
+    width: "80%",
+    borderWidth: 0.5,
+    fontSize: 16,
+    color: "#000000",
+  },
+  inputAndroid: {
+    // Copied code of docs
+    // TODO: Make styles responsive to androids
+    fontSize: 16,
+    justifyContent: "center",
+    textAlign: "center",
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderWidth: 0.5,
     color: "#000000",
   },
 });
