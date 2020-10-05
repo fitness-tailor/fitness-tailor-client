@@ -12,19 +12,34 @@ import {
 import axios from "axios";
 import firebase from "firebase";
 import { connect } from "react-redux";
+import RNPickerSelect from "react-native-picker-select";
 
 const RecipeCard = ({ recipe }) => {
   const [name, setName] = useState(recipe.description);
   const [totalNutrients, setTotalNutrients] = useState({});
+  const [isEditing, setIsEditing] = useState(false);
+  const [servingSize, setServingSize] = useState(null);
+  const [servingUnit, setServingUnit] = useState(null);
 
+  const [calendar, setCalendar] = useState({
+    month: null,
+    date: null,
+    year: null,
+  });
+  let { month, date, year } = calendar;
+
+  // handles parsing nutririon object
   useEffect(() => {
-    let data = parseNutritionData(recipe.foodNutrients);
-    setTotalNutrients(data);
+    let nutritionData = parseNutritionData(recipe.foodNutrients);
+    setTotalNutrients(nutritionData);
   }, []);
 
-  // useEffect(() => {
-  //   console.log("CALORIES HERE", totalNutrients.CALORIES);
-  // }, [totalNutrients]);
+  // handles calendar display
+  useEffect(() => {
+    let [month, date, year] = new Date().toLocaleDateString().split("/");
+    year = year.substring(2);
+    setCalendar({ month, date, year });
+  }, []);
 
   const addToJournal = () => {
     firebase
@@ -37,6 +52,10 @@ const RecipeCard = ({ recipe }) => {
 
   const parseNutritionData = (nutritionArray) => {
     let parsedObject = {
+      SERVING_SIZE: {
+        value: 100,
+        unit: "g",
+      },
       CALORIES: {},
       TOTAL_FAT: {},
       SAT_FAT: {},
@@ -107,7 +126,63 @@ const RecipeCard = ({ recipe }) => {
           continue;
       }
     }
+
+    // loops over object for undefined values
+    for (let key in parsedObject) {
+      if (JSON.stringify(parsedObject[key]) === "{}") {
+        parsedObject[key].value = "";
+        parsedObject[key].unit = "";
+      }
+    }
+
     return parsedObject;
+  };
+
+  const handleServingSize = (size, unit) => {
+    // changes value inside parsed nutrition object
+    totalNutrients.SERVING_SIZE.value = size;
+    totalNutrients.SERVING_SIZE.unit = unit;
+
+    // resets state values
+    setServingSize(null);
+    setServingUnit(null);
+  };
+
+  // TODO: create new function for converting to other units. i.e.) "cups, oz, quarts".
+
+  const checkForEmptyInputs = () => {
+    if (!servingUnit && !servingSize) {
+      alert("Please Input Serving Unit and Yield");
+    } else if (!servingUnit) {
+      alert("Please Input Serving Units");
+    } else if (!servingSize) {
+      alert("Please Input Serving Yield");
+    }
+  };
+
+  const handleEditing = () => {
+    // Don't submit data if input fields are empty
+    if (isEditing && (!servingUnit || !servingSize)) {
+      checkForEmptyInputs();
+      return;
+    } else if (isEditing) {
+      handleServingSize(servingSize, servingUnit);
+    }
+
+    setIsEditing(!isEditing);
+  };
+
+  const unitList = [
+    { label: "g", value: "g" },
+    { label: "oz", value: "oz" },
+    { label: "cup", value: "cup" },
+    { label: "qt", value: "qt" },
+    { label: "lbs", value: "lbs" },
+  ];
+
+  const placeholderForPicker = {
+    label: "Select unit",
+    value: null,
   };
 
   // only render if nutrients is not an empty object
@@ -186,7 +261,9 @@ const RecipeCard = ({ recipe }) => {
             </View>
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
-              <Text style={[styles.recipeFont, styles.boldFont]}>100g </Text>
+              <Text style={[styles.recipeFont, styles.boldFont]}>
+                {`${totalNutrients.SERVING_SIZE.value} ${totalNutrients.SERVING_SIZE.unit}`}
+              </Text>
             </View>
 
             <View style={[styles.nutrientAmount, styles.bottomPadding]}>
@@ -300,15 +377,70 @@ const RecipeCard = ({ recipe }) => {
             </View>
           </View>
         </View>
-        <TouchableOpacity
-          style={styles.addButtonContainer}
-          onPress={() => addToJournal()}
-          activeOpacity="0.5"
-        >
-          <Text style={[styles.addButtonText, styles.baseText]}>
-            Add To Journal
-          </Text>
-        </TouchableOpacity>
+
+        <View style={styles.buttonsContainer}>
+          <View style={styles.oneButtonContainer}>
+            <TouchableOpacity
+              style={styles.editButton}
+              onPress={handleEditing}
+              activeOpacity="0.5"
+            >
+              <Text style={styles.buttonText}>
+                {!isEditing ? "Convert" : "Done?"}
+              </Text>
+            </TouchableOpacity>
+
+            <View style={styles.editDisplay}>
+              {!isEditing && (
+                <Text style={styles.buttonText}>Serving Size</Text>
+              )}
+
+              {!isEditing && (
+                <Text
+                  style={[styles.buttonText, { marginTop: 5, marginBottom: 3 }]}
+                >{`${totalNutrients.SERVING_SIZE.value} ${totalNutrients.SERVING_SIZE.unit}`}</Text>
+              )}
+
+              {isEditing && (
+                <TextInput
+                  style={styles.servingValueBox}
+                  value={servingSize}
+                  placeholder={"Set Yield"}
+                  placeholderTextColor="#696969"
+                  keyboardType={"numeric"}
+                  onChangeText={(val) => setServingSize(val)}
+                />
+              )}
+
+              {isEditing && (
+                <RNPickerSelect
+                  selectedValue={servingUnit}
+                  placeholder={placeholderForPicker}
+                  style={pickerStyles}
+                  onValueChange={(unit) => setServingUnit(unit)}
+                  items={unitList}
+                />
+              )}
+            </View>
+          </View>
+
+          <View style={styles.oneButtonContainer}>
+            <TouchableOpacity
+              style={styles.addButton}
+              onPress={() => addToJournal()}
+              activeOpacity="0.5"
+            >
+              <Text style={styles.buttonText}>Add To</Text>
+            </TouchableOpacity>
+
+            <View style={styles.editDisplay}>
+              <Text style={styles.buttonText}>Date</Text>
+              <Text
+                style={[styles.buttonText, { marginTop: 5, marginBottom: 3 }]}
+              >{`${month}/${date}/${year}`}</Text>
+            </View>
+          </View>
+        </View>
       </View>
     </SafeAreaView>
   );
@@ -338,7 +470,7 @@ const styles = StyleSheet.create({
   recipeContainer: {
     alignItems: "center",
     justifyContent: "center",
-    paddingHorizontal: "2%",
+    paddingHorizontal: "3%",
     paddingTop: "2%",
     width: "100%",
   },
@@ -357,7 +489,7 @@ const styles = StyleSheet.create({
   // ============================
   nutrientTitleWrapper: {
     borderWidth: 0.5,
-    flex: 2,
+    flex: 1.5,
   },
   nutrientTitle: {
     borderBottomWidth: 0.5,
@@ -385,15 +517,79 @@ const styles = StyleSheet.create({
   // ============================
   // Add Button
   // ============================
-  addButtonContainer: {
-    paddingVertical: "2%",
-    paddingHorizontal: "6%",
-    marginVertical: "3%",
-    backgroundColor: "#24a0ed",
-    borderRadius: 5,
+  buttonsContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    marginTop: "3%",
+    marginBottom: "5%",
+    height: 130,
   },
-  addButtonText: {
-    fontSize: 26,
-    color: "#ffffff",
+  oneButtonContainer: {
+    flex: 1,
+  },
+  editButton: {
+    padding: "4%",
+    marginHorizontal: "5%",
+    marginTop: "5%",
+    marginBottom: "2%",
+    backgroundColor: "limegreen",
+    borderWidth: 2,
+    borderRadius: 10,
+  },
+  editDisplay: {
+    display: "flex",
+    marginTop: 5,
+    justifyContent: "center",
+  },
+  servingValueBox: {
+    justifyContent: "center",
+    textAlign: "center",
+    paddingVertical: 4,
+    marginVertical: 4,
+    marginHorizontal: "10%",
+    width: "80%",
+    fontSize: 16,
+    borderWidth: 1,
+  },
+  addButton: {
+    padding: "4%",
+    margin: "5%",
+    marginBottom: "2%",
+    backgroundColor: "deepskyblue",
+    borderWidth: 2,
+    borderRadius: 10,
+  },
+  buttonText: {
+    textAlign: "center",
+    fontFamily: "Menlo",
+    fontWeight: "bold",
+    fontSize: 18,
+    color: "#000000",
+  },
+});
+
+const pickerStyles = StyleSheet.create({
+  inputIOS: {
+    justifyContent: "center",
+    textAlign: "center",
+    paddingHorizontal: 4,
+    paddingVertical: 4,
+    marginTop: 2,
+    marginHorizontal: "10%",
+    width: "80%",
+    borderWidth: 0.5,
+    fontSize: 16,
+    color: "#000000",
+  },
+  inputAndroid: {
+    // Copied code of docs
+    // TODO: Make styles responsive to androids
+    fontSize: 16,
+    justifyContent: "center",
+    textAlign: "center",
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderWidth: 0.5,
+    color: "#000000",
   },
 });
