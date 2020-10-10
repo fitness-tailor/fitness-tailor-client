@@ -13,6 +13,8 @@ import axios from "axios";
 import firebase from "firebase";
 import { connect } from "react-redux";
 import RNPickerSelect from "react-native-picker-select";
+import RowTitle from "./RowTitle.js";
+import RowData from "./RowData.js";
 
 const RecipeCard = ({ recipe }) => {
   const [name, setName] = useState(recipe.description);
@@ -130,7 +132,7 @@ const RecipeCard = ({ recipe }) => {
     // loops over object for undefined values
     for (let key in parsedObject) {
       if (JSON.stringify(parsedObject[key]) === "{}") {
-        parsedObject[key].value = "";
+        parsedObject[key].value = "N/A";
         parsedObject[key].unit = "";
       }
     }
@@ -205,7 +207,22 @@ const RecipeCard = ({ recipe }) => {
           </Text>
         </View>
 
-        <View style={styles.nutrientsContainer}>
+      <View style={{width: "100%"}}>
+        <RowTitle />
+        <RowData id="Serving Size" nutValue={totalNutrients.SERVING_SIZE.value} nutUnit={totalNutrients.SERVING_SIZE.unit} percentage="N/A"/>
+        <RowData id="Calories" nutValue={totalNutrients.CALORIES.value} percentage="None"/>
+        <RowData id="Total Fat" nutValue={totalNutrients.TOTAL_FAT.value} nutUnit={totalNutrients.TOTAL_FAT.unit} percentage="None"/>
+        <RowData id="Sat. Fat" nutValue={totalNutrients.SAT_FAT.value} nutUnit={totalNutrients.SAT_FAT.unit} percentage="None"/>
+        <RowData id="Trans. Fat" nutValue={totalNutrients.TRANS_FAT.value} nutUnit={totalNutrients.TRANS_FAT.unit} percentage="None"/>
+        <RowData id="Cholesterol" nutValue={totalNutrients.CHOLESTEROL.value} nutUnit={totalNutrients.CHOLESTEROL.unit} percentage="None"/>
+        <RowData id="Sodium" nutValue={totalNutrients.SODIUM.value} nutUnit={totalNutrients.SODIUM.unit} percentage="None"/>
+        <RowData id="Total Carbs." nutValue={totalNutrients.CARBS.value} nutUnit={totalNutrients.CARBS.unit} percentage="None"/>
+        <RowData id="Dietary Fiber" nutValue={totalNutrients.FIBER.value} nutUnit={totalNutrients.FIBER.unit} percentage="None"/>
+        <RowData id="Total Sugar" nutValue={totalNutrients.TOTAL_SUGAR.value} nutUnit={totalNutrients.TOTAL_SUGAR.unit} percentage="None"/>
+        <RowData id="Protein" nutValue={totalNutrients.PROTEIN.value} nutUnit={totalNutrients.PROTEIN.unit} percentage="None"/>
+      </View>
+
+        {/* <View style={styles.nutrientsContainer}>
           <View style={styles.nutrientTitleWrapper}>
             <View style={[styles.nutrientTitle, styles.bottomPadding]}>
               <Text style={[styles.recipeFont, styles.baseText]}>Name</Text>
@@ -376,7 +393,7 @@ const RecipeCard = ({ recipe }) => {
               <Text style={styles.recipeFont}>NONE </Text>
             </View>
           </View>
-        </View>
+        </View>*/}
 
         <View style={styles.buttonsContainer}>
           <View style={styles.oneButtonContainer}>
