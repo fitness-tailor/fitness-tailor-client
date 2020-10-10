@@ -1,27 +1,43 @@
 import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
-const RowData = ({id, nutValue, nutUnit, percentage}) => {
-  if (!nutUnit) {
-    nutUnit = "";
+const RowData = ({ id, nutValue, nutUnit, percentage }) => {
+  if (!nutValue && nutValue !== 0) nutValue = "N/A";
+  if (!nutUnit) nutUnit = "";
+
+  if (!percentage && percentage !== 0) {
+    percentage = "N/A";
+  } else if (percentage > 200) {
+    percentage = `<200%`;
+  } else {
+    percentage = `${percentage}%`;
   }
+
+  let valueDisplay = "";
+
+  if (nutValue === "N/A") {
+    valueDisplay = "N/A";
+  } else if (id === "Serving Size") {
+    valueDisplay = `${nutValue} ${nutUnit}`;
+  } else {
+    valueDisplay = `${Math.round(nutValue)} ${nutUnit}`;
+  }
+
   return (
     <View style={styles.nutritionRow}>
       <View style={styles.nutrientTitle}>
         <Text style={[styles.recipeFont, styles.baseText]}>{id}</Text>
       </View>
+
       <View style={styles.nutrientAmount}>
-        <Text style={[styles.recipeFont, styles.baseText]}>{`${nutValue} ${nutUnit}`}</Text>
+        <Text style={[styles.recipeFont, styles.baseText]}>{valueDisplay}</Text>
       </View>
+
       <View style={styles.nutrientPercentage}>
-        <Text style={[styles.recipeFont, styles.baseText]}>{`${percentage}`}</Text>
+        <Text style={[styles.recipeFont, styles.baseText]}>{percentage}</Text>
       </View>
     </View>
-  )
+  );
 };
 
 export default RowData;
@@ -34,7 +50,7 @@ const styles = StyleSheet.create({
   baseText: { fontFamily: "Menlo" },
   bottomPadding: { paddingBottom: 2 },
   recipeFont: {
-    fontSize: 18,
+    fontSize: 17,
     textAlign: "center",
   },
   recipeName: {
@@ -44,7 +60,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     paddingVertical: 5,
     borderWidth: 1,
-    borderTopWidth: 0
+    borderTopWidth: 0,
   },
   // ============================
   // Nutrient Title
@@ -52,7 +68,7 @@ const styles = StyleSheet.create({
   nutrientTitle: {
     flex: 1.5,
     borderRightWidth: 1,
-    height: "100%"
+    height: "100%",
   },
   // ============================
   // Nutrient Amount
@@ -65,7 +81,6 @@ const styles = StyleSheet.create({
   // Nutrient Percentage
   // ============================
   nutrientPercentage: {
-    flex: 0.8,
+    flex: 0.7,
   },
 });
-

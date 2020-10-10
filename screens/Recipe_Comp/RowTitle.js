@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
 const RowTitle = (props) => {
   return (
@@ -11,14 +7,16 @@ const RowTitle = (props) => {
       <View style={styles.nutrientTitle}>
         <Text style={[styles.recipeFont, styles.baseText]}>Name</Text>
       </View>
+
       <View style={styles.nutrientAmount}>
         <Text style={[styles.recipeFont, styles.baseText]}>DV</Text>
       </View>
+
       <View style={styles.nutrientPercentage}>
         <Text style={[styles.recipeFont, styles.baseText]}>% DV</Text>
       </View>
     </View>
-  )
+  );
 };
 
 export default RowTitle;
@@ -40,7 +38,7 @@ const styles = StyleSheet.create({
   nutritionRow: {
     flexDirection: "row",
     paddingVertical: 5,
-    borderWidth: 1
+    borderWidth: 1,
   },
   // ============================
   // Nutrient Title
@@ -60,7 +58,6 @@ const styles = StyleSheet.create({
   // Nutrient Percentage
   // ============================
   nutrientPercentage: {
-    flex: 0.8,
+    flex: 0.7,
   },
 });
-

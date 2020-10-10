@@ -13,15 +13,17 @@ import axios from "axios";
 import firebase from "firebase";
 import { connect } from "react-redux";
 import RNPickerSelect from "react-native-picker-select";
+import convert from "convert-units";
 import RowTitle from "./RowTitle.js";
 import RowData from "./RowData.js";
 
-const RecipeCard = ({ recipe }) => {
+const RecipeCard = ({ recipe, RDA }) => {
   const [name, setName] = useState(recipe.description);
   const [totalNutrients, setTotalNutrients] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [servingSize, setServingSize] = useState(null);
   const [servingUnit, setServingUnit] = useState(null);
+  const [gender, setGender] = useState("");
 
   const [calendar, setCalendar] = useState({
     month: null,
@@ -86,42 +88,42 @@ const RecipeCard = ({ recipe }) => {
     for (var i = 0; i < nutritionArray.length; i++) {
       switch (nutritionArray[i].nutrientId) {
         case 1008:
-          CALORIES.value = Math.round(nutritionArray[i].value);
+          CALORIES.value = nutritionArray[i].value;
           break;
         case 1004:
-          TOTAL_FAT.value = Math.round(nutritionArray[i].value);
+          TOTAL_FAT.value = nutritionArray[i].value;
           TOTAL_FAT.unit = nutritionArray[i].unitName.toLowerCase();
           break;
         case 1258:
-          SAT_FAT.value = Math.round(nutritionArray[i].value);
+          SAT_FAT.value = nutritionArray[i].value;
           SAT_FAT.unit = nutritionArray[i].unitName.toLowerCase();
           break;
         case 1257:
-          TRANS_FAT.value = Math.round(nutritionArray[i].value);
+          TRANS_FAT.value = nutritionArray[i].value;
           TRANS_FAT.unit = nutritionArray[i].unitName.toLowerCase();
           break;
         case 1253:
-          CHOLESTEROL.value = Math.round(nutritionArray[i].value);
+          CHOLESTEROL.value = nutritionArray[i].value;
           CHOLESTEROL.unit = nutritionArray[i].unitName.toLowerCase();
           break;
         case 1093:
-          SODIUM.value = Math.round(nutritionArray[i].value);
+          SODIUM.value = nutritionArray[i].value;
           SODIUM.unit = nutritionArray[i].unitName.toLowerCase();
           break;
         case 1005:
-          CARBS.value = Math.round(nutritionArray[i].value);
+          CARBS.value = nutritionArray[i].value;
           CARBS.unit = nutritionArray[i].unitName.toLowerCase();
           break;
         case 1079:
-          FIBER.value = Math.round(nutritionArray[i].value);
+          FIBER.value = nutritionArray[i].value;
           FIBER.unit = nutritionArray[i].unitName.toLowerCase();
           break;
         case 2000:
-          TOTAL_SUGAR.value = Math.round(nutritionArray[i].value);
+          TOTAL_SUGAR.value = nutritionArray[i].value;
           TOTAL_SUGAR.unit = nutritionArray[i].unitName.toLowerCase();
           break;
         case 1003:
-          PROTEIN.value = Math.round(nutritionArray[i].value);
+          PROTEIN.value = nutritionArray[i].value;
           PROTEIN.unit = nutritionArray[i].unitName.toLowerCase();
           break;
         default:
@@ -129,25 +131,46 @@ const RecipeCard = ({ recipe }) => {
       }
     }
 
-    // loops over object for undefined values
-    for (let key in parsedObject) {
-      if (JSON.stringify(parsedObject[key]) === "{}") {
-        parsedObject[key].value = "N/A";
-        parsedObject[key].unit = "";
-      }
-    }
+    addPercentagesKey(parsedObject);
 
     return parsedObject;
   };
 
+  const addPercentagesKey = (object) => {
+    for (let keys in object) {
+      if (RDA[keys]) {
+        object[keys].percentage = function () {
+          let division = this.value / RDA[keys];
+          return Math.round(division * 100);
+        };
+      }
+    }
+  };
+
   const handleServingSize = (size, unit) => {
     // changes value inside parsed nutrition object
+    handleDailyValues(size, unit);
     totalNutrients.SERVING_SIZE.value = size;
     totalNutrients.SERVING_SIZE.unit = unit;
-
     // resets state values
     setServingSize(null);
     setServingUnit(null);
+  };
+
+  const handleDailyValues = (size, convertUnits) => {
+    let { value, unit } = totalNutrients.SERVING_SIZE;
+
+    let newValues = convert(size).from(convertUnits).to("g");
+    let previousValues = convert(value).from(unit).to("g");
+    let factor = newValues / previousValues;
+
+    for (let key in totalNutrients) {
+      if (!totalNutrients[key].value) {
+        continue;
+      } else {
+        totalNutrients[key].value *= factor;
+      }
+    }
   };
 
   // TODO: create new function for converting to other units. i.e.) "cups, oz, quarts".
@@ -162,7 +185,7 @@ const RecipeCard = ({ recipe }) => {
     }
   };
 
-  const handleEditing = () => {
+  const toggleEditing = () => {
     // Don't submit data if input fields are empty
     if (isEditing && (!servingUnit || !servingSize)) {
       checkForEmptyInputs();
@@ -177,9 +200,6 @@ const RecipeCard = ({ recipe }) => {
   const unitList = [
     { label: "g", value: "g" },
     { label: "oz", value: "oz" },
-    { label: "cup", value: "cup" },
-    { label: "qt", value: "qt" },
-    { label: "lbs", value: "lbs" },
   ];
 
   const placeholderForPicker = {
@@ -207,199 +227,91 @@ const RecipeCard = ({ recipe }) => {
           </Text>
         </View>
 
-      <View style={{width: "100%"}}>
-        <RowTitle />
-        <RowData id="Serving Size" nutValue={totalNutrients.SERVING_SIZE.value} nutUnit={totalNutrients.SERVING_SIZE.unit} percentage="N/A"/>
-        <RowData id="Calories" nutValue={totalNutrients.CALORIES.value} percentage="None"/>
-        <RowData id="Total Fat" nutValue={totalNutrients.TOTAL_FAT.value} nutUnit={totalNutrients.TOTAL_FAT.unit} percentage="None"/>
-        <RowData id="Sat. Fat" nutValue={totalNutrients.SAT_FAT.value} nutUnit={totalNutrients.SAT_FAT.unit} percentage="None"/>
-        <RowData id="Trans. Fat" nutValue={totalNutrients.TRANS_FAT.value} nutUnit={totalNutrients.TRANS_FAT.unit} percentage="None"/>
-        <RowData id="Cholesterol" nutValue={totalNutrients.CHOLESTEROL.value} nutUnit={totalNutrients.CHOLESTEROL.unit} percentage="None"/>
-        <RowData id="Sodium" nutValue={totalNutrients.SODIUM.value} nutUnit={totalNutrients.SODIUM.unit} percentage="None"/>
-        <RowData id="Total Carbs." nutValue={totalNutrients.CARBS.value} nutUnit={totalNutrients.CARBS.unit} percentage="None"/>
-        <RowData id="Dietary Fiber" nutValue={totalNutrients.FIBER.value} nutUnit={totalNutrients.FIBER.unit} percentage="None"/>
-        <RowData id="Total Sugar" nutValue={totalNutrients.TOTAL_SUGAR.value} nutUnit={totalNutrients.TOTAL_SUGAR.unit} percentage="None"/>
-        <RowData id="Protein" nutValue={totalNutrients.PROTEIN.value} nutUnit={totalNutrients.PROTEIN.unit} percentage="None"/>
-      </View>
+        <View style={{ width: "100%" }}>
+          <RowTitle />
 
-        {/* <View style={styles.nutrientsContainer}>
-          <View style={styles.nutrientTitleWrapper}>
-            <View style={[styles.nutrientTitle, styles.bottomPadding]}>
-              <Text style={[styles.recipeFont, styles.baseText]}>Name</Text>
-            </View>
-            <View style={[styles.nutrientTitle, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>Serving Size</Text>
-            </View>
+          <RowData
+            id="Serving Size"
+            nutValue={totalNutrients.SERVING_SIZE.value}
+            nutUnit={totalNutrients.SERVING_SIZE.unit}
+            percentage={null}
+          />
 
-            <View style={[styles.nutrientTitle, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>Calories</Text>
-            </View>
+          <RowData
+            id="Calories"
+            nutValue={totalNutrients.CALORIES.value}
+            percentage={totalNutrients.CALORIES.percentage()}
+          />
 
-            <View style={[styles.nutrientTitle, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>Total Fat</Text>
-            </View>
+          <RowData
+            id="Total Fat"
+            nutValue={totalNutrients.TOTAL_FAT.value}
+            nutUnit={totalNutrients.TOTAL_FAT.unit}
+            percentage={totalNutrients.TOTAL_FAT.percentage()}
+          />
 
-            <View style={[styles.nutrientTitle, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>Sat. Fat</Text>
-            </View>
+          <RowData
+            id="Sat. Fat"
+            nutValue={totalNutrients.SAT_FAT.value}
+            nutUnit={totalNutrients.SAT_FAT.unit}
+            percentage={totalNutrients.SAT_FAT.percentage()}
+          />
 
-            <View style={[styles.nutrientTitle, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>Trans. Fat</Text>
-            </View>
+          <RowData
+            id="Trans. Fat"
+            nutValue={totalNutrients.TRANS_FAT.value}
+            nutUnit={totalNutrients.TRANS_FAT.unit}
+            percentage={null}
+          />
 
-            <View style={[styles.nutrientTitle, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>Cholesterol</Text>
-            </View>
+          <RowData
+            id="Cholesterol"
+            nutValue={totalNutrients.CHOLESTEROL.value}
+            nutUnit={totalNutrients.CHOLESTEROL.unit}
+            percentage={totalNutrients.CHOLESTEROL.percentage()}
+          />
 
-            <View style={[styles.nutrientTitle, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>Sodium</Text>
-            </View>
+          <RowData
+            id="Sodium"
+            nutValue={totalNutrients.SODIUM.value}
+            nutUnit={totalNutrients.SODIUM.unit}
+            percentage={totalNutrients.SODIUM.percentage()}
+          />
 
-            <View style={[styles.nutrientTitle, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>Total Carbs</Text>
-            </View>
+          <RowData
+            id="Total Carbs."
+            nutValue={totalNutrients.CARBS.value}
+            nutUnit={totalNutrients.CARBS.unit}
+            percentage={totalNutrients.CARBS.percentage()}
+          />
 
-            <View style={[styles.nutrientTitle, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>Dietary Fiber</Text>
-            </View>
+          <RowData
+            id="Dietary Fiber"
+            nutValue={totalNutrients.FIBER.value}
+            nutUnit={totalNutrients.FIBER.unit}
+            percentage={totalNutrients.FIBER.percentage()}
+          />
 
-            <View style={[styles.nutrientTitle, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>Total Sugar</Text>
-            </View>
+          <RowData
+            id="Total Sugar"
+            nutValue={totalNutrients.TOTAL_SUGAR.value}
+            nutUnit={totalNutrients.TOTAL_SUGAR.unit}
+            percentage={null}
+          />
 
-            <View style={[styles.nutrientTitle, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>Protein</Text>
-            </View>
-          </View>
-
-          <View style={styles.nutrientAmountWrapper}>
-            <View style={[styles.nutrientAmount, styles.bottomPadding]}>
-              <Text style={[styles.recipeFont, styles.baseText]}>DV</Text>
-            </View>
-
-            <View style={[styles.nutrientAmount, styles.bottomPadding]}>
-              <Text style={[styles.recipeFont, styles.boldFont]}>
-                {`${totalNutrients.SERVING_SIZE.value} ${totalNutrients.SERVING_SIZE.unit}`}
-              </Text>
-            </View>
-
-            <View style={[styles.nutrientAmount, styles.bottomPadding]}>
-              <Text style={[styles.recipeFont, styles.boldFont]}>
-                {totalNutrients.CALORIES.value}
-              </Text>
-            </View>
-
-            <View style={[styles.nutrientAmount, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>
-                {`${totalNutrients.TOTAL_FAT.value} ${totalNutrients.TOTAL_FAT.unit}`}
-              </Text>
-            </View>
-
-            <View style={[styles.nutrientAmount, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>
-                {`${totalNutrients.SAT_FAT.value} ${totalNutrients.TOTAL_FAT.unit}`}
-              </Text>
-            </View>
-
-            <View style={[styles.nutrientAmount, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>
-                {`${totalNutrients.TRANS_FAT.value} ${totalNutrients.TRANS_FAT.unit}`}
-              </Text>
-            </View>
-
-            <View style={[styles.nutrientAmount, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>
-                {`${totalNutrients.CHOLESTEROL.value} ${totalNutrients.CHOLESTEROL.unit}`}
-              </Text>
-            </View>
-
-            <View style={[styles.nutrientAmount, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>
-                {`${totalNutrients.SODIUM.value} ${totalNutrients.SODIUM.unit}`}
-              </Text>
-            </View>
-
-            <View style={[styles.nutrientAmount, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>
-                {`${totalNutrients.CARBS.value} ${totalNutrients.CARBS.unit}`}
-              </Text>
-            </View>
-
-            <View style={[styles.nutrientAmount, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>
-                {`${totalNutrients.FIBER.value} ${totalNutrients.FIBER.unit}`}
-              </Text>
-            </View>
-
-            <View style={[styles.nutrientAmount, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>
-                {`${totalNutrients.TOTAL_SUGAR.value} ${totalNutrients.TOTAL_SUGAR.unit}`}
-              </Text>
-            </View>
-
-            <View style={[styles.nutrientAmount, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>
-                {`${totalNutrients.PROTEIN.value} ${totalNutrients.PROTEIN.unit}`}
-              </Text>
-            </View>
-          </View>
-
-          <View style={styles.nutrientPercentageWrapper}>
-            <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
-              <Text style={[styles.recipeFont, styles.baseText]}>% DV</Text>
-            </View>
-
-            <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>NONE</Text>
-            </View>
-
-            <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>LATER</Text>
-            </View>
-
-            <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>NONE</Text>
-            </View>
-
-            <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>NONE</Text>
-            </View>
-
-            <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>NONE</Text>
-            </View>
-
-            <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>NONE </Text>
-            </View>
-
-            <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>NONE </Text>
-            </View>
-
-            <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>NONE </Text>
-            </View>
-
-            <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>NONE </Text>
-            </View>
-
-            <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>NONE</Text>
-            </View>
-
-            <View style={[styles.nutrientPercentage, styles.bottomPadding]}>
-              <Text style={styles.recipeFont}>NONE </Text>
-            </View>
-          </View>
-        </View>*/}
+          <RowData
+            id="Protein"
+            nutValue={totalNutrients.PROTEIN.value}
+            nutUnit={totalNutrients.PROTEIN.unit}
+            percentage={totalNutrients.PROTEIN.percentage()}
+          />
+        </View>
 
         <View style={styles.buttonsContainer}>
           <View style={styles.oneButtonContainer}>
             <TouchableOpacity
               style={styles.editButton}
-              onPress={handleEditing}
+              onPress={toggleEditing}
               activeOpacity="0.5"
             >
               <Text style={styles.buttonText}>
@@ -465,6 +377,7 @@ const RecipeCard = ({ recipe }) => {
 
 const mapStateToProps = (state) => ({
   displayName: state.auth.user.displayName,
+  RDA: state.recipeList.RDA,
 });
 
 export default connect(mapStateToProps, null)(RecipeCard);

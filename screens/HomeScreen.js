@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import firebase from "firebase";
 import { StyleSheet, Text, View, SafeAreaView, Button } from "react-native";
 import { getUser } from "../redux/actions/authActions.js";
+import { storeRDA } from "../redux/actions/recipeListActions.js";
 import styles from "./styles.js";
 
 class HomeScreen extends React.Component {
@@ -12,6 +13,7 @@ class HomeScreen extends React.Component {
 
   componentDidMount() {
     this.props.fetchUser();
+    this.props.fetchRDA("male");
   }
 
   render() {
@@ -41,6 +43,9 @@ const mapStateToProps = (state) => ({
 function mapDispatchToProps(dispatch) {
   return {
     fetchUser: () => dispatch(getUser()),
+    // Fetching RDA is hardcoded as male
+    // TODO: make function accept user's gender
+    fetchRDA: (gender) => dispatch(storeRDA(gender)),
   };
 }
 
