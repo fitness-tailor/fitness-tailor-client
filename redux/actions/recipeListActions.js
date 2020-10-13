@@ -2,6 +2,7 @@ import {
   FETCH_RECIPE_LIST,
   FETCH_RECIPE_LIST_SUCCESS,
   FETCH_RECIPE_LIST_ERROR,
+  STORE_RDA,
 } from "./actionTypes.js";
 import axios from "axios";
 import { RECIPE_API_KEYS } from "../../assets/API_KEYS.json";
@@ -44,5 +45,35 @@ export const getRecipes = (recipe) => {
         const errorMsg = err.message;
         dispatch(fetchRecipeListError(errorMsg)); // change 'error' value in our state to error message received
       });
+  };
+};
+
+export const storeRDA = (gender = "N/A") => {
+  let RDApayload =
+    gender !== "female"
+      ? {
+          CALORIES: 2500,
+          TOTAL_FAT: 80,
+          SAT_FAT: 25,
+          CHOLESTEROL: 300,
+          SODIUM: 2400,
+          CARBS: 375,
+          FIBER: 30,
+          PROTEIN: 55,
+        }
+      : {
+          CALORIES: 2000,
+          TOTAL_FAT: 65,
+          SAT_FAT: 20,
+          CHOLESTEROL: 300,
+          SODIUM: 2400,
+          CARBS: 300,
+          FIBER: 25,
+          PROTEIN: 45,
+        };
+
+  return {
+    type: STORE_RDA,
+    payload: RDApayload,
   };
 };

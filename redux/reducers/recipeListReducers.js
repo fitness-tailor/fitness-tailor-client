@@ -2,6 +2,7 @@ let recipeListState = {
   isLoading: false,
   recipes: [],
   error: "",
+  RDA: null,
 };
 
 // if ((action.type = "FETCH_RECIPE_LIST"));
@@ -18,23 +19,23 @@ const recipeListReducers = (state = recipeListState, action) => {
         error: "",
         recipes: [],
       };
-    // Reset loading state if request is successful
-    // Place data fetched from api to recipes in redux/global state
     case "FETCH_RECIPE_LIST_SUCCESS":
       return {
         ...state,
         isLoading: false,
         recipes: action.payload,
       };
-    // Reset loading state if request has failed
-    // Store error message inside error of redux/global state
     case "FETCH_RECIPE_LIST_ERROR":
       return {
         ...state,
         isLoading: false,
         error: action.payload,
       };
-    // action.payload will be DIFFERENT depending if API request was successful or it failed
+    case "STORE_RDA":
+      return {
+        ...state,
+        RDA: action.payload,
+      };
     default:
       return state;
   }

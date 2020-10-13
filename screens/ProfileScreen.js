@@ -10,7 +10,7 @@ import {
   Image,
   Button,
 } from "react-native";
-import {Picker} from '@react-native-community/picker';
+import RNPickerSelect from "react-native-picker-select";
 import { connect } from "react-redux";
 import firebase from 'firebase';
 import styles from "./styles.js";
@@ -78,6 +78,11 @@ const ProfileScreen = (props) => {
     }
   };
 
+    const genderList = [
+    { label: "Male", value: "male" },
+    { label: "Female", value: "female" }
+  ];
+
   return (
     <SafeAreaView style={styles.containerProfile}>
       <Text>
@@ -88,16 +93,21 @@ const ProfileScreen = (props) => {
       </Text>
       <View style={styles.userInputProfile}>
 
-      <Picker
+      {/* <Picker
         selectedValue={gender}
         itemStyle={{height: 100}}
         onValueChange={(itemValue) => setGender(itemValue)}
       >
         <Picker.Item label="Male" value="male" />
         <Picker.Item label="Female" value="female" />
-      </Picker>
+      </Picker> */}
 
-
+      <RNPickerSelect
+        selectedValue={gender}
+        style={pickerStyles}
+        items={genderList}
+        onValueChange={(itemValue) => setGender(itemValue)}
+      />
 
         <View styles={styles.userHeightProfile}>
             <TextInput placeholder='Feet' keyboardType={'numeric'} style={styles.userInput} value={heightFeet} onChangeText={text => setHeightFeet(text)} />
@@ -129,6 +139,32 @@ const ProfileScreen = (props) => {
     </SafeAreaView>
   );
 };
+
+const pickerStyles = StyleSheet.create({
+  inputIOS: {
+    justifyContent: "center",
+    textAlign: "center",
+    paddingHorizontal: 4,
+    paddingVertical: 4,
+    marginTop: 2,
+    marginHorizontal: "10%",
+    width: "80%",
+    borderWidth: 0.5,
+    fontSize: 16,
+    color: "#000000",
+  },
+  inputAndroid: {
+    // Copied code of docs
+    // TODO: Make styles responsive to androids
+    fontSize: 16,
+    justifyContent: "center",
+    textAlign: "center",
+    paddingHorizontal: 10,
+    paddingVertical: 8,
+    borderWidth: 0.5,
+    color: "#000000",
+  },
+});
 
 const mapStateToProps = (state) => ({
   displayName: state.auth.user.displayName,

@@ -6,6 +6,7 @@ export const ADD_HELP = "ADD_HELP";
 export const FETCH_RECIPE_LIST = "FETCH_RECIPE_LIST";
 export const FETCH_RECIPE_LIST_SUCCESS = "FETCH_RECIPE_LIST_SUCCESS";
 export const FETCH_RECIPE_LIST_ERROR = "FETCH_RECIPE_LIST_ERROR";
+export const STORE_RDA = "STORE_RDA";
 
 // Auth Action Types
 export const FETCH_USER = "FETCH_USER";
