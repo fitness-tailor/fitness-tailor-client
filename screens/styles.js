@@ -75,7 +75,8 @@ module.exports = StyleSheet.create({
     // flexDirection: 'column',
     marginTop: "20%",
     // backgroundColor: 'red',
-    alignItems: 'center',
+    // alignItems: 'center',
+    marginLeft: "20%",
     justifyContent: 'space-evenly',
   },
   userInputProfile: {

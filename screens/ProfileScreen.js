@@ -86,12 +86,10 @@ const ProfileScreen = (props) => {
   return (
     <SafeAreaView style={styles.containerProfile}>
       <Text>
-        Hello {props.displayName}, please enter your height and weight.
+        Hello <Text style={{"fontSize": "25",}}>{props.displayName}</Text>, {"\n"}
+        please enter your height and weight.{"\n"}
+        <Text style={{"fontSize": "20",}}>Your BMI is {bmi}</Text>
       </Text>
-      <Text>
-        Your BMI is {bmi}
-      </Text>
-
       <View style={styles.userInputProfile}>
 
         <View style={styles.userGenderProfile}>
