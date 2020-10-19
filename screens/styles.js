@@ -72,20 +72,27 @@ module.exports = StyleSheet.create({
   // ==================================
   containerProfile: {
     flex: 1,
-    flexDirection: 'column',
+    // flexDirection: 'column',
+    marginTop: "20%",
+    // backgroundColor: 'red',
     alignItems: 'center',
-    justifyContent: 'center',
-  },
-  userHeightProfile: {
-    flex: 1,
-    flexDirection: 'row',
+    justifyContent: 'space-evenly',
   },
   userInputProfile: {
-  marginTop: "5%",
-  width: "40%",
+    // backgroundColor: 'blue',
+    width: "70%",
+  },
+  userGenderProfile: {
+    // backgroundColor: 'green',
+    height: "20%",
+  },
+  userHeightProfile: {
+    // backgroundColor: 'purple',
+    height: "30%",
   },
   userWeightProfile: {
-    marginTop: "5%",
+    // backgroundColor: 'grey',
+    height: "20%",
   },
   // ==================================
   // Recipe List Screen
