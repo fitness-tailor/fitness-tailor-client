@@ -96,7 +96,7 @@ const ProfileScreen = (props) => {
           <Text style={{"fontSize": "25",}}>Gender</Text>
           <RNPickerSelect
             selectedValue={gender}
-            style={pickerStyles}
+            // style={pickerStyles}
             items={genderList}
             onValueChange={(itemValue) => setGender(itemValue)}
           />
@@ -125,31 +125,31 @@ const ProfileScreen = (props) => {
   );
 };
 
-const pickerStyles = StyleSheet.create({
-  inputIOS: {
-    // justifyContent: "center/",
-    // textAlign: "center",
-    // paddingHorizontal: 4,
-    // paddingVertical: 4,
-    // marginTop: 2,
-    // marginHorizontal: "10%",
-    // width: "80%",
-    // borderWidth: 0.5,
-    // fontSize: 16,
-    // color: "#000000",
-  },
-  inputAndroid: {
-    // Copied code of docs
-    // TODO: Make styles responsive to androids
-    fontSize: 16,
-    justifyContent: "center",
-    textAlign: "center",
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderWidth: 0.5,
-    color: "#000000",
-  },
-});
+// const pickerStyles = StyleSheet.create({
+//   inputIOS: {
+//     // justifyContent: "center/",
+//     // textAlign: "center",
+//     // paddingHorizontal: 4,
+//     // paddingVertical: 4,
+//     // marginTop: 2,
+//     // marginHorizontal: "10%",
+//     // width: "80%",
+//     // borderWidth: 0.5,
+//     // fontSize: 16,
+//     // color: "#000000",
+//   },
+//   inputAndroid: {
+//     // Copied code of docs
+//     // TODO: Make styles responsive to androids
+//     // fontSize: 16,
+//     // justifyContent: "center",
+//     // textAlign: "center",
+//     // paddingHorizontal: 10,
+//     // paddingVertical: 8,
+//     // borderWidth: 0.5,
+//     // color: "#000000",
+//   },
+// });
 
 const mapStateToProps = (state) => ({
   displayName: state.auth.user.displayName,
