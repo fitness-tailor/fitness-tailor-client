@@ -51,6 +51,7 @@ const mapStateToProps = (state) => ({
   isLoading: state.recipeList.isLoading,
   recipes: state.recipeList.recipes,
   error: state.recipeList.error,
+  RDA: state.recipeList.RDA,
 });
 
 export default connect(mapStateToProps, null)(RecipeListScreen);

@@ -27,7 +27,6 @@ const fetchUserAuthError = () => {
 };
 
 const storeGender = (gender) => {
-  console.log(gender);
   return {
     type: STORE_GENDER,
     payload: gender,

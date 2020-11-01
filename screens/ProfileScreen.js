@@ -12,6 +12,8 @@ import {
 } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import { connect } from "react-redux";
+import { getUserAuth } from "../redux/actions/authActions.js";
+import { storeRDA } from "../redux/actions/recipeListActions.js";
 import firebase from "firebase";
 import styles from "./styles.js";
 
@@ -90,6 +92,9 @@ const ProfileScreen = (props) => {
               BMI: bmi,
             });
         });
+      // to refresh gender on update
+      props.fetchUser(props.displayName);
+      props.fetchRDA(props.gender);
     }
   };
 
@@ -180,4 +185,11 @@ const mapStateToProps = (state) => ({
   displayName: state.auth.user.displayName,
 });
 
-export default connect(mapStateToProps, null)(ProfileScreen);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchUser: (name) => dispatch(getUserAuth(name)),
+    fetchRDA: (gender) => dispatch(storeRDA(gender)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen);
