@@ -27,7 +27,7 @@ function MainNavigator() {
               iconName = "md-search";
               break;
             case "Profile":
-              iconName = "md-person";
+              iconName = "ios-contact";
               break;
             // case "Playground":
             //   iconName = "md-happy";

@@ -107,46 +107,37 @@ const ProfileScreen = (props) => {
   return (
     <SafeAreaView style={styles.containerProfile}>
       <Text>
-        Hello {props.displayName}, please enter your height and weight.
+        Hello <Text style={{"fontSize": "25",}}>{props.displayName}</Text>, {"\n"}
+        please enter your height and weight.{"\n"}
+        <Text style={{"fontSize": "20",}}>Your BMI is {bmi}</Text>
       </Text>
-      <Text>Your BMI is {bmi}</Text>
       <View style={styles.userInputProfile}>
-        <RNPickerSelect
-          selectedValue={gender}
-          style={pickerStyles}
-          items={genderList}
-          onValueChange={(itemValue) => setGender(itemValue)}
-        />
 
-        <View styles={styles.userHeightProfile}>
-          <TextInput
-            placeholder="Feet"
-            keyboardType={"numeric"}
-            style={styles.userInput}
-            value={heightFeet}
-            onChangeText={(text) => setHeightFeet(text)}
+        <View style={styles.userGenderProfile}>
+          <Text style={{"fontSize": "25",}}>Gender</Text>
+          <RNPickerSelect
+            selectedValue={gender}
+            // style={pickerStyles}
+            items={genderList}
+            onValueChange={(itemValue) => setGender(itemValue)}
           />
-          <Text>Feet</Text>
         </View>
-        <View styles={styles.userHeightProfile}>
-          <TextInput
-            placeholder="Inches"
-            keyboardType={"numeric"}
-            style={styles.userInput}
-            value={heightInch}
-            onChangeText={(text) => setHeightInch(text)}
-          />
+
+        <View style={styles.userHeightProfile}>
+          <Text style={{"fontSize": "25",}} >Height</Text>
+          <TextInput placeholder='Feet' keyboardType={'numeric'} style={styles.userInput} value={heightFeet} onChangeText={text => setHeightFeet(text)} />
+          <Text>Feet</Text>
+          <TextInput placeholder='Inches' keyboardType={'numeric'} style={styles.userInput} value={heightInch} onChangeText={text => setHeightInch(text)} />
           <Text>Inches</Text>
         </View>
 
+        {/* <View styles={styles.userHeightProfile}> */}
+        {/* </View> */}
         <View style={styles.userWeightProfile}>
-          <TextInput
-            placeholder="Weight"
-            keyboardType={"numeric"}
-            value={weight}
-            onChangeText={(text) => setWeight(text)}
-          />
-          <Text>lbs</Text>
+          <Text style={{"fontSize": "25",}}>
+            Weight
+          </Text>
+          <TextInput placeholder='Weight' keyboardType={'numeric'} value={weight} onChangeText={text => setWeight(text)} /><Text>lbs</Text>
         </View>
 
         <Button title="Done" onPress={updateUserInfo} />
@@ -155,31 +146,31 @@ const ProfileScreen = (props) => {
   );
 };
 
-const pickerStyles = StyleSheet.create({
-  inputIOS: {
-    justifyContent: "center",
-    textAlign: "center",
-    paddingHorizontal: 4,
-    paddingVertical: 4,
-    marginTop: 2,
-    marginHorizontal: "10%",
-    width: "80%",
-    borderWidth: 0.5,
-    fontSize: 16,
-    color: "#000000",
-  },
-  inputAndroid: {
-    // Copied code of docs
-    // TODO: Make styles responsive to androids
-    fontSize: 16,
-    justifyContent: "center",
-    textAlign: "center",
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderWidth: 0.5,
-    color: "#000000",
-  },
-});
+// const pickerStyles = StyleSheet.create({
+//   inputIOS: {
+//     // justifyContent: "center/",
+//     // textAlign: "center",
+//     // paddingHorizontal: 4,
+//     // paddingVertical: 4,
+//     // marginTop: 2,
+//     // marginHorizontal: "10%",
+//     // width: "80%",
+//     // borderWidth: 0.5,
+//     // fontSize: 16,
+//     // color: "#000000",
+//   },
+//   inputAndroid: {
+//     // Copied code of docs
+//     // TODO: Make styles responsive to androids
+//     // fontSize: 16,
+//     // justifyContent: "center",
+//     // textAlign: "center",
+//     // paddingHorizontal: 10,
+//     // paddingVertical: 8,
+//     // borderWidth: 0.5,
+//     // color: "#000000",
+//   },
+// });
 
 const mapStateToProps = (state) => ({
   displayName: state.auth.user.displayName,
