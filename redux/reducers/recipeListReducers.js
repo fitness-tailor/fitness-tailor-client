@@ -5,9 +5,6 @@ let recipeListState = {
   RDA: null,
 };
 
-// if ((action.type = "FETCH_RECIPE_LIST"));
-// if ((action.type = "FETCH_RECIPE_LIST_SUCCESS"));
-
 const recipeListReducers = (state = recipeListState, action) => {
   switch (action.type) {
     // While get request is sent to recipe search api

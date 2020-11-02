@@ -1,52 +1,46 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import firebase from "firebase";
 import { StyleSheet, Text, View, SafeAreaView, Button } from "react-native";
-import { getUser } from "../redux/actions/authActions.js";
+import { getUserAuth } from "../redux/actions/authActions.js";
 import { storeRDA } from "../redux/actions/recipeListActions.js";
 import styles from "./styles.js";
 
-class HomeScreen extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+const HomeScreen = (props) => {
+  useEffect(() => {
+    props.fetchUser(props.user.displayName);
+    props.fetchRDA(props.gender);
+  }, [props.user.displayName, props.gender]);
 
-  componentDidMount() {
-    this.props.fetchUser();
-    this.props.fetchRDA("male");
-  }
-
-  render() {
-    return (
-      <SafeAreaView style={{ flex: 1 }}>
-        <View style={styles.containerHome}>
-          <Text>{this.props.user.displayName}</Text>
-          <Text>{this.props.user.email}</Text>
-          <Button
-            title="Log Off"
-            onPress={() => {
-              firebase.auth().signOut();
-            }}
-          />
-        </View>
-      </SafeAreaView>
-    );
-  }
-}
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      <View style={styles.containerHome}>
+        <Text>{props.user.displayName}</Text>
+        <Text>{props.user.email}</Text>
+        <Button
+          title="Log Off"
+          onPress={() => {
+            firebase.auth().signOut();
+          }}
+        />
+      </View>
+    </SafeAreaView>
+  );
+};
 
 const mapStateToProps = (state) => ({
   isLoading: state.auth.isLoading,
   user: state.auth.user,
   error: state.auth.error,
+  gender: state.auth.gender,
+  RDA: state.recipeList.RDA,
 });
 
-function mapDispatchToProps(dispatch) {
+const mapDispatchToProps = (dispatch) => {
   return {
-    fetchUser: () => dispatch(getUser()),
-    // Fetching RDA is hardcoded as male
-    // TODO: make function accept user's gender
+    fetchUser: (name) => dispatch(getUserAuth(name)),
     fetchRDA: (gender) => dispatch(storeRDA(gender)),
   };
-}
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);

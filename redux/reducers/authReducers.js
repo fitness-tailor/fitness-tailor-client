@@ -2,26 +2,33 @@ let initialState = {
   isLoading: false,
   error: "",
   user: {},
+  gender: "",
 };
 
 const authReducers = (state = initialState, action) => {
   switch (action.type) {
-    case "FETCH_USER":
+    case "FETCH_USER_AUTH":
       return {
         ...state,
         isLoading: true,
       };
-    case "FETCH_USER_SUCCESS":
+    case "FETCH_USER_AUTH_SUCCESS":
       return {
         ...state,
         isLoading: false,
         user: action.payload,
       };
-    case "FETCH_USER_ERROR":
+    case "FETCH_USER_AUTH_ERROR":
       return {
         ...state,
         isLoading: false,
         error: action.payload,
+      };
+
+    case "STORE_GENDER":
+      return {
+        ...state,
+        gender: action.payload,
       };
 
     default:

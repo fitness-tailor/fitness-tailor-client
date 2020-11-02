@@ -1,4 +1,3 @@
-// import { createBottomTabNavigator } from "react-navigation";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
@@ -30,9 +29,9 @@ function MainNavigator() {
             case "Profile":
               iconName = "ios-contact";
               break;
-            case "Playground":
-              iconName = "md-happy";
-              break;
+            // case "Playground":
+            //   iconName = "md-happy";
+            //   break;
           }
 
           // You can return any component that you like here!
@@ -51,19 +50,9 @@ function MainNavigator() {
       <Tab.Screen name="Nutrition" component={NutritionScreen} />
       <Tab.Screen name="Recipe List" component={RecipeListScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
-      <Tab.Screen name="Playground" component={ReduxPlayground} />
+      {/* <Tab.Screen name="Playground" component={ReduxPlayground} /> */}
     </Tab.Navigator>
   );
 }
-
-// const MainNavigator = createBottomTabNavigator(
-//   {
-//     Home: { screen: HomeScreen },
-//     Nutrition: { screen: NutritionScreen },
-//     RecipeList: { screen: RecipeListScreen },
-//     Playground: { screen: ReduxPlayground },
-//   },
-//   { initialRouteName: "Home" }
-// );
 
 export default MainNavigator;

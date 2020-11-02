@@ -1,34 +1,64 @@
-import { FETCH_USER, FETCH_USER_SUCCESS, FETCH_USER_ERROR } from "./actionTypes.js";
+import {
+  FETCH_USER_AUTH,
+  FETCH_USER_AUTH_SUCCESS,
+  FETCH_USER_AUTH_ERROR,
+  STORE_GENDER,
+} from "./actionTypes.js";
 import firebase from "firebase";
 
-const fetchUser = () => {
+const fetchUserAuth = () => {
   return {
-    type: FETCH_USER,
+    type: FETCH_USER_AUTH,
   };
 };
-const fetchUserSuccess = (user) => {
+
+const fetchUserAuthSuccess = (user) => {
   return {
-    type: FETCH_USER_SUCCESS,
+    type: FETCH_USER_AUTH_SUCCESS,
     payload: user,
   };
 };
-const fetchUserError = () => {
+
+const fetchUserAuthError = () => {
   return {
-    type: FETCH_USER_ERROR,
+    type: FETCH_USER_AUTH_ERROR,
     payload: "Sign In!",
   };
 };
 
-export const getUser = () => {
+const storeGender = (gender) => {
+  return {
+    type: STORE_GENDER,
+    payload: gender,
+  };
+};
+
+const fetchGender = (name) => {
   return (dispatch) => {
-    dispatch(fetchUser());
+    firebase
+      .database()
+      .ref(`users/${name}`)
+      .once("value")
+      .then(function (snapshot) {
+        dispatch(storeGender(snapshot.val().gender));
+      });
+  };
+};
+
+export const getUserAuth = (name) => {
+  return (dispatch) => {
+    dispatch(fetchUserAuth());
+
+    if (name && typeof name === "string") {
+      dispatch(fetchGender(name));
+    }
+
     firebase.auth().onAuthStateChanged((user) => {
       if (user != null) {
-        dispatch(fetchUserSuccess(user));
+        dispatch(fetchUserAuthSuccess(user));
       } else {
-        dispatch(fetchUserError());
+        dispatch(fetchUserAuthError());
       }
     });
-  }
-}
-
+  };
+};

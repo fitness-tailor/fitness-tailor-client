@@ -12,75 +12,96 @@ import {
 } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import { connect } from "react-redux";
-import firebase from 'firebase';
+import { getUserAuth } from "../redux/actions/authActions.js";
+import { storeRDA } from "../redux/actions/recipeListActions.js";
+import firebase from "firebase";
 import styles from "./styles.js";
 
 const ProfileScreen = (props) => {
-    const [heightFeet, setHeightFeet] = useState('');
-    const [heightInch, setHeightInch] = useState('');
-    const [weight, setWeight] = useState('');
-    const [bmi, setBMI] = useState('');
-    const [gender, setGender] = useState('');
+  const [heightFeet, setHeightFeet] = useState("");
+  const [heightInch, setHeightInch] = useState("");
+  const [weight, setWeight] = useState("");
+  const [bmi, setBMI] = useState("");
+  const [gender, setGender] = useState("");
 
   useEffect(() => {
-    firebase.database().ref('users/' + props.displayName)
-    .on('value', function(snapshot) {
-      if(snapshot.val() === null) {
-        setHeightFeet('0');
-        setHeightInch('0');
-        setWeight('0');
-        setGender('0');
-        setBMI('0');
-      } else {
-        setHeightFeet(snapshot.val().heightFeet);
-        setHeightInch(snapshot.val().heightInch);
-        setWeight(snapshot.val().weight);
-        setGender(snapshot.val().gender);
-        setBMI(snapshot.val().BMI);
-      }
-    });
+    firebase
+      .database()
+      .ref("users/" + props.displayName)
+      .on("value", function (snapshot) {
+        if (snapshot.val() === null) {
+          setHeightFeet("0");
+          setHeightInch("0");
+          setWeight("0");
+          setGender("0");
+          setBMI("0");
+        } else {
+          setHeightFeet(snapshot.val().heightFeet);
+          setHeightInch(snapshot.val().heightInch);
+          setWeight(snapshot.val().weight);
+          setGender(snapshot.val().gender);
+          setBMI(snapshot.val().BMI);
+        }
+      });
   }, []);
 
   const numbersOnly = (input) => {
-    let numbers = '1234567890';
+    let numbers = "1234567890";
     for (var i = 0; i < input.length; i++) {
-      if(numbers.indexOf(input[i]) === -1) {
+      if (numbers.indexOf(input[i]) === -1) {
         return false;
       }
     }
   };
 
   const updateUserInfo = () => {
-    if(heightFeet.length === 0 || heightInch.length === 0 || weight.length === 0) {
-      Alert.alert(
-        "Please enter all information"
-      )
-    } else if (numbersOnly(heightFeet) === false || numbersOnly(heightInch) === false || numbersOnly(weight) === false ) {
-      Alert.alert(
-        "Please enter only numbers"
-      )
+    if (
+      heightFeet.length === 0 ||
+      heightInch.length === 0 ||
+      weight.length === 0
+    ) {
+      Alert.alert("Please enter all information");
+    } else if (
+      numbersOnly(heightFeet) === false ||
+      numbersOnly(heightInch) === false ||
+      numbersOnly(weight) === false
+    ) {
+      Alert.alert("Please enter only numbers");
     } else {
-      firebase.database().ref('users/' + props.displayName).update({
-        weight: weight,
-        heightFeet: heightFeet,
-        heightInch: heightInch,
-        gender: gender,
-      })
-      .then(() => {
-        let userInchSquared = Math.pow((parseInt(heightFeet)*12) + parseInt(heightInch), 2)
-        let userLbs = parseInt(weight);
-        let BMI = ((userLbs/(userInchSquared))*703);
-        setBMI(BMI.toFixed(2));
-        firebase.database().ref('users/' + props.displayName).update({
-          BMI: bmi,
+      firebase
+        .database()
+        .ref("users/" + props.displayName)
+        .update({
+          weight: weight,
+          heightFeet: heightFeet,
+          heightInch: heightInch,
+          gender: gender,
         })
-      })
+        .then(() => {
+          let userInchSquared = Math.pow(
+            parseInt(heightFeet) * 12 + parseInt(heightInch),
+            2
+          );
+          let userLbs = parseInt(weight);
+          let BMI = (userLbs / userInchSquared) * 703;
+          setBMI(BMI.toFixed(2));
+          firebase
+            .database()
+            .ref("users/" + props.displayName)
+            .update({
+              BMI: bmi,
+            });
+        });
+      // to refresh gender on update
+      props.fetchUser(props.displayName);
+      props.fetchRDA(props.gender);
     }
   };
 
-    const genderList = [
+  const genderList = [
     { label: "Male", value: "male" },
-    { label: "Female", value: "female" }
+    { label: "Female", value: "female" },
+    { label: "Non-Binary", value: "non-binary" },
   ];
 
   return (
@@ -155,4 +176,11 @@ const mapStateToProps = (state) => ({
   displayName: state.auth.user.displayName,
 });
 
-export default connect(mapStateToProps, null)(ProfileScreen);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    fetchUser: (name) => dispatch(getUserAuth(name)),
+    fetchRDA: (gender) => dispatch(storeRDA(gender)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProfileScreen);
