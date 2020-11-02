@@ -20,32 +20,25 @@ import RowData from "./RowData.js";
 const RecipeCard = ({ recipe, RDA }) => {
   const [name, setName] = useState(recipe.description);
   const [totalNutrients, setTotalNutrients] = useState({});
-  const [isEditing, setIsEditing] = useState(false);
-  const [servingSize, setServingSize] = useState(null);
-  const [servingUnit, setServingUnit] = useState(null);
-  const [gender, setGender] = useState("");
+  const [isEditingServeSize, setIsEditingServeSize] = useState(false);
+  const [servingSize, setServingSize] = useState(100);
+  const [servingUnit, setServingUnit] = useState("g");
 
-  const [calendar, setCalendar] = useState({
-    month: null,
-    date: null,
-    year: null,
+  const [currentDate, setCurrentDate] = useState({
+    month: new Date().getMonth() + 1,
+    date: new Date().getDate(),
+    year: String(new Date().getFullYear()).substring(2),
   });
-  let { month, date, year } = calendar;
+  let { month, date, year } = currentDate;
 
-  // handles parsing nutririon object
   useEffect(() => {
+    // Handle nutrition parsing and calendar set-up
     let nutritionData = parseNutritionData(recipe.foodNutrients);
     setTotalNutrients(nutritionData);
   }, []);
 
-  // handles calendar display
-  useEffect(() => {
-    let [month, date, year] = new Date().toLocaleDateString().split("/");
-    year = year.substring(2);
-    setCalendar({ month, date, year });
-  }, []);
-
   const addToJournal = () => {
+    // console.log(`${month}/${date}/${year}`);
     firebase
       .database()
       .ref("users/" + props.displayName)
@@ -56,20 +49,17 @@ const RecipeCard = ({ recipe, RDA }) => {
 
   const parseNutritionData = (nutritionArray) => {
     let parsedObject = {
-      SERVING_SIZE: {
-        value: 100,
-        unit: "g",
-      },
-      CALORIES: {},
-      TOTAL_FAT: {},
-      SAT_FAT: {},
-      TRANS_FAT: {},
-      CHOLESTEROL: {},
-      SODIUM: {},
-      CARBS: {},
-      FIBER: {},
-      TOTAL_SUGAR: {},
-      PROTEIN: {},
+      SERVING_SIZE: { value: 100, unit: "g" },
+      CALORIES: { value: null },
+      TOTAL_FAT: { value: null, unit: null },
+      SAT_FAT: { value: null, unit: null },
+      TRANS_FAT: { value: null, unit: null },
+      CHOLESTEROL: { value: null, unit: null },
+      SODIUM: { value: null, unit: null },
+      CARBS: { value: null, unit: null },
+      FIBER: { value: null, unit: null },
+      TOTAL_SUGAR: { value: null, unit: null },
+      PROTEIN: { value: null, unit: null },
     };
 
     let {
@@ -132,7 +122,6 @@ const RecipeCard = ({ recipe, RDA }) => {
     }
 
     addPercentagesKey(parsedObject);
-
     return parsedObject;
   };
 
@@ -149,15 +138,12 @@ const RecipeCard = ({ recipe, RDA }) => {
 
   const handleServingSize = (size, unit) => {
     // changes value inside parsed nutrition object
-    handleDailyValues(size, unit);
+    changePercentageOnConversion(size, unit);
     totalNutrients.SERVING_SIZE.value = size;
     totalNutrients.SERVING_SIZE.unit = unit;
-    // resets state values
-    setServingSize(null);
-    setServingUnit(null);
   };
 
-  const handleDailyValues = (size, convertUnits) => {
+  const changePercentageOnConversion = (size, convertUnits) => {
     let { value, unit } = totalNutrients.SERVING_SIZE;
 
     let newValues = convert(size).from(convertUnits).to("g");
@@ -165,7 +151,7 @@ const RecipeCard = ({ recipe, RDA }) => {
     let factor = newValues / previousValues;
 
     for (let key in totalNutrients) {
-      if (!totalNutrients[key].value) {
+      if (!totalNutrients[key].value && totalNutrients[key].value === 0) {
         continue;
       } else {
         totalNutrients[key].value *= factor;
@@ -187,25 +173,20 @@ const RecipeCard = ({ recipe, RDA }) => {
 
   const toggleEditing = () => {
     // Don't submit data if input fields are empty
-    if (isEditing && (!servingUnit || !servingSize)) {
+    if (isEditingServeSize && (!servingUnit || !servingSize)) {
       checkForEmptyInputs();
       return;
-    } else if (isEditing) {
+    } else if (isEditingServeSize) {
       handleServingSize(servingSize, servingUnit);
     }
 
-    setIsEditing(!isEditing);
+    setIsEditingServeSize(!isEditingServeSize);
   };
 
   const unitList = [
     { label: "g", value: "g" },
     { label: "oz", value: "oz" },
   ];
-
-  const placeholderForPicker = {
-    label: "Select unit",
-    value: null,
-  };
 
   // only render if nutrients is not an empty object
   return JSON.stringify(totalNutrients) === "{}" ? null : (
@@ -220,6 +201,7 @@ const RecipeCard = ({ recipe, RDA }) => {
                 fontSize: 24,
                 textAlign: "center",
                 paddingVertical: 4,
+                paddingHorizontal: 10,
               },
             ]}
           >
@@ -227,7 +209,7 @@ const RecipeCard = ({ recipe, RDA }) => {
           </Text>
         </View>
 
-        <View style={{ width: "100%" }}>
+        <View style={{ width: "100%", backgroundColor: "#E9DFF6" }}>
           <RowTitle />
 
           <RowData
@@ -315,40 +297,44 @@ const RecipeCard = ({ recipe, RDA }) => {
               activeOpacity="0.5"
             >
               <Text style={styles.buttonText}>
-                {!isEditing ? "Convert" : "Done?"}
+                {!isEditingServeSize ? "Convert" : "Done?"}
               </Text>
             </TouchableOpacity>
 
             <View style={styles.editDisplay}>
-              {!isEditing && (
-                <Text style={styles.buttonText}>Serving Size</Text>
-              )}
+              <Text style={styles.buttonText}>Serving Size</Text>
 
-              {!isEditing && (
+              {!isEditingServeSize && (
                 <Text
-                  style={[styles.buttonText, { marginTop: 5, marginBottom: 3 }]}
+                  style={[styles.buttonText, { fontSize: 22 }]}
                 >{`${totalNutrients.SERVING_SIZE.value} ${totalNutrients.SERVING_SIZE.unit}`}</Text>
               )}
 
-              {isEditing && (
-                <TextInput
-                  style={styles.servingValueBox}
-                  value={servingSize}
-                  placeholder={"Set Yield"}
-                  placeholderTextColor="#696969"
-                  keyboardType={"numeric"}
-                  onChangeText={(val) => setServingSize(val)}
-                />
-              )}
-
-              {isEditing && (
-                <RNPickerSelect
-                  selectedValue={servingUnit}
-                  placeholder={placeholderForPicker}
-                  style={pickerStyles}
-                  onValueChange={(unit) => setServingUnit(unit)}
-                  items={unitList}
-                />
+              {isEditingServeSize && (
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "75%",
+                  }}
+                >
+                  <TextInput
+                    style={styles.servingInputBox}
+                    value={servingSize}
+                    placeholder={`${servingSize}`}
+                    placeholderTextColor="#696969"
+                    keyboardType={"numeric"}
+                    onChangeText={(val) => setServingSize(val)}
+                  />
+                  <RNPickerSelect
+                    selectedValue={servingUnit}
+                    placeholder={{}}
+                    style={pickerStyles}
+                    onValueChange={(unit) => setServingUnit(unit)}
+                    items={unitList}
+                  />
+                </View>
               )}
             </View>
           </View>
@@ -364,9 +350,51 @@ const RecipeCard = ({ recipe, RDA }) => {
 
             <View style={styles.editDisplay}>
               <Text style={styles.buttonText}>Date</Text>
-              <Text
-                style={[styles.buttonText, { marginTop: 5, marginBottom: 3 }]}
-              >{`${month}/${date}/${year}`}</Text>
+
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  width: "75%",
+                }}
+              >
+                <TextInput
+                  style={styles.dateInputBox}
+                  value={month}
+                  placeholder={`${month}`}
+                  placeholderTextColor="#000000"
+                  keyboardType={"numeric"}
+                  maxLength={2}
+                  onChangeText={(val) =>
+                    setCurrentDate({ month: val, date, year })
+                  }
+                />
+                <Text style={{ fontSize: 24 }}>/</Text>
+                <TextInput
+                  style={styles.dateInputBox}
+                  value={date}
+                  placeholder={`${date}`}
+                  placeholderTextColor="#000000"
+                  keyboardType={"numeric"}
+                  maxLength={2}
+                  onChangeText={(val) =>
+                    setCurrentDate({ month, date: val, year })
+                  }
+                />
+                <Text style={{ fontSize: 24 }}>/</Text>
+                <TextInput
+                  style={styles.dateInputBox}
+                  value={year}
+                  placeholder={`${year}`}
+                  placeholderTextColor="#000000"
+                  keyboardType={"numeric"}
+                  maxLength={2}
+                  onChangeText={(val) =>
+                    setCurrentDate({ month, date, year: val })
+                  }
+                />
+              </View>
             </View>
           </View>
         </View>
@@ -396,6 +424,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     borderWidth: 1,
     borderRadius: 10,
+    backgroundColor: "#C8E8C4",
   },
   recipeContainer: {
     alignItems: "center",
@@ -452,7 +481,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     marginTop: "3%",
     marginBottom: "5%",
-    height: 130,
   },
   oneButtonContainer: {
     flex: 1,
@@ -469,18 +497,22 @@ const styles = StyleSheet.create({
   editDisplay: {
     display: "flex",
     marginTop: 5,
-    justifyContent: "center",
+    justifyContent: "space-around",
+    height: 70,
+    alignItems: "center",
   },
-  servingValueBox: {
-    justifyContent: "center",
-    textAlign: "center",
-    paddingVertical: 4,
-    marginVertical: 4,
-    marginHorizontal: "10%",
-    width: "80%",
-    fontSize: 16,
+  servingInputBox: {
     borderWidth: 1,
+    borderColor: "#F086A3",
+    textAlign: "center",
+    marginHorizontal: 4,
+    padding: 4,
+    fontSize: 22,
+    width: 90,
   },
+  // ==========
+  // Date Buttons
+  // ==========
   addButton: {
     padding: "4%",
     margin: "5%",
@@ -489,37 +521,43 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 10,
   },
+  dateInputBox: {
+    borderWidth: 1,
+    borderColor: "#F086A3",
+    textAlign: "center",
+    marginHorizontal: 4,
+    padding: 4,
+    fontSize: 22,
+    width: 40,
+  },
   buttonText: {
     textAlign: "center",
     fontFamily: "Menlo",
     fontWeight: "bold",
-    fontSize: 18,
+    fontSize: 20,
     color: "#000000",
   },
 });
 
 const pickerStyles = StyleSheet.create({
   inputIOS: {
-    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#F086A3",
     textAlign: "center",
-    paddingHorizontal: 4,
-    paddingVertical: 4,
-    marginTop: 2,
-    marginHorizontal: "10%",
-    width: "80%",
-    borderWidth: 0.5,
-    fontSize: 16,
-    color: "#000000",
+    marginHorizontal: 4,
+    padding: 4,
+    fontSize: 22,
+    width: 50,
   },
   inputAndroid: {
     // Copied code of docs
     // TODO: Make styles responsive to androids
-    fontSize: 16,
-    justifyContent: "center",
+    borderWidth: 1,
+    borderColor: "#F086A3",
     textAlign: "center",
-    paddingHorizontal: 10,
-    paddingVertical: 8,
-    borderWidth: 0.5,
-    color: "#000000",
+    marginHorizontal: 4,
+    padding: 4,
+    fontSize: 22,
+    width: 40,
   },
 });
