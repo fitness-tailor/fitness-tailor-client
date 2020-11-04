@@ -78,7 +78,7 @@ class SignInScreen extends React.Component {
         <SafeAreaView style={{ flex: 1 }}>
           <KeyboardAvoidingView style={styles.containerSignIn}>
             <Text style={{ fontSize: 32, fontWeight: "700", color: "black" }}>
-              Fitness Tailor
+              Nutrific
             </Text>
             <View style={styles.formSignIn}>
               <TextInput
