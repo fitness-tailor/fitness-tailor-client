@@ -75,15 +75,15 @@ class SignInScreen extends React.Component {
           Keyboard.dismiss();
         }}
       >
-        <SafeAreaView style={{ flex: 1 }}>
-          <KeyboardAvoidingView style={styles.containerSignIn}>
-            <Text style={{ fontSize: 32, fontWeight: "700", color: "black" }}>
-              Nutrific
+        <SafeAreaView style={styles.containerSignIn}>
+          <KeyboardAvoidingView style={styles.SignIn}>
+            <Text style= {styles.title}>
+              NUTRIFIC
             </Text>
             <View style={styles.formSignIn}>
               <TextInput
                 style={styles.inputSignIn}
-                placeholder="Email"
+                placeholder="E-mail Address"
                 autoCapitalize="none"
                 placeholderTextColor="#B1B1B1"
                 returnKeyType="next"
@@ -103,7 +103,7 @@ class SignInScreen extends React.Component {
                 value={this.state.password}
                 onChangeText={(password) => this.setState({ password })}
               />
-            </View>
+
             {this.renderLoading()}
             <Text
               style={{
@@ -115,25 +115,26 @@ class SignInScreen extends React.Component {
             >
               {this.state.error}
             </Text>
+
             <TouchableOpacity
-              style={{ width: "85%", marginTop: 10 }}
+              style={styles.signInButton}
               onPress={() => this.signInWithEmail()}
             >
-              <Text>Sign In</Text>
+              <Text style = {{ fontWeight: "500", fontSize: 20, color: "white" }}>Sign In</Text>
             </TouchableOpacity>
-            <View style={{ marginTop: 10 }}>
+            </View>
+
+            <View >
               <Text
-                style={{ fontWeight: "200", fontSize: 17, textAlign: "center" }}
+                style={{ fontWeight: "200", fontSize: 17, textAlign: "center", color: "white", margin: 20}}
                 onPress={() => {
                   this.props.navigation.navigate("SignUp");
                 }}
               >
                 Don't have an Account?
               </Text>
-            </View>
-            <View style={{ marginTop: 10 }}>
               <Text
-                style={{ fontWeight: "200", fontSize: 17, textAlign: "center" }}
+                style={{ fontWeight: "200", fontSize: 17, textAlign: "center", color: "white" }}
                 onPress={() => {
                   this.forgotPassword();
                 }}
@@ -141,6 +142,7 @@ class SignInScreen extends React.Component {
                 Forgot Password?
               </Text>
             </View>
+
           </KeyboardAvoidingView>
         </SafeAreaView>
       </TouchableWithoutFeedback>
