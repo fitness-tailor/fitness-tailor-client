@@ -29,7 +29,7 @@ const firebaseConfig = {
   authDomain: "fitness-tailor.firebaseapp.com",
   databaseURL: "https://fitness-tailor.firebaseio.com",
   projectId: "fitness-tailor",
-  storageBucket: "fitness-tailor.appspot.com",
+  storageBucket: "gs://fitness-tailor.appspot.com/",
   messagingSenderId: "822343603827",
   appId: "1:822343603827:web:76a6256a0fa23496913c06",
   measurementId: "G-48BDZ94KZ2",

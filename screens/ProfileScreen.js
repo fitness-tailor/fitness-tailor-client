@@ -107,14 +107,13 @@ const ProfileScreen = (props) => {
   return (
     <SafeAreaView style={styles.containerProfile}>
       <Text>
-        Hello <Text style={{"fontSize": "25",}}>{props.displayName}</Text>, {"\n"}
+        Hello <Text style={{ fontSize: 25 }}>{props.displayName}</Text>, {"\n"}
         please enter your height and weight.{"\n"}
-        <Text style={{"fontSize": "20",}}>Your BMI is {bmi}</Text>
+        <Text style={{ fontSize: 20 }}>Your BMI is {bmi}</Text>
       </Text>
       <View style={styles.userInputProfile}>
-
         <View style={styles.userGenderProfile}>
-          <Text style={{"fontSize": "25",}}>Gender</Text>
+          <Text style={{ fontSize: 25 }}>Gender</Text>
           <RNPickerSelect
             selectedValue={gender}
             // style={pickerStyles}
@@ -124,20 +123,36 @@ const ProfileScreen = (props) => {
         </View>
 
         <View style={styles.userHeightProfile}>
-          <Text style={{"fontSize": "25",}} >Height</Text>
-          <TextInput placeholder='Feet' keyboardType={'numeric'} style={styles.userInput} value={heightFeet} onChangeText={text => setHeightFeet(text)} />
+          <Text style={{ fontSize: 25 }}>Height</Text>
+          <TextInput
+            placeholder="Feet"
+            keyboardType={"numeric"}
+            style={styles.userInput}
+            value={heightFeet}
+            onChangeText={(text) => setHeightFeet(text)}
+          />
           <Text>Feet</Text>
-          <TextInput placeholder='Inches' keyboardType={'numeric'} style={styles.userInput} value={heightInch} onChangeText={text => setHeightInch(text)} />
+          <TextInput
+            placeholder="Inches"
+            keyboardType={"numeric"}
+            style={styles.userInput}
+            value={heightInch}
+            onChangeText={(text) => setHeightInch(text)}
+          />
           <Text>Inches</Text>
         </View>
 
         {/* <View styles={styles.userHeightProfile}> */}
         {/* </View> */}
         <View style={styles.userWeightProfile}>
-          <Text style={{"fontSize": "25",}}>
-            Weight
-          </Text>
-          <TextInput placeholder='Weight' keyboardType={'numeric'} value={weight} onChangeText={text => setWeight(text)} /><Text>lbs</Text>
+          <Text style={{ fontSize: 25 }}>Weight</Text>
+          <TextInput
+            placeholder="Weight"
+            keyboardType={"numeric"}
+            value={weight}
+            onChangeText={(text) => setWeight(text)}
+          />
+          <Text>lbs</Text>
         </View>
 
         <Button title="Done" onPress={updateUserInfo} />
