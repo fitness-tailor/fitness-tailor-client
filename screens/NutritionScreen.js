@@ -1,6 +1,6 @@
 import styles from "./styles.js";
 import firebase from "firebase";
-import React, { Component } from 'react';
+import React, { useState, useEffect, Component } from 'react';
 import {
   SafeAreaView,
   AppRegistry,
@@ -11,14 +11,21 @@ import {
 import Dates from 'react-native-dates';
 import moment, { now } from 'moment';
 
-export default class NutritionScreen extends Component {
-  state = {
-    date: null,
-    focus: 'startDate',
-    startDate: null,
-    endDate: null,
-    recipes: [],
-  }
+// export default class NutritionScreen extends Component {
+const NutritionScreen = (props) => {
+  const [date, setDate] = useState(null);
+  const [focus, setFocus] = useState('startDate');
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
+  const [recipes, setRecipes] = useState([]);
+
+  // state = {
+  //   date: null,
+  //   focus: 'startDate',
+  //   startDate: null,
+  //   endDate: null,
+  //   recipes: [],
+  // }
 
   //add firebase functionality retrieving user foods
   // useEffect(() => {
@@ -36,19 +43,18 @@ export default class NutritionScreen extends Component {
   //     });
   // }, []);
 
-  render() {
-    const isDateBlocked = (date) => {
-      date.isBefore(moment(), 'day');
-    }
+  const isDateBlocked = (date) => {
+    date.isBefore(moment(), 'day');
+  }
 
-    const onDatesChange = ({ startDate, endDate, focusedInput }) =>
-      this.setState({ ...this.state, focus: focusedInput }, () =>
-        this.setState({ ...this.state, startDate, endDate })
-      );
+  const onDatesChange = ({ startDate, endDate, focusedInput }) => {
+    setFocus(focusedInput);
+    setStartDate(startDate);
+    setEndDate(endDate);
+  }
 
-    const onDateChange = ({ date }) =>
-      this.setState({ ...this.state, date });
-
+  const onDateChange = ({ date }) =>
+    setDate(date);
 
     return (
       <SafeAreaView style={styles.containerNutScreen}>
@@ -56,17 +62,18 @@ export default class NutritionScreen extends Component {
           <Dates
             onDatesChange={onDatesChange}
             isDateBlocked={isDateBlocked}
-            startDate={this.state.startDate}
-            endDate={this.state.endDate}
-            focusedInput={this.state.focus}
+            startDate={startDate}
+            endDate={endDate}
+            focusedInput={focus}
             range
           />
 
-        {this.state.date && <Text style={styles.dateNutScreen}>{this.state.date && this.state.date.format('LL')}</Text>}
-        <Text style={[styles.date, this.state.focus === 'startDate' && styles.focusedNutScreen]}>{this.state.startDate && this.state.startDate.format('LL')}</Text>
-        <Text style={[styles.date, this.state.focus === 'endDate' && styles.focusedNutScreen]}>{this.state.endDate && this.state.endDate.format('LL')}</Text>
+        {date && <Text style={styles.dateNutScreen}>{date && date.format('LL')}</Text>}
+        <Text style={[styles.date, focus === 'startDate' && styles.focusedNutScreen]}>{startDate && startDate.format('LL')}</Text>
+        <Text style={[styles.date, focus === 'endDate' && styles.focusedNutScreen]}>{endDate && endDate.format('LL')}</Text>
         </View>
       </SafeAreaView>
     );
-  }
 };
+
+export default NutritionScreen;
