@@ -21,6 +21,7 @@ const ProfileScreen = (props) => {
   const [heightFeet, setHeightFeet] = useState("");
   const [heightInch, setHeightInch] = useState("");
   const [weight, setWeight] = useState("");
+  const [age, setAge] = useState("");
   const [bmi, setBMI] = useState("");
   const [gender, setGender] = useState("");
 
@@ -33,12 +34,14 @@ const ProfileScreen = (props) => {
           setHeightFeet("0");
           setHeightInch("0");
           setWeight("0");
-          setGender("0");
+          setAge("0");
+          setGender("non-binary");
           setBMI("0");
         } else {
           setHeightFeet(snapshot.val().heightFeet);
           setHeightInch(snapshot.val().heightInch);
           setWeight(snapshot.val().weight);
+          setAge(snapshot.val().age);
           setGender(snapshot.val().gender);
           setBMI(snapshot.val().BMI);
         }
@@ -54,17 +57,39 @@ const ProfileScreen = (props) => {
     }
   };
 
+  const convertToCM = (feet, inches)　=> {
+    let totalInches = feet * 12 + inches;
+    console.log(totalInches * 2.54)
+    return totalInches * 2.54;
+  };
+
+  const convertToKg = (lbs) => {
+    return lbs * 0.45359;
+  };
+
+  const calculateBMI = (heightFeet, heightInch, weight) => {
+    let userInchSquared = Math.pow(
+      parseInt(heightFeet) * 12 + parseInt(heightInch),
+      2
+    );
+    let userLbs = parseInt(weight);
+    let BMI = (userLbs / userInchSquared) * 703;
+    return BMI;
+  }
+
   const updateUserInfo = () => {
     if (
       heightFeet.length === 0 ||
       heightInch.length === 0 ||
-      weight.length === 0
+      weight.length === 0 ||
+      age.length === 0
     ) {
       Alert.alert("Please enter all information");
     } else if (
       numbersOnly(heightFeet) === false ||
       numbersOnly(heightInch) === false ||
-      numbersOnly(weight) === false
+      numbersOnly(weight) === false ||
+      numbersOnly(age) === false
     ) {
       Alert.alert("Please enter only numbers");
     } else {
@@ -73,17 +98,13 @@ const ProfileScreen = (props) => {
         .ref("users/" + props.displayName)
         .update({
           weight: weight,
+          age: age,
           heightFeet: heightFeet,
           heightInch: heightInch,
           gender: gender,
         })
         .then(() => {
-          let userInchSquared = Math.pow(
-            parseInt(heightFeet) * 12 + parseInt(heightInch),
-            2
-          );
-          let userLbs = parseInt(weight);
-          let BMI = (userLbs / userInchSquared) * 703;
+          let BMI = calculateBMI(heightFeet, heightInch, weight);
           setBMI(BMI.toFixed(2));
           firebase
             .database()
@@ -138,6 +159,12 @@ const ProfileScreen = (props) => {
             Weight
           </Text>
           <TextInput placeholder='Weight' keyboardType={'numeric'} value={weight} onChangeText={text => setWeight(text)} /><Text>lbs</Text>
+        </View>
+        <View style={styles.userAgeProfile}>
+          <Text style={{"fontSize": 25,}}>
+            Age
+          </Text>
+          <TextInput placeholder='Age' keyboardType={'numeric'} value={age} onChangeText={text => setAge(text)} /><Text>years</Text>
         </View>
 
         <Button title="Done" onPress={updateUserInfo} />
