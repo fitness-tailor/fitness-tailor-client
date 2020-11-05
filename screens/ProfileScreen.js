@@ -23,6 +23,7 @@ const ProfileScreen = (props) => {
   const [weight, setWeight] = useState("");
   const [age, setAge] = useState("");
   const [bmi, setBMI] = useState("");
+  const [bmr, setBMR] = useState("");
   const [gender, setGender] = useState("");
 
   useEffect(() => {
@@ -31,12 +32,13 @@ const ProfileScreen = (props) => {
       .ref("users/" + props.displayName)
       .on("value", function (snapshot) {
         if (snapshot.val() === null) {
-          setHeightFeet("0");
-          setHeightInch("0");
-          setWeight("0");
-          setAge("0");
+          setHeightFeet(0);
+          setHeightInch(0);
+          setWeight(0);
+          setAge(0);
           setGender("non-binary");
-          setBMI("0");
+          setBMI(0);
+          setBMR(0);
         } else {
           setHeightFeet(snapshot.val().heightFeet);
           setHeightInch(snapshot.val().heightInch);
@@ -44,6 +46,7 @@ const ProfileScreen = (props) => {
           setAge(snapshot.val().age);
           setGender(snapshot.val().gender);
           setBMI(snapshot.val().BMI);
+          setBMR(snapshot.val().BMR);
         }
       });
   }, []);
@@ -58,9 +61,10 @@ const ProfileScreen = (props) => {
   };
 
   const convertToCM = (feet, inches)　=> {
-    let totalInches = feet * 12 + inches;
-    console.log(totalInches * 2.54)
-    return totalInches * 2.54;
+
+    let totalInches = (parseInt(feet) * 12) + parseInt(inches);
+    let totalCM = totalInches * 2.54;
+    return totalCM;
   };
 
   const convertToKg = (lbs) => {
@@ -75,6 +79,18 @@ const ProfileScreen = (props) => {
     let userLbs = parseInt(weight);
     let BMI = (userLbs / userInchSquared) * 703;
     return BMI;
+  };
+
+  const calculateBMR = (gender, weight, heightFeet, heightInch, age) => {
+    let heightCM = convertToCM(heightFeet, heightInch);
+    let weightKG = convertToKg(weight);
+    console.log(heightCM);
+    console.log(weightKG);
+    if(gender === "male") {
+      return (10 * weightKG) + (6.25 * heightCM) - (5 * age) + 5;
+    } else if (gender === "female") {
+      return (10 * weightKG) + (6.25 * heightCM) - (5 * age) - 161;
+    }
   }
 
   const updateUserInfo = () => {
@@ -106,11 +122,14 @@ const ProfileScreen = (props) => {
         .then(() => {
           let BMI = calculateBMI(heightFeet, heightInch, weight);
           setBMI(BMI.toFixed(2));
+          let BMR = calculateBMR(gender, weight, heightFeet, heightInch, age);
+          setBMR(BMR.toFixed(0));
           firebase
             .database()
             .ref("users/" + props.displayName)
             .update({
               BMI: bmi,
+              BMR: bmr,
             });
         });
       // to refresh gender on update
@@ -122,7 +141,7 @@ const ProfileScreen = (props) => {
   const genderList = [
     { label: "Male", value: "male" },
     { label: "Female", value: "female" },
-    { label: "Non-Binary", value: "non-binary" },
+    // { label: "Non-Binary", value: "non-binary" },
   ];
 
   return (
@@ -131,6 +150,9 @@ const ProfileScreen = (props) => {
         Hello <Text style={{"fontSize": 25,}}>{props.displayName}</Text>, {"\n"}
         please enter your height and weight.{"\n"}
         <Text style={{"fontSize": 20,}}>Your BMI is {bmi}</Text>
+        </Text>
+        <Text>
+        <Text style={{"fontSize": 20,}}>Your BMR is {bmr}</Text>
       </Text>
       <View style={styles.userInputProfile}>
 
