@@ -16,10 +16,25 @@ export default class NutritionScreen extends Component {
     date: null,
     focus: 'startDate',
     startDate: null,
-    endDate: null
+    endDate: null,
+    recipes: [],
   }
 
   //add firebase functionality retrieving user foods
+  // useEffect(() => {
+  //   firebase
+  //     .database()
+  //     .ref("users/" + props.displayName)
+  //     .on("value", function (snapshot) {
+  //       if (snapshot.val() === null) {
+  //         setHeightFeet("0");
+
+  //       } else {
+  //         setHeightFeet(snapshot.val().heightFeet);
+
+  //       }
+  //     });
+  // }, []);
 
   render() {
     const isDateBlocked = (date) => {
