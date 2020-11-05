@@ -24,6 +24,8 @@ const ProfileScreen = (props) => {
   const [age, setAge] = useState("");
   const [bmi, setBMI] = useState("");
   const [bmr, setBMR] = useState("");
+  const [bmrPlusExcer, setbmrPlusExcer] = useState("");
+  const [activityLevel, setActivityLevel] = useState("");
   const [gender, setGender] = useState("");
 
   useEffect(() => {
@@ -47,6 +49,8 @@ const ProfileScreen = (props) => {
           setGender(snapshot.val().gender);
           setBMI(snapshot.val().BMI);
           setBMR(snapshot.val().BMR);
+          setActivityLevel(snapshot.val().activityLevel);
+          setbmrPlusExcer(snapshot.val().bmrPlusExcer);
         }
       });
   }, []);
@@ -61,7 +65,6 @@ const ProfileScreen = (props) => {
   };
 
   const convertToCM = (feet, inches)　=> {
-
     let totalInches = (parseInt(feet) * 12) + parseInt(inches);
     let totalCM = totalInches * 2.54;
     return totalCM;
@@ -118,18 +121,22 @@ const ProfileScreen = (props) => {
           heightFeet: heightFeet,
           heightInch: heightInch,
           gender: gender,
+          activityLevel: activityLevel,
         })
         .then(() => {
           let BMI = calculateBMI(heightFeet, heightInch, weight);
           setBMI(BMI.toFixed(2));
           let BMR = calculateBMR(gender, weight, heightFeet, heightInch, age);
           setBMR(BMR.toFixed(0));
+          let bmrPlusExcer = (BMR * activityLevel).toFixed(0);
+          setbmrPlusExcer(bmrPlusExcer);
           firebase
             .database()
             .ref("users/" + props.displayName)
             .update({
               BMI: bmi,
               BMR: bmr,
+              bmrPlusExcer: bmrPlusExcer,
             });
         });
       // to refresh gender on update
@@ -144,16 +151,24 @@ const ProfileScreen = (props) => {
     // { label: "Non-Binary", value: "non-binary" },
   ];
 
+  const activityLevelList = [
+    { label: "Little to No Exercise", value: 1.2 },
+    { label: "Light Excercise", value: 1.375 },
+    { label: "Light to Moderate Excerise", value: 1.55 },
+    { label: "Moderate to Difficult", value: 1.725 },
+    { label: "Professional Athlete", value: 1.9 },
+  ];
+
   return (
     <SafeAreaView style={styles.containerProfile}>
       <Text>
         Hello <Text style={{"fontSize": 25,}}>{props.displayName}</Text>, {"\n"}
         please enter your height and weight.{"\n"}
+      </ Text>
         <Text style={{"fontSize": 20,}}>Your BMI is {bmi}</Text>
-        </Text>
-        <Text>
         <Text style={{"fontSize": 20,}}>Your BMR is {bmr}</Text>
-      </Text>
+        <Text style={{"fontSize": 20,}}>Your Daily Caloric Expenditure is {bmrPlusExcer}</Text>
+
       <View style={styles.userInputProfile}>
 
         <View style={styles.userGenderProfile}>
@@ -163,6 +178,15 @@ const ProfileScreen = (props) => {
             // style={pickerStyles}
             items={genderList}
             onValueChange={(itemValue) => setGender(itemValue)}
+          />
+        </View>
+        <View >
+          <Text style={{"fontSize": 25,}}>Activity Level</Text>
+          <RNPickerSelect
+            selectedValue={activityLevel}
+            // style={pickerStyles}
+            items={activityLevelList}
+            onValueChange={(itemValue) => setActivityLevel(itemValue)}
           />
         </View>
 
