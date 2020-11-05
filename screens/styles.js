@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from "react-native";
 
 module.exports = StyleSheet.create({
   containerHome: {
@@ -77,7 +77,7 @@ module.exports = StyleSheet.create({
     // backgroundColor: 'red',
     // alignItems: 'center',
     marginLeft: "20%",
-    justifyContent: 'space-evenly',
+    justifyContent: "space-evenly",
   },
   userInputProfile: {
     // backgroundColor: 'blue',
@@ -129,4 +129,4 @@ module.exports = StyleSheet.create({
     width: "100%",
     borderRadius: 10,
   },
-  });
+});
