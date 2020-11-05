@@ -87,6 +87,7 @@ class SignUpScreen extends React.Component {
                 placeholder="Full Name"
                 autoCapitalize="none"
                 placeholderTextColor="#B1B1B1"
+                color="#B1B1B1"
                 returnKeyType="next"
                 textContentType="name"
                 value={this.state.displayName}
@@ -97,6 +98,7 @@ class SignUpScreen extends React.Component {
                 placeholder="E-mail Address"
                 autoCapitalize="none"
                 placeholderTextColor="#B1B1B1"
+                color="#B1B1B1"
                 returnKeyType="next"
                 keyboardType="email-address"
                 textContentType="emailAddress"
