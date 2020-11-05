@@ -129,4 +129,18 @@ module.exports = StyleSheet.create({
     width: "100%",
     borderRadius: 10,
   },
+  // ==================================
+  // NutritionScreen
+  // ==================================
+  containerNutScreen: {
+    flex: 1,
+    flexGrow: 1,
+    marginTop: 20
+  },
+  dateNutScreen: {
+    marginTop: 50
+  },
+  focusedNutScreen: {
+    color: 'blue'
+  }
   });
