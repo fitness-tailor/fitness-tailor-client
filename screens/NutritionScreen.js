@@ -9,7 +9,7 @@ import {
   View
 } from 'react-native';
 import Dates from 'react-native-dates';
-import moment from 'moment';
+import moment, { now } from 'moment';
 
 export default class NutritionScreen extends Component {
   state = {
@@ -19,10 +19,12 @@ export default class NutritionScreen extends Component {
     endDate: null
   }
 
+  //add firebase functionality retrieving user foods
 
   render() {
-    const isDateBlocked = (date) =>
+    const isDateBlocked = (date) => {
       date.isBefore(moment(), 'day');
+    }
 
     const onDatesChange = ({ startDate, endDate, focusedInput }) =>
       this.setState({ ...this.state, focus: focusedInput }, () =>
@@ -46,8 +48,8 @@ export default class NutritionScreen extends Component {
           />
 
         {this.state.date && <Text style={styles.dateNutScreen}>{this.state.date && this.state.date.format('LL')}</Text>}
-        <Text style={[styles.date, this.state.focus === 'startDate' && styles.focused]}>{this.state.startDate && this.state.startDate.format('LL')}</Text>
-        <Text style={[styles.date, this.state.focus === 'endDate' && styles.focused]}>{this.state.endDate && this.state.endDate.format('LL')}</Text>
+        <Text style={[styles.date, this.state.focus === 'startDate' && styles.focusedNutScreen]}>{this.state.startDate && this.state.startDate.format('LL')}</Text>
+        <Text style={[styles.date, this.state.focus === 'endDate' && styles.focusedNutScreen]}>{this.state.endDate && this.state.endDate.format('LL')}</Text>
         </View>
       </SafeAreaView>
     );

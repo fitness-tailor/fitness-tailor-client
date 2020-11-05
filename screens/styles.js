@@ -141,6 +141,6 @@ module.exports = StyleSheet.create({
     marginTop: 50
   },
   focusedNutScreen: {
-    color: 'blue'
+    color: 'grey'
   }
   });
