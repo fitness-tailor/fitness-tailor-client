@@ -5,40 +5,40 @@ module.exports = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: "700",
+    color: "white",
+    padding: 25,
   },
   containerSignIn: {
     flex: 1,
     flexDirection: "column",
+    backgroundColor: 'rgb(22, 66, 92)',
+  },
+  SignIn: {
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
   formSignIn: {
-    width: "85%",
-    marginTop: 15,
+    width: "70%",
   },
   inputSignIn: {
     fontSize: 15,
-    borderColor: "black",
+    borderColor: "white",
     borderBottomWidth: 1,
     paddingBottom: 1.5,
     marginTop: 25,
   },
-  containerSignUp: {
-    flex: 1,
-    flexDirection: "column",
+  signInButton: {
     alignItems: "center",
-    justifyContent: "center",
-  },
-  formSignUp: {
-    width: "85%",
-    marginTop: 15,
-  },
-  inputSignUp: {
-    fontSize: 15,
-    borderColor: "black",
-    borderBottomWidth: 1,
-    paddingBottom: 1.5,
-    marginTop: 25,
+    backgroundColor: 'rgb(37, 93, 120)',
+    padding: 25,
+    borderRadius: 10,
+    marginTop: 30,
   },
   containerLoading: {
     flex: 1,
@@ -129,4 +129,18 @@ module.exports = StyleSheet.create({
     width: "100%",
     borderRadius: 10,
   },
-});
+  // ==================================
+  // NutritionScreen
+  // ==================================
+  containerNutScreen: {
+    flex: 1,
+    flexGrow: 1,
+    marginTop: 20
+  },
+  dateNutScreen: {
+    marginTop: 50
+  },
+  focusedNutScreen: {
+    color: 'grey'
+  }
+  });

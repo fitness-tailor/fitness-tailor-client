@@ -76,15 +76,15 @@ class SignUpScreen extends React.Component {
           Keyboard.dismiss();
         }}
       >
-        <SafeAreaView style={{ flex: 1 }}>
-          <KeyboardAvoidingView style={styles.containerSignUp}>
-            <Text style={{ fontSize: 32, fontWeight: "700", color: "black" }}>
-              Nutrific
+        <SafeAreaView style={styles.containerSignIn}>
+          <KeyboardAvoidingView style={styles.SignIn}>
+            <Text style= {styles.title}>
+              NUTRIFIC
             </Text>
-            <View style={styles.formSignUp}>
+            <View style={styles.formSignIn}>
               <TextInput
-                style={styles.inputSignUp}
-                placeholder="Name"
+                style={styles.inputSignIn}
+                placeholder="Full Name"
                 autoCapitalize="none"
                 placeholderTextColor="#B1B1B1"
                 returnKeyType="next"
@@ -93,8 +93,8 @@ class SignUpScreen extends React.Component {
                 onChangeText={(displayName) => this.setState({ displayName })}
               />
               <TextInput
-                style={styles.inputSignUp}
-                placeholder="Email"
+                style={styles.inputSignIn}
+                placeholder="E-mail Address"
                 autoCapitalize="none"
                 placeholderTextColor="#B1B1B1"
                 returnKeyType="next"
@@ -104,7 +104,7 @@ class SignUpScreen extends React.Component {
                 onChangeText={(email) => this.setState({ email })}
               />
               <TextInput
-                style={styles.inputSignUp}
+                style={styles.inputSignIn}
                 placeholder="Password"
                 autoCapitalize="none"
                 placeholderTextColor="#B1B1B1"
@@ -114,7 +114,7 @@ class SignUpScreen extends React.Component {
                 value={this.state.password}
                 onChangeText={(password) => this.setState({ password })}
               />
-            </View>
+
             {this.renderLoading()}
             <Text
               style={{
@@ -126,15 +126,18 @@ class SignUpScreen extends React.Component {
             >
               {this.state.error}
             </Text>
+
             <TouchableOpacity
-              style={{ width: "85%", marginTop: 10 }}
+              style={styles.signInButton}
               onPress={() => this.signInWithEmail()}
             >
-              <Text>Sign Up</Text>
+              <Text style={{ fontWeight: "500", fontSize: 20, color: "white" }}>Sign Up</Text>
             </TouchableOpacity>
+            </View>
+
             <View style={{ marginTop: 10 }}>
               <Text
-                style={{ fontWeight: "200", fontSize: 17, textAlign: "center" }}
+                style={{ fontWeight: "200", fontSize: 17, textAlign: "center", color: "white", margin: 20}}
                 onPress={() => {
                   this.props.navigation.navigate("SignIn");
                 }}
