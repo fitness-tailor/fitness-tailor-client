@@ -140,8 +140,8 @@ const ProfileScreen = (props) => {
             });
         });
       // to refresh gender on update
-      props.fetchUser(props.displayName);
-      props.fetchRDA(props.gender);
+      // props.fetchUser(props.displayName);
+      // props.fetchRDA(props.gender);
     }
   };
 
@@ -153,97 +153,114 @@ const ProfileScreen = (props) => {
 
   const activityLevelList = [
     { label: "Little to No Exercise", value: 1.2 },
-    { label: "Light Excercise", value: 1.375 },
-    { label: "Light to Moderate Excerise", value: 1.55 },
-    { label: "Moderate to Difficult", value: 1.725 },
+    { label: "1-3 Days Light", value: 1.375 },
+    { label: "3-5 Days Moderate", value: 1.55 },
+    { label: "5-6 Days Intense", value: 1.725 },
     { label: "Professional Athlete", value: 1.9 },
   ];
 
   return (
     <SafeAreaView style={styles.containerProfile}>
-      <Text>
-        Hello <Text style={{"fontSize": 25,}}>{props.displayName}</Text>, {"\n"}
-        please enter your height and weight.{"\n"}
-      </ Text>
-        <Text style={{"fontSize": 20,}}>Your BMI is {bmi}</Text>
-        <Text style={{"fontSize": 20,}}>Your BMR is {bmr}</Text>
-        <Text style={{"fontSize": 20,}}>Your Daily Caloric Expenditure is {bmrPlusExcer}</Text>
+
+      <View style={styles.userSumsProfile}>
+        <Text style={{"fontSize": 27, color: "white"}}>
+          Hello <Text style={{"fontSize": 35, color: "white"}}>{props.displayName}</Text>, {"\n"}
+          please enter your information{"\n"}
+        </ Text>
+        <Text style={{"fontSize": 20, color: "white"}}>Your BMI is {bmi}</Text>
+        <Text style={{"fontSize": 20, color: "white"}}>Your BMR is {bmr}</Text>
+        <Text style={{"fontSize": 20, color: "white"}}>Your Daily Caloric Expenditure is {bmrPlusExcer}</Text>
+      </View>
 
       <View style={styles.userInputProfile}>
 
         <View style={styles.userGenderProfile}>
-          <Text style={{"fontSize": 25,}}>Gender</Text>
-          <RNPickerSelect
-            selectedValue={gender}
-            // style={pickerStyles}
-            items={genderList}
-            onValueChange={(itemValue) => setGender(itemValue)}
-          />
+          <Text style={{"fontSize": 20, color: "white"}}>Gender</Text>
+            <RNPickerSelect
+              selectedValue={gender}
+              items={genderList}
+              onValueChange={(itemValue) => setGender(itemValue)}
+              value={gender}
+              style={{
+                ...pickerSelectStyles,
+              }}
+              />
         </View>
-        <View >
-          <Text style={{"fontSize": 25,}}>Activity Level</Text>
+
+        <View style={styles.userActivityLevelProfile}>
+          <Text style={{"fontSize": 20, color: "white"}}>Activity Level</Text>
           <RNPickerSelect
             selectedValue={activityLevel}
-            // style={pickerStyles}
             items={activityLevelList}
             onValueChange={(itemValue) => setActivityLevel(itemValue)}
+            value={activityLevel}
+            style={{
+              ...pickerSelectStyles,
+            }}
           />
         </View>
 
         <View style={styles.userHeightProfile}>
-          <Text style={{"fontSize": 25,}} >Height</Text>
-          <TextInput placeholder='Feet' keyboardType={'numeric'} style={styles.userInput} value={heightFeet} onChangeText={text => setHeightFeet(text)} />
-          <Text>Feet</Text>
-          <TextInput placeholder='Inches' keyboardType={'numeric'} style={styles.userInput} value={heightInch} onChangeText={text => setHeightInch(text)} />
-          <Text>Inches</Text>
+          <Text style={{"fontSize": 20, color: "white"}} >Height</Text>
+          <View style={styles.userHeightNumbersProfile}>
+            <TextInput placeholder='Feet' style={{"fontSize": 20, color: "white"}} keyboardType={'numeric'} value={heightFeet} onChangeText={text => setHeightFeet(text)} />
+            <Text style={{"fontSize": 20, color: "white"}}> Feet </Text>
+            <TextInput placeholder='Inches' keyboardType={'numeric'} style={{"fontSize": 20, color: "white"}} value={heightInch} onChangeText={text => setHeightInch(text)} />
+            <Text style={{"fontSize": 20, color: "white"}}> Inches</Text>
+          </View>
         </View>
 
-        {/* <View styles={styles.userHeightProfile}> */}
-        {/* </View> */}
         <View style={styles.userWeightProfile}>
-          <Text style={{"fontSize": 25,}}>
+          <Text style={{"fontSize": 20, color: "white"}}>
             Weight
           </Text>
-          <TextInput placeholder='Weight' keyboardType={'numeric'} value={weight} onChangeText={text => setWeight(text)} /><Text>lbs</Text>
-        </View>
-        <View style={styles.userAgeProfile}>
-          <Text style={{"fontSize": 25,}}>
-            Age
-          </Text>
-          <TextInput placeholder='Age' keyboardType={'numeric'} value={age} onChangeText={text => setAge(text)} /><Text>years</Text>
+          <View style={styles.userWeightNumbersProfile}>
+            <TextInput placeholder='Weight' style={{"fontSize": 20, color: "white"}} keyboardType={'numeric'} value={weight} onChangeText={text => setWeight(text)} /><Text style={{"fontSize": 20, color: "white"}}> lbs</Text>
+          </View>
         </View>
 
-        <Button title="Done" onPress={updateUserInfo} />
+        <View style={styles.userAgeProfile}>
+          <Text style={{"fontSize": 20, color: "white"}}>
+            Age
+          </Text>
+          <View style={styles.userAgeNumbersProfile}>
+            <TextInput placeholder='Age' style={{"fontSize": 20, color: "white"}} keyboardType={'numeric'} value={age} onChangeText={text => setAge(text)} /><Text style={{"fontSize": 20, color: "white"}}> years</Text>
+          </View>
+        </View>
+
+        <TouchableOpacity
+              style={styles.signInButton}
+              onPress={() => updateUserInfo()}
+            >
+              <Text style={{ fontWeight: "500", fontSize: 20, color: "white" }}>Done</Text>
+            </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
 };
 
-// const pickerStyles = StyleSheet.create({
-//   inputIOS: {
-//     // justifyContent: "center/",
-//     // textAlign: "center",
-//     // paddingHorizontal: 4,
-//     // paddingVertical: 4,
-//     // marginTop: 2,
-//     // marginHorizontal: "10%",
-//     // width: "80%",
-//     // borderWidth: 0.5,
-//     // fontSize: 16,
-//     // color: "#000000",
-//   },
-//   inputAndroid: {
-//     // Copied code of docs
-//     // TODO: Make styles responsive to androids
-//     // fontSize: 16,
-//     // justifyContent: "center",
-//     // textAlign: "center",
-//     // paddingHorizontal: 10,
-//     // paddingVertical: 8,
-//     // borderWidth: 0.5,
-//     // color: "#000000",
-//   },
-// });
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    fontSize: 20,
+    // paddingVertical: 12,
+    // paddingHorizontal: 10,
+    // borderWidth: 1,
+    // borderColor: 'gray',
+    // borderRadius: 4,
+    color: 'white',
+    // paddingRight: 30, // to ensure the text is never behind the icon
+  },
+  inputAndroid: {
+    fontSize: 25,
+    // paddingHorizontal: 10,
+    // paddingVertical: 8,
+    // borderWidth: 0.5,
+    // borderColor: 'purple',
+    // borderRadius: 8,
+    color: 'white',
+    // paddingRight: 30, // to ensure the text is never behind the icon
+  },
+});
 
 const mapStateToProps = (state) => ({
   displayName: state.auth.user.displayName,
