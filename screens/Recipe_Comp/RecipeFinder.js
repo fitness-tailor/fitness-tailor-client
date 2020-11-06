@@ -32,7 +32,7 @@ function RecipeSearch(props) {
         style={styles.buttonBox}
         onPress={() => fetchRecipesOnPress(recipe)}
       >
-        <Ionicons name="md-search" size={40} color="black" />
+        <Ionicons name="md-search" size={35} color="grey" />
       </TouchableOpacity>
     </View>
   );
@@ -48,7 +48,7 @@ export default connect(null, mapDispatchToProps)(RecipeSearch);
 
 const styles = StyleSheet.create({
   container: {
-    borderWidth: 1,
+    borderWidth: 2,
     borderRadius: 10,
     borderColor: "white",
     backgroundColor: "#fff",
@@ -63,7 +63,6 @@ const styles = StyleSheet.create({
     fontSize: 20,
     padding: 10,
     borderRightWidth: 1,
-    // borderColor: "green",
   },
   buttonBox: {
     flex: 1,
