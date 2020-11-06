@@ -32,7 +32,7 @@ function RecipeSearch(props) {
         style={styles.buttonBox}
         onPress={() => fetchRecipesOnPress(recipe)}
       >
-        <Ionicons name="md-search" size={45} color="black" />
+        <Ionicons name="md-search" size={40} color="black" />
       </TouchableOpacity>
     </View>
   );
@@ -50,11 +50,11 @@ const styles = StyleSheet.create({
   container: {
     borderWidth: 1,
     borderRadius: 10,
-    borderColor: "green",
+    borderColor: "white",
     backgroundColor: "#fff",
     flexDirection: "row",
     justifyContent: "center",
-    marginTop: "7%",
+    marginTop: "5%",
   },
   inputBox: {
     flex: 5.5,
@@ -62,8 +62,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     fontSize: 20,
     padding: 10,
-    borderRightWidth: 0.2,
-    borderColor: "green",
+    borderRightWidth: 1,
+    // borderColor: "green",
   },
   buttonBox: {
     flex: 1,

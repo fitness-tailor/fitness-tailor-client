@@ -21,18 +21,18 @@ import styles from "./styles.js";
 const HomeScreen = (props) => {
   const [image, setImage] = useState(null);
 
-  useEffect(() => {
-    (async () => {
-      if (Platform.OS !== "web") {
-        const {
-          status,
-        } = await ImagePicker.requestCameraRollPermissionsAsync();
-        if (status !== "granted") {
-          alert("Sorry, we need camera roll permissions to make this work!");
-        }
-      }
-    })();
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     if (Platform.OS !== "web") {
+  //       const {
+  //         status,
+  //       } = await ImagePicker.requestCameraRollPermissionsAsync();
+  //       if (status !== "granted") {
+  //         alert("Sorry, we need camera roll permissions to make this work!");
+  //       }
+  //     }
+  //   })();
+  // }, []);
 
   useEffect(() => {
     props.fetchUser(props.user.displayName);
