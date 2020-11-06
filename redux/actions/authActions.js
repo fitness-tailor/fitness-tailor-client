@@ -3,6 +3,7 @@ import {
   FETCH_USER_AUTH_SUCCESS,
   FETCH_USER_AUTH_ERROR,
   STORE_GENDER,
+  STORE_PROFILE_PIC,
 } from "./actionTypes.js";
 import firebase from "firebase";
 
@@ -35,13 +36,38 @@ const storeGender = (gender) => {
 
 const fetchGender = (name) => {
   return (dispatch) => {
-    firebase
-      .database()
-      .ref(`users/${name}`)
-      .once("value")
-      .then(function (snapshot) {
-        dispatch(storeGender(snapshot.val().gender));
-      });
+    if (name) {
+      firebase
+        .database()
+        .ref(`users/${name}`)
+        .once("value")
+        .then((snapshot) => {
+          dispatch(storeGender(snapshot.val().gender));
+        });
+    }
+  };
+};
+
+const storeProfilePic = (image) => {
+  return {
+    type: STORE_PROFILE_PIC,
+    payload: image,
+  };
+};
+
+export const fetchProfilePic = (name) => {
+  return (dispatch) => {
+    if (name) {
+      let ref = firebase.storage().ref(`profilePic/${name}`);
+      ref
+        .getDownloadURL()
+        .then((url) => {
+          dispatch(storeProfilePic(url));
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   };
 };
 
