@@ -134,6 +134,28 @@ const HomeScreen = (props) => {
           >
             {props.user.displayName}
           </Text>
+          <View
+            style={{
+              borderColor: "white",
+              borderWidth: 1,
+              bottom: 215,
+              height: 120,
+              width: 240,
+              borderRadius: 20,
+              justifyContent: "center",
+              alignItems: "center",
+              position: "absolute",
+            }}
+          >
+            <Text style={{ color: "white", fontSize: 18 }}>
+              Your Caloric Goal:
+            </Text>
+            <Text style={{ color: "white", fontSize: 18 }}>2200</Text>
+            <Text style={{ color: "white", fontSize: 18 }}>
+              Your Caloric Intake Today:
+            </Text>
+            <Text style={{ color: "white", fontSize: 18 }}>2300</Text>
+          </View>
           <TouchableOpacity
             style={{
               backgroundColor: "#055f7d",
