@@ -196,12 +196,10 @@ const RecipeCard = ({ recipe, RDA }) => {
           <Text
             style={[
               {
-                // fontFamily: "Menlo",
                 fontSize: 24,
                 color: "white",
                 textAlign: "center",
                 paddingVertical: 4,
-                // paddingHorizontal: 10,
               },
             ]}
           >
@@ -315,8 +313,6 @@ const RecipeCard = ({ recipe, RDA }) => {
                   style={{
                     flexDirection: "row",
                     justifyContent: "center",
-                    alignItems: "center",
-                    width: "75%",
                   }}
                 >
                   <TextInput
@@ -358,7 +354,6 @@ const RecipeCard = ({ recipe, RDA }) => {
                   flexDirection: "row",
                   justifyContent: "center",
                   alignItems: "center",
-                  width: "75%",
                 }}
               >
                 <TextInput
@@ -372,7 +367,7 @@ const RecipeCard = ({ recipe, RDA }) => {
                     setCurrentDate({ month: val, date, year })
                   }
                 />
-                <Text style={{ fontSize: 24 }}>/</Text>
+                <Text style={{ fontSize: 24, color: "white" }}>/</Text>
                 <TextInput
                   style={styles.dateInputBox}
                   value={date}
@@ -384,12 +379,12 @@ const RecipeCard = ({ recipe, RDA }) => {
                     setCurrentDate({ month, date: val, year })
                   }
                 />
-                <Text style={{ fontSize: 24 }}>/</Text>
+                <Text style={{ fontSize: 24, color: "white" }}>/</Text>
                 <TextInput
                   style={styles.dateInputBox}
                   value={year}
                   placeholder={`${year}`}
-                  placeholderTextColor="grey"
+                  color="white"
                   keyboardType={"numeric"}
                   maxLength={2}
                   onChangeText={(val) =>
@@ -529,8 +524,6 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     textAlign: "center",
-    // fontFamily: "Menlo",
-    // fontWeight: "bold",
     fontSize: 18,
     color: "white",
   },
