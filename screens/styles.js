@@ -71,29 +71,59 @@ module.exports = StyleSheet.create({
   // Profile Screen
   // ==================================
   containerProfile: {
+    flex: 2,
+    // justifyContent: "space-evenly",
+    alignItems: 'center',
+    backgroundColor: 'rgb(22, 66, 92)',
+
+  },
+  userSumsProfile: {
+    backgroundColor: 'rgb(37, 93, 120)',
     flex: 1,
-    // flexDirection: 'column',
-    marginTop: "20%",
-    // backgroundColor: 'red',
-    // alignItems: 'center',
-    marginLeft: "20%",
-    justifyContent: "space-evenly",
+    alignItems: 'center',
+    width: "100%",
+    justifyContent:'space-evenly',
   },
   userInputProfile: {
     // backgroundColor: 'blue',
-    width: "70%",
+    flex: 2,
+    width: "90%",
+    justifyContent:'space-evenly',
+    // flexDirection: 'row'
   },
   userGenderProfile: {
-    // backgroundColor: 'green',
-    height: "20%",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  userActivityLevelProfile: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   userHeightProfile: {
     // backgroundColor: 'purple',
-    height: "30%",
+    // height: "30%",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  userHeightNumbersProfile: {
+    flexDirection: 'row',
   },
   userWeightProfile: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     // backgroundColor: 'grey',
-    height: "20%",
+    // height: "20%",
+  },
+  userWeightNumbersProfile: {
+    flexDirection: 'row',
+  },
+  userAgeProfile: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+
+  },
+  userAgeNumbersProfile: {
+    flexDirection: 'row',
   },
   // ==================================
   // Recipe List Screen

@@ -86,6 +86,7 @@ class SignInScreen extends React.Component {
                 placeholder="E-mail Address"
                 autoCapitalize="none"
                 placeholderTextColor="#B1B1B1"
+                color="#B1B1B1"
                 returnKeyType="next"
                 keyboardType="email-address"
                 textContentType="emailAddress"
@@ -97,6 +98,7 @@ class SignInScreen extends React.Component {
                 placeholder="Password"
                 autoCapitalize="none"
                 placeholderTextColor="#B1B1B1"
+                color="#B1B1B1"
                 returnKeyType="done"
                 textContentType="newPassword"
                 secureTextEntry={true}
