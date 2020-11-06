@@ -3,6 +3,7 @@ let initialState = {
   error: "",
   user: {},
   gender: "",
+  profilePic: "",
 };
 
 const authReducers = (state = initialState, action) => {
@@ -29,6 +30,12 @@ const authReducers = (state = initialState, action) => {
       return {
         ...state,
         gender: action.payload,
+      };
+
+    case "STORE_PROFILE_PIC":
+      return {
+        ...state,
+        profilePic: action.payload,
       };
 
     default:

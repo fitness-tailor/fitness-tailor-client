@@ -1,7 +1,5 @@
 import React from "react";
 
-// import { StyleSheet, Text, View } from "react-native"; <== IF CODE BREAKS, UNCOMMENT THIS!!!!!! ELSE REMOVE!!
-
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { NavigationContainer } from "@react-navigation/native";
 
@@ -18,6 +16,12 @@ import "firebase/firestore";
 // Imports necessary for redux
 import { Provider } from "react-redux";
 import store from "./redux/store.js";
+import { AppLoading } from "expo";
+import {
+  useFonts,
+  Inter_600SemiBold,
+  Inter_400Regular,
+} from "@expo-google-fonts/inter";
 
 // TODO: Replace the following with your app's Firebase project configuration
 const firebaseConfig = {
@@ -25,7 +29,7 @@ const firebaseConfig = {
   authDomain: "fitness-tailor.firebaseapp.com",
   databaseURL: "https://fitness-tailor.firebaseio.com",
   projectId: "fitness-tailor",
-  storageBucket: "fitness-tailor.appspot.com",
+  storageBucket: "gs://fitness-tailor.appspot.com/",
   messagingSenderId: "822343603827",
   appId: "1:822343603827:web:76a6256a0fa23496913c06",
   measurementId: "G-48BDZ94KZ2",
@@ -48,8 +52,15 @@ const AppContainer = createAppContainer(
   )
 );
 
-class App extends React.Component {
-  render() {
+const App = () => {
+  let [fontsLoaded] = useFonts({
+    Inter_600SemiBold,
+    Inter_400Regular,
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } else {
     return (
       <Provider store={store}>
         <NavigationContainer>
@@ -58,6 +69,6 @@ class App extends React.Component {
       </Provider>
     );
   }
-}
+};
 
 export default App;

@@ -171,9 +171,8 @@ const ProfileScreen = (props) => {
         <Text style={{"fontSize": 20, color: "white"}}>Your BMR is {bmr}</Text>
         <Text style={{"fontSize": 20, color: "white"}}>Your Daily Caloric Expenditure is {bmrPlusExcer}</Text>
       </View>
-
+    
       <View style={styles.userInputProfile}>
-
         <View style={styles.userGenderProfile}>
           <Text style={{"fontSize": 20, color: "white"}}>Gender</Text>
             <RNPickerSelect
@@ -189,6 +188,7 @@ const ProfileScreen = (props) => {
 
         <View style={styles.userActivityLevelProfile}>
           <Text style={{"fontSize": 20, color: "white"}}>Activity Level</Text>
+
           <RNPickerSelect
             selectedValue={activityLevel}
             items={activityLevelList}
@@ -208,6 +208,7 @@ const ProfileScreen = (props) => {
             <TextInput placeholder='Inches' keyboardType={'numeric'} style={{"fontSize": 20, color: "white"}} value={heightInch} onChangeText={text => setHeightInch(text)} />
             <Text style={{"fontSize": 20, color: "white"}}> Inches</Text>
           </View>
+
         </View>
 
         <View style={styles.userWeightProfile}>
