@@ -289,16 +289,6 @@ const RecipeCard = ({ recipe, RDA }) => {
 
         <View style={styles.buttonsContainer}>
           <View style={styles.oneButtonContainer}>
-            <TouchableOpacity
-              style={styles.editButton}
-              onPress={toggleEditing}
-              activeOpacity="0.5"
-            >
-              <Text style={styles.buttonText}>
-                {!isEditingServeSize ? "Convert Unit" : "Done"}
-              </Text>
-            </TouchableOpacity>
-
             <View style={styles.editDisplay}>
               <Text style={styles.buttonText}>Serving Size</Text>
 
@@ -335,16 +325,18 @@ const RecipeCard = ({ recipe, RDA }) => {
                 </View>
               )}
             </View>
+            <TouchableOpacity
+              style={styles.editButton}
+              onPress={toggleEditing}
+              activeOpacity="0.5"
+            >
+              <Text style={styles.buttonText}>
+                {!isEditingServeSize ? "Convert Unit" : "Done"}
+              </Text>
+            </TouchableOpacity>
           </View>
 
           <View style={styles.oneButtonContainer}>
-            <TouchableOpacity
-              style={styles.addButton}
-              onPress={() => addToJournal()}
-              activeOpacity="0.5"
-            >
-              <Text style={styles.buttonText}>Add To Journal</Text>
-            </TouchableOpacity>
 
             <View style={styles.editDisplay}>
               <Text style={styles.buttonText}>Date</Text>
@@ -393,6 +385,14 @@ const RecipeCard = ({ recipe, RDA }) => {
                 />
               </View>
             </View>
+            <TouchableOpacity
+              style={styles.addButton}
+              onPress={() => addToJournal()}
+              activeOpacity="0.5"
+            >
+              <Text style={styles.buttonText}>Add To Journal</Text>
+            </TouchableOpacity>
+
           </View>
         </View>
       </View>
