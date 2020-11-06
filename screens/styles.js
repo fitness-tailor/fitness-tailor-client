@@ -1,12 +1,6 @@
 import { StyleSheet } from "react-native";
 
 module.exports = StyleSheet.create({
-  containerHome: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-
-  },
   title: {
     fontSize: 32,
     fontWeight: "700",
@@ -42,6 +36,15 @@ module.exports = StyleSheet.create({
   },
   containerLoading: {
     flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  // ==================================
+  // Home Style
+  // ==================================
+  containerHome: {
+    flex: 1,
+    // flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
   },

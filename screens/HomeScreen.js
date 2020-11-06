@@ -109,6 +109,7 @@ const HomeScreen = (props) => {
     >
       <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.containerHome}>
+
           <TouchableOpacity
             activeOpacity={0.7}
             style={{
@@ -123,6 +124,7 @@ const HomeScreen = (props) => {
           >
             <View>{profilePic}</View>
           </TouchableOpacity>
+
           <Text
             style={{
               color: "#32b4be",
@@ -134,17 +136,18 @@ const HomeScreen = (props) => {
           >
             {props.user.displayName}
           </Text>
+
           <View
             style={{
               borderColor: "white",
               borderWidth: 1,
-              bottom: 215,
+              // bottom: 215,
               height: 120,
               width: 240,
               borderRadius: 20,
               justifyContent: "center",
               alignItems: "center",
-              position: "absolute",
+              // position: "absolute",
             }}
           >
             <Text style={{ color: "white", fontSize: 18 }}>
@@ -156,6 +159,7 @@ const HomeScreen = (props) => {
             </Text>
             <Text style={{ color: "white", fontSize: 18 }}>2300</Text>
           </View>
+
           <TouchableOpacity
             style={{
               backgroundColor: "#055f7d",
@@ -181,6 +185,7 @@ const HomeScreen = (props) => {
               </Text>
             </View>
           </TouchableOpacity>
+
         </View>
       </SafeAreaView>
     </LinearGradient>
