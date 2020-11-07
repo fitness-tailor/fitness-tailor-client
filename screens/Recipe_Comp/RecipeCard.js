@@ -17,8 +17,8 @@ import convert from "convert-units";
 import RowTitle from "./RowTitle.js";
 import RowData from "./RowData.js";
 
-const RecipeCard = ({ recipe, RDA }) => {
-  const [name, setName] = useState(recipe.description);
+const RecipeCard = ({ recipe, RDA, displayName }) => {
+  const { description, foodNutrients, fdcId } = recipe;
   const [totalNutrients, setTotalNutrients] = useState({});
   const [isEditingServeSize, setIsEditingServeSize] = useState(false);
   const [servingSize, setServingSize] = useState(100);
@@ -32,23 +32,74 @@ const RecipeCard = ({ recipe, RDA }) => {
   let { month, date, year } = currentDate;
 
   useEffect(() => {
-    // Handle nutrition parsing and calendar set-up
-    let nutritionData = parseNutritionData(recipe.foodNutrients);
+    // Hold Parsed Nutrition Data in state
+    let nutritionData = parseNutritionData(foodNutrients, fdcId);
     setTotalNutrients(nutritionData);
   }, []);
 
-  const addToJournal = () => {
-    // console.log(`${month}/${date}/${year}`);
-    firebase
-      .database()
-      .ref("users/" + props.displayName)
-      .set({
-        journal: name,
-      });
+  // Deletes Keys that firebase can't accept
+  // Purpose: Firebase can't store function values
+  const removeKeysForDuplicate = (nutObj) => {
+    let duplicateObj = JSON.parse(JSON.stringify(nutObj));
+    delete duplicateObj.ID;
+    for (let key in duplicateObj) {
+      if (duplicateObj[key].percentage) {
+        delete duplicateObj[key].percentage;
+      }
+    }
+    return duplicateObj;
   };
 
-  const parseNutritionData = (nutritionArray) => {
+  // Add Food Info to User's Journal
+  const addFoodToUserJournal = ({ month, date, year }, { CALORIES }) => {
+    const storeFoodInUserRef = firebase
+      .database()
+      .ref(`users/${displayName}/foodJournal/20${year}/${month}/${date}`);
+
+    storeFoodInUserRef.push().set({
+      referenceID: fdcId,
+      name: description,
+      calories: CALORIES.value,
+    });
+  };
+
+  // Add Food Info to Food Archives if Food ID doesn't exist
+  const addFoodToArchives = (duplicateObj) => {
+    const foodArchivesRef = firebase.database().ref(`foodArchives/${fdcId}`);
+
+    // Transaction method prevents adding food to archives
+    // If it already exists
+    foodArchivesRef.transaction(
+      (currentData) => {
+        if (currentData === null) {
+          return duplicateObj;
+        } else {
+          return;
+        }
+      },
+      (error, committed, snapshot) => {
+        if (error) {
+          console.log("Transaction failed abnormally!", error);
+        } else if (!committed) {
+          console.log(`Did not save since fdcId: ${fdcId} already exists`);
+        } else {
+          console.log(`fdcId: ${fdcId} has been added to archives!`);
+        }
+      }
+    );
+  };
+
+  // Adds Nutrition Info to User's Journal and Archives
+  const addToJournal = async (dateObj, nutritionObj) => {
+    const duplicate = removeKeysForDuplicate(nutritionObj);
+    await addFoodToUserJournal(dateObj, nutritionObj);
+    await addFoodToArchives(duplicate);
+  };
+
+  // Parse through nutrition database
+  const parseNutritionData = (nutritionArray, id) => {
     let parsedObject = {
+      ID: id,
       SERVING_SIZE: { value: 100, unit: "g" },
       CALORIES: { value: null },
       TOTAL_FAT: { value: null, unit: null },
@@ -161,6 +212,7 @@ const RecipeCard = ({ recipe, RDA }) => {
 
   // TODO: create new function for converting to other units. i.e.) "cups, oz, quarts".
 
+  // Checks if serving size inputs are empty
   const checkForEmptyInputs = () => {
     if (!servingUnit && !servingSize) {
       alert("Please Input Serving Unit and Yield");
@@ -171,6 +223,7 @@ const RecipeCard = ({ recipe, RDA }) => {
     }
   };
 
+  // Toggles editing when converting serving size
   const toggleEditing = () => {
     // Don't submit data if input fields are empty
     if (isEditingServeSize && (!servingUnit || !servingSize)) {
@@ -205,7 +258,7 @@ const RecipeCard = ({ recipe, RDA }) => {
               },
             ]}
           >
-            {name}
+            {description}
           </Text>
         </View>
 
@@ -342,7 +395,7 @@ const RecipeCard = ({ recipe, RDA }) => {
           <View style={styles.oneButtonContainer}>
             <TouchableOpacity
               style={styles.addButton}
-              onPress={() => addToJournal()}
+              onPress={() => addToJournal(currentDate, totalNutrients)}
               activeOpacity="0.5"
             >
               <Text style={styles.buttonText}>Add To</Text>
