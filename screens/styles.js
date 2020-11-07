@@ -47,13 +47,21 @@ module.exports = StyleSheet.create({
     // flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
+    // backgroundColor: "grey"
   },
-  containerNutScreen: {
+  userInfoHome: {
+    position: "absolute",
+    top: "50%",
     alignItems: "center",
+    justifyContent: "space-between",
+    height: "35%",
   },
   // ==================================
   // Nutrition Card Styles
   // ==================================
+  containerNutScreen: {
+    alignItems: "center",
+  },
   percentageContainerNutScreen: {
     marginTop: "4%",
     width: "90%",
