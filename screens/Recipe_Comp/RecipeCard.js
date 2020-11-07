@@ -316,6 +316,7 @@ const RecipeCard = ({ recipe, RDA }) => {
                   <RNPickerSelect
                     selectedValue={servingUnit}
                     value={servingUnit}
+                    placeholder={{}}
                     style={{
                       ...pickerSelectStyles,
                     }}
