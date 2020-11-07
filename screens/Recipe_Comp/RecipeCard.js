@@ -499,8 +499,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginHorizontal: 4,
     padding: 4,
-    fontSize: 22,
-    width: 90,
+    fontSize: 20,
+    width: 80,
   },
   // ==========
   // Date Buttons
@@ -519,8 +519,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginHorizontal: 4,
     padding: 4,
-    fontSize: 22,
-    width: 40,
+    fontSize: 20,
+    width: 35,
   },
   buttonText: {
     textAlign: "center",
@@ -537,7 +537,7 @@ const pickerSelectStyles = StyleSheet.create({
     textAlign: "center",
     marginHorizontal: 4,
     padding: 4,
-    fontSize: 22,
+    fontSize: 20,
     width: 50,
   },
   inputAndroid: {
@@ -549,7 +549,7 @@ const pickerSelectStyles = StyleSheet.create({
     textAlign: "center",
     marginHorizontal: 4,
     padding: 4,
-    fontSize: 22,
+    fontSize: 20,
     width: 40,
   },
 });
