@@ -16,6 +16,7 @@ import "firebase/firestore";
 import firebase from "firebase";
 import styles from "./styles.js";
 import { Fontisto, AntDesign } from "@expo/vector-icons";
+import FadeInView from "./Animation_View_Comps/AuthView.js";
 
 class SignUpScreen extends React.Component {
   state = {
@@ -79,94 +80,88 @@ class SignUpScreen extends React.Component {
       >
         <SafeAreaView style={styles.containerSignIn}>
           <KeyboardAvoidingView style={styles.SignIn}>
-            <Text style={styles.title}>NUTRIFIC</Text>
-            <View style={styles.formSignIn}>
-              <View style={styles.inputSignInContainer}>
-                <AntDesign name="user" size={30} color="#B1B1B1"></AntDesign>
-                <TextInput
-                  style={styles.inputSignIn}
-                  placeholder="Full Name"
-                  autoCapitalize="none"
-                  placeholderTextColor="#B1B1B1"
-                  color="#B1B1B1"
-                  returnKeyType="next"
-                  textContentType="name"
-                  value={this.state.displayName}
-                  onChangeText={(displayName) => this.setState({ displayName })}
-                />
-              </View>
+            <FadeInView>
+              <Text style={styles.title}>NUTRIFIC</Text>
+              <View style={styles.formSignIn}>
+                <View style={styles.inputSignInContainer}>
+                  <AntDesign name="user" size={30} color="#B1B1B1"></AntDesign>
+                  <TextInput
+                    style={styles.inputSignIn}
+                    placeholder="Full Name"
+                    autoCapitalize="none"
+                    placeholderTextColor="#B1B1B1"
+                    color="#B1B1B1"
+                    returnKeyType="next"
+                    textContentType="name"
+                    value={this.state.displayName}
+                    onChangeText={(displayName) =>
+                      this.setState({ displayName })
+                    }
+                  />
+                </View>
 
-              <View style={styles.inputSignInContainer}>
-                <Fontisto name="email" size={30} color="#B1B1B1"></Fontisto>
-                <TextInput
-                  style={styles.inputSignIn}
-                  placeholder="E-mail"
-                  autoCapitalize="none"
-                  placeholderTextColor="#B1B1B1"
-                  color="#B1B1B1"
-                  returnKeyType="next"
-                  keyboardType="email-address"
-                  textContentType="emailAddress"
-                  value={this.state.email}
-                  onChangeText={(email) => this.setState({ email })}
-                />
-              </View>
+                <View style={styles.inputSignInContainer}>
+                  <Fontisto name="email" size={30} color="#B1B1B1"></Fontisto>
+                  <TextInput
+                    style={styles.inputSignIn}
+                    placeholder="E-mail"
+                    autoCapitalize="none"
+                    placeholderTextColor="#B1B1B1"
+                    color="#B1B1B1"
+                    returnKeyType="next"
+                    keyboardType="email-address"
+                    textContentType="emailAddress"
+                    value={this.state.email}
+                    onChangeText={(email) => this.setState({ email })}
+                  />
+                </View>
 
-              <View style={styles.inputSignInContainer}>
-                <AntDesign name="lock" size={30} color="#B1B1B1"></AntDesign>
-                <TextInput
-                  style={styles.inputSignIn}
-                  placeholder="Password"
-                  autoCapitalize="none"
-                  placeholderTextColor="#B1B1B1"
-                  color="#B1B1B1"
-                  returnKeyType="done"
-                  textContentType="newPassword"
-                  secureTextEntry={true}
-                  value={this.state.password}
-                  onChangeText={(password) => this.setState({ password })}
-                />
-              </View>
+                <View style={styles.inputSignInContainer}>
+                  <AntDesign name="lock" size={30} color="#B1B1B1"></AntDesign>
+                  <TextInput
+                    style={styles.inputSignIn}
+                    placeholder="Password"
+                    autoCapitalize="none"
+                    placeholderTextColor="#B1B1B1"
+                    color="#B1B1B1"
+                    returnKeyType="done"
+                    textContentType="newPassword"
+                    secureTextEntry={true}
+                    value={this.state.password}
+                    onChangeText={(password) => this.setState({ password })}
+                  />
+                </View>
 
-              {this.renderLoading()}
-              <Text
-                style={{
-                  fontSize: 12,
-                  textAlign: "center",
-                  color: "red",
-                  width: "85%",
-                }}
-              >
-                {this.state.error}
-              </Text>
-
-              <TouchableOpacity
-                style={styles.signInButton}
-                onPress={() => this.signInWithEmail()}
-              >
-                <Text
-                  style={{ fontWeight: "500", fontSize: 20, color: "white" }}
-                >
-                  Sign Up
-                </Text>
-              </TouchableOpacity>
-              <View>
+                {this.renderLoading()}
                 <Text
                   style={{
-                    fontWeight: "200",
-                    fontSize: 17,
+                    fontSize: 12,
                     textAlign: "center",
-                    color: "white",
-                    margin: 20,
-                  }}
-                  onPress={() => {
-                    this.props.navigation.navigate("SignIn");
+                    color: "red",
+                    width: "85%",
                   }}
                 >
-                  Already have an account?
+                  {this.state.error}
                 </Text>
+
+                <TouchableOpacity
+                  style={styles.signInButton}
+                  onPress={() => this.signInWithEmail()}
+                >
+                  <Text style={styles.signInButtonText}>Sign Up</Text>
+                </TouchableOpacity>
+                <View>
+                  <Text
+                    style={[styles.authOptionsText, { margin: 20 }]}
+                    onPress={() => {
+                      this.props.navigation.navigate("SignIn");
+                    }}
+                  >
+                    Already have an account?
+                  </Text>
+                </View>
               </View>
-            </View>
+            </FadeInView>
           </KeyboardAvoidingView>
         </SafeAreaView>
       </TouchableWithoutFeedback>

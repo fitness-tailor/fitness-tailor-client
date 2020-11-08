@@ -22,6 +22,9 @@ import {
   Inter_600SemiBold,
   Inter_400Regular,
 } from "@expo-google-fonts/inter";
+import { OpenSans_600SemiBold } from "@expo-google-fonts/open-sans";
+import { Montserrat_600SemiBold } from "@expo-google-fonts/montserrat";
+import { Lato_300Light } from "@expo-google-fonts/lato";
 
 // TODO: Replace the following with your app's Firebase project configuration
 const firebaseConfig = {
@@ -56,6 +59,9 @@ const App = () => {
   let [fontsLoaded] = useFonts({
     Inter_600SemiBold,
     Inter_400Regular,
+    OpenSans_600SemiBold,
+    Montserrat_600SemiBold,
+    Lato_300Light,
   });
 
   if (!fontsLoaded) {
