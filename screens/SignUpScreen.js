@@ -49,8 +49,8 @@ class SignUpScreen extends React.Component {
       .then((result) => {
         const user = firebase.auth().currentUser;
         return user.updateProfile({
-          displayName: this.state.displayName
-        })
+          displayName: this.state.displayName,
+        });
       })
       .then(this.onLoginSuccess.bind(this))
       .catch((error) => {
@@ -78,9 +78,7 @@ class SignUpScreen extends React.Component {
       >
         <SafeAreaView style={styles.containerSignIn}>
           <KeyboardAvoidingView style={styles.SignIn}>
-            <Text style= {styles.title}>
-              NUTRIFIC
-            </Text>
+            <Text style={styles.title}>NUTRIFIC</Text>
             <View style={styles.formSignIn}>
               <TextInput
                 style={styles.inputSignIn}
@@ -117,41 +115,50 @@ class SignUpScreen extends React.Component {
                 onChangeText={(password) => this.setState({ password })}
               />
 
-            {this.renderLoading()}
-            <Text
-              style={{
-                fontSize: 12,
-                textAlign: "center",
-                color: "red",
-                width: "85%",
-              }}
-            >
-              {this.state.error}
-            </Text>
-
-            <TouchableOpacity
-              style={styles.signInButton}
-              onPress={() => this.signInWithEmail()}
-            >
-              <Text style={{ fontWeight: "500", fontSize: 20, color: "white" }}>Sign Up</Text>
-            </TouchableOpacity>
-            </View>
-
-            <View style={{ marginTop: 10 }}>
+              {this.renderLoading()}
               <Text
-                style={{ fontWeight: "200", fontSize: 17, textAlign: "center", color: "white", margin: 20}}
-                onPress={() => {
-                  this.props.navigation.navigate("SignIn");
+                style={{
+                  fontSize: 12,
+                  textAlign: "center",
+                  color: "red",
+                  width: "85%",
                 }}
               >
-                Already have an account?
+                {this.state.error}
               </Text>
+
+              <TouchableOpacity
+                style={styles.signInButton}
+                onPress={() => this.signInWithEmail()}
+              >
+                <Text
+                  style={{ fontWeight: "500", fontSize: 20, color: "white" }}
+                >
+                  Sign Up
+                </Text>
+              </TouchableOpacity>
+              <View>
+                <Text
+                  style={{
+                    fontWeight: "200",
+                    fontSize: 17,
+                    textAlign: "center",
+                    color: "white",
+                    margin: 20,
+                  }}
+                  onPress={() => {
+                    this.props.navigation.navigate("SignIn");
+                  }}
+                >
+                  Already have an account?
+                </Text>
+              </View>
             </View>
           </KeyboardAvoidingView>
         </SafeAreaView>
       </TouchableWithoutFeedback>
     );
   }
-};
+}
 
 export default SignUpScreen;
