@@ -14,7 +14,7 @@ import {
 import "firebase/firestore";
 import firebase from "firebase";
 import styles from "./styles.js";
-import { Fontisto } from "@expo/vector-icons";
+import { Fontisto, AntDesign } from "@expo/vector-icons";
 
 class SignInScreen extends React.Component {
   state = {
@@ -96,7 +96,7 @@ class SignInScreen extends React.Component {
                 />
               </View>
               <View style={styles.inputSignInContainer}>
-                <Fontisto name="email" size={30} color="#B1B1B1"></Fontisto>
+                <AntDesign name="lock" size={30} color="#B1B1B1"></AntDesign>
                 <TextInput
                   style={styles.inputSignIn}
                   placeholder="Password"
@@ -130,7 +130,7 @@ class SignInScreen extends React.Component {
                 <Text
                   style={{ fontWeight: "500", fontSize: 20, color: "white" }}
                 >
-                  Sign In
+                  Log In
                 </Text>
               </TouchableOpacity>
               <View>

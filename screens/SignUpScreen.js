@@ -15,6 +15,7 @@ import {
 import "firebase/firestore";
 import firebase from "firebase";
 import styles from "./styles.js";
+import { Fontisto, AntDesign } from "@expo/vector-icons";
 
 class SignUpScreen extends React.Component {
   state = {
@@ -80,40 +81,52 @@ class SignUpScreen extends React.Component {
           <KeyboardAvoidingView style={styles.SignIn}>
             <Text style={styles.title}>NUTRIFIC</Text>
             <View style={styles.formSignIn}>
-              <TextInput
-                style={styles.inputSignIn}
-                placeholder="Full Name"
-                autoCapitalize="none"
-                placeholderTextColor="#B1B1B1"
-                color="#B1B1B1"
-                returnKeyType="next"
-                textContentType="name"
-                value={this.state.displayName}
-                onChangeText={(displayName) => this.setState({ displayName })}
-              />
-              <TextInput
-                style={styles.inputSignIn}
-                placeholder="E-mail Address"
-                autoCapitalize="none"
-                placeholderTextColor="#B1B1B1"
-                color="#B1B1B1"
-                returnKeyType="next"
-                keyboardType="email-address"
-                textContentType="emailAddress"
-                value={this.state.email}
-                onChangeText={(email) => this.setState({ email })}
-              />
-              <TextInput
-                style={styles.inputSignIn}
-                placeholder="Password"
-                autoCapitalize="none"
-                placeholderTextColor="#B1B1B1"
-                returnKeyType="done"
-                textContentType="newPassword"
-                secureTextEntry={true}
-                value={this.state.password}
-                onChangeText={(password) => this.setState({ password })}
-              />
+              <View style={styles.inputSignInContainer}>
+                <AntDesign name="user" size={30} color="#B1B1B1"></AntDesign>
+                <TextInput
+                  style={styles.inputSignIn}
+                  placeholder="Full Name"
+                  autoCapitalize="none"
+                  placeholderTextColor="#B1B1B1"
+                  color="#B1B1B1"
+                  returnKeyType="next"
+                  textContentType="name"
+                  value={this.state.displayName}
+                  onChangeText={(displayName) => this.setState({ displayName })}
+                />
+              </View>
+
+              <View style={styles.inputSignInContainer}>
+                <Fontisto name="email" size={30} color="#B1B1B1"></Fontisto>
+                <TextInput
+                  style={styles.inputSignIn}
+                  placeholder="E-mail"
+                  autoCapitalize="none"
+                  placeholderTextColor="#B1B1B1"
+                  color="#B1B1B1"
+                  returnKeyType="next"
+                  keyboardType="email-address"
+                  textContentType="emailAddress"
+                  value={this.state.email}
+                  onChangeText={(email) => this.setState({ email })}
+                />
+              </View>
+
+              <View style={styles.inputSignInContainer}>
+                <AntDesign name="lock" size={30} color="#B1B1B1"></AntDesign>
+                <TextInput
+                  style={styles.inputSignIn}
+                  placeholder="Password"
+                  autoCapitalize="none"
+                  placeholderTextColor="#B1B1B1"
+                  color="#B1B1B1"
+                  returnKeyType="done"
+                  textContentType="newPassword"
+                  secureTextEntry={true}
+                  value={this.state.password}
+                  onChangeText={(password) => this.setState({ password })}
+                />
+              </View>
 
               {this.renderLoading()}
               <Text

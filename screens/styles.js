@@ -24,7 +24,7 @@ module.exports = StyleSheet.create({
     justifyContent: "center",
   },
   formSignIn: {
-    top: "5%",
+    top: "10%",
     width: "80%",
   },
   inputSignInContainer: {
@@ -34,10 +34,11 @@ module.exports = StyleSheet.create({
     alignItems: "center",
     borderRadius: 50,
     paddingHorizontal: 20,
-    paddingVertical: 15,
+    paddingVertical: 10,
+    marginBottom: 20,
   },
   inputSignIn: {
-    fontSize: 18,
+    fontSize: 22,
     borderColor: "white",
     marginHorizontal: "4%",
     borderLeftWidth: 1,
