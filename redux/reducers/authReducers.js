@@ -1,9 +1,11 @@
 let initialState = {
   isLoading: false,
-  error: "",
+  isProfPicLoading: false,
   user: {},
+  error: "",
   gender: "",
-  profilePic: "",
+  profilePic: null,
+  errFetchingProfPic: false,
 };
 
 const authReducers = (state = initialState, action) => {
@@ -26,17 +28,37 @@ const authReducers = (state = initialState, action) => {
         error: action.payload,
       };
 
+    case "FETCH_PROFILE_PIC":
+      return {
+        ...state,
+        isProfPicLoading: true,
+      };
+    case "FETCH_PROFILE_PIC_SUCCESS":
+      return {
+        ...state,
+        isProfPicLoading: false,
+        errFetchingProfPic: false,
+        profilePic: action.payload,
+      };
+    case "FETCH_PROFILE_PIC_ERROR":
+      return {
+        ...state,
+        isProfPicLoading: false,
+        profilePic: null,
+        errFetchingProfPic: true,
+      };
+
     case "STORE_GENDER":
       return {
         ...state,
         gender: action.payload,
       };
 
-    case "STORE_PROFILE_PIC":
-      return {
-        ...state,
-        profilePic: action.payload,
-      };
+    // case "STORE_PROFILE_PIC":
+    //   return {
+    //     ...state,
+    //     profilePic: action.payload,
+    //   };
 
     default:
       return state;

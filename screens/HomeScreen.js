@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
+import { AppLoading } from "expo";
 import firebase from "firebase";
 import {
   StyleSheet,
@@ -9,8 +10,9 @@ import {
   Button,
   Image,
   TouchableOpacity,
+  Alert,
 } from "react-native";
-import { getUserAuth, fetchProfilePic } from "../redux/actions/authActions.js";
+import { getUserAuth, getProfilePic } from "../redux/actions/authActions.js";
 import { storeRDA } from "../redux/actions/recipeListActions.js";
 import { LinearGradient } from "expo-linear-gradient";
 import * as ImagePicker from "expo-image-picker";
@@ -36,24 +38,28 @@ const HomeScreen = (props) => {
 
   useEffect(() => {
     props.fetchUser(props.user.displayName);
-    props.fetchRDA(props.gender);
     if (props.user.displayName) {
-      props.fetchProfilePic(props.user.displayName);
+      props.getProfilePic(props.user);
     }
-  }, [props.user.displayName, props.gender]);
+  }, [props.user]);
 
   useEffect(() => {
-    if (props.profilePic) setImage(props.profilePic);
+    props.fetchRDA(props.gender);
+  }, [props.gender]);
+
+  useEffect(() => {
+    if (props.profilePic) {
+      setImage(props.profilePic);
+    }
   }, [props.profilePic]);
 
-  const uploadProfilePic = async (imageURI, name) => {
+  const uploadProfilePic = async (imageURI, { uid, displayName }) => {
     const response = await fetch(imageURI);
     const blob = await response.blob();
-    let ref = firebase
+    let profilePicRef = firebase
       .storage()
-      .ref()
-      .child("profilePic/" + name);
-    return ref.put(blob);
+      .ref(`users/${uid}_${displayName}/profilePic`);
+    return profilePicRef.put(blob);
   };
 
   const pickProfilePic = async () => {
@@ -65,10 +71,10 @@ const HomeScreen = (props) => {
     });
 
     if (!result.cancelled) {
-      setImage(result.uri);
-      uploadProfilePic(result.uri, props.user.displayName)
+      uploadProfilePic(result.uri, props.user)
         .then(() => {
-          Alert.alert("Successfully Updated Pic to Firebase");
+          Alert.alert("Profile Pic stored to Database");
+          setImage(result.uri);
         })
         .catch((error) => {
           Alert.alert(error);
@@ -94,6 +100,11 @@ const HomeScreen = (props) => {
       }}
     />
   );
+
+  let profilePicError =
+    props.errFetchingProfPic === true
+      ? Alert.alert("Error getting your profile pics")
+      : null;
 
   return (
     <LinearGradient
@@ -125,6 +136,7 @@ const HomeScreen = (props) => {
             onPress={pickProfilePic}
           >
             <View>{profilePic}</View>
+            {profilePicError}
           </TouchableOpacity>
 
           <View style={styles.userInfoHome}>
@@ -196,18 +208,20 @@ const HomeScreen = (props) => {
 
 const mapStateToProps = (state) => ({
   isLoading: state.auth.isLoading,
+  isProfPicLoading: state.auth.isProfPicLoading,
   user: state.auth.user,
   error: state.auth.error,
   gender: state.auth.gender,
   RDA: state.recipeList.RDA,
   profilePic: state.auth.profilePic,
+  errFetchingProfPic: state.auth.errFetchingProfPic,
 });
 
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchUser: (name) => dispatch(getUserAuth(name)),
     fetchRDA: (gender) => dispatch(storeRDA(gender)),
-    fetchProfilePic: (name) => dispatch(fetchProfilePic(name)),
+    getProfilePic: (name) => dispatch(getProfilePic(name)),
   };
 };
 
