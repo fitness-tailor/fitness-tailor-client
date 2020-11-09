@@ -549,6 +549,7 @@ const styles = StyleSheet.create({
   servingInputBox: {
     borderWidth: 1,
     borderColor: "white",
+    color: "white",
     textAlign: "center",
     marginHorizontal: 4,
     padding: 4,
@@ -569,6 +570,7 @@ const styles = StyleSheet.create({
   dateInputBox: {
     borderWidth: 1,
     borderColor: "white",
+    color: "white",
     textAlign: "center",
     marginHorizontal: 4,
     padding: 4,
