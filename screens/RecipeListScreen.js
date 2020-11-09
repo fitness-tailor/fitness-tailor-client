@@ -16,8 +16,8 @@ import styles from "./styles.js";
 // Recipe List Component
 const RecipeListScreen = (props) => {
   return (
-    <KeyboardAwareScrollView>
-      <SafeAreaView style={styles.containerRecipeList}>
+    <KeyboardAwareScrollView style={styles.containerRecipeList}>
+      <SafeAreaView >
         <ScrollView style={styles.scrollViewRecipeList}>
           <View style={styles.searchContainerRecipeList}>
             <RecipeFinder />

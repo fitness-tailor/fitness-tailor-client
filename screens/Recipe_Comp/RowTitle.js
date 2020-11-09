@@ -5,15 +5,15 @@ const RowTitle = (props) => {
   return (
     <View style={styles.nutritionRow}>
       <View style={styles.nutrientTitle}>
-        <Text style={[styles.recipeFont, styles.baseText]}>Name</Text>
+        <Text style={[styles.recipeFont]}>Name</Text>
       </View>
 
       <View style={styles.nutrientAmount}>
-        <Text style={[styles.recipeFont, styles.baseText]}>DV</Text>
+        <Text style={[styles.recipeFont]}>DV</Text>
       </View>
 
       <View style={styles.nutrientPercentage}>
-        <Text style={[styles.recipeFont, styles.baseText]}>% DV</Text>
+        <Text style={[styles.recipeFont]}>% DV</Text>
       </View>
     </View>
   );
@@ -22,11 +22,6 @@ const RowTitle = (props) => {
 export default RowTitle;
 
 const styles = StyleSheet.create({
-  fontSize: { fontSize: 18 },
-  boldFont: { fontWeight: "bold" },
-  normalFont: { fontWeight: "normal" },
-  centeredText: { textAlign: "center" },
-  baseText: { fontFamily: "Menlo" },
   bottomPadding: { paddingBottom: 2 },
   recipeFont: {
     fontSize: 20,

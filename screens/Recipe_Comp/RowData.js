@@ -26,15 +26,15 @@ const RowData = ({ id, nutValue, nutUnit, percentage }) => {
   return (
     <View style={styles.nutritionRow}>
       <View style={styles.nutrientTitle}>
-        <Text style={[styles.recipeFont, styles.baseText]}>{id}</Text>
+        <Text style={[styles.recipeFont]}>{id}</Text>
       </View>
 
       <View style={styles.nutrientAmount}>
-        <Text style={[styles.recipeFont, styles.baseText]}>{valueDisplay}</Text>
+        <Text style={[styles.recipeFont]}>{valueDisplay}</Text>
       </View>
 
       <View style={styles.nutrientPercentage}>
-        <Text style={[styles.recipeFont, styles.baseText]}>{percentage}</Text>
+        <Text style={[styles.recipeFont]}>{percentage}</Text>
       </View>
     </View>
   );
@@ -43,12 +43,6 @@ const RowData = ({ id, nutValue, nutUnit, percentage }) => {
 export default RowData;
 
 const styles = StyleSheet.create({
-  fontSize: { fontSize: 18 },
-  boldFont: { fontWeight: "bold" },
-  normalFont: { fontWeight: "normal" },
-  centeredText: { textAlign: "center" },
-  baseText: { fontFamily: "Menlo" },
-  bottomPadding: { paddingBottom: 2 },
   recipeFont: {
     fontSize: 17,
     textAlign: "center",

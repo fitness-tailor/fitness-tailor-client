@@ -21,18 +21,18 @@ import styles from "./styles.js";
 const HomeScreen = (props) => {
   const [image, setImage] = useState(null);
 
-  useEffect(() => {
-    (async () => {
-      if (Platform.OS !== "web") {
-        const {
-          status,
-        } = await ImagePicker.requestCameraRollPermissionsAsync();
-        if (status !== "granted") {
-          alert("Sorry, we need camera roll permissions to make this work!");
-        }
-      }
-    })();
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     if (Platform.OS !== "web") {
+  //       const {
+  //         status,
+  //       } = await ImagePicker.requestCameraRollPermissionsAsync();
+  //       if (status !== "granted") {
+  //         alert("Sorry, we need camera roll permissions to make this work!");
+  //       }
+  //     }
+  //   })();
+  // }, []);
 
   useEffect(() => {
     props.fetchUser(props.user.displayName);
@@ -109,78 +109,85 @@ const HomeScreen = (props) => {
     >
       <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.containerHome}>
+
           <TouchableOpacity
             activeOpacity={0.7}
             style={{
               backgroundColor: "#055f7d",
               height: 230,
               width: 230,
-              bottom: 120,
+              top: "13%",
+              // bottom: 50,
               borderRadius: 230 / 2,
-              position: "relative",
+              position: "absolute",
+              zIndex: 1,
             }}
             onPress={pickProfilePic}
           >
             <View>{profilePic}</View>
           </TouchableOpacity>
-          <Text
-            style={{
-              color: "#32b4be",
-              fontSize: 35,
-              textTransform: "uppercase",
-              fontFamily: "Inter_600SemiBold",
-              bottom: 65,
-            }}
-          >
-            {props.user.displayName}
-          </Text>
-          <View
-            style={{
-              borderColor: "white",
-              borderWidth: 1,
-              bottom: 215,
-              height: 120,
-              width: 240,
-              borderRadius: 20,
-              justifyContent: "center",
-              alignItems: "center",
-              position: "absolute",
-            }}
-          >
-            <Text style={{ color: "white", fontSize: 18 }}>
-              Your Caloric Goal:
+
+          <View style={styles.userInfoHome}>
+            <Text
+              style={{
+                color: "#32b4be",
+                fontSize: 35,
+                textTransform: "uppercase",
+                fontFamily: "Inter_600SemiBold",
+              }}
+            >
+              {props.user.displayName}
             </Text>
-            <Text style={{ color: "white", fontSize: 18 }}>2200</Text>
-            <Text style={{ color: "white", fontSize: 18 }}>
-              Your Caloric Intake Today:
-            </Text>
-            <Text style={{ color: "white", fontSize: 18 }}>2300</Text>
-          </View>
-          <TouchableOpacity
-            style={{
-              backgroundColor: "#055f7d",
-              width: 230,
-              height: 60,
-              top: 80,
-              borderRadius: 30 / 2,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-            activeOpacity={0.7}
-            onPress={logOut}
-          >
-            <View>
-              <Text
-                style={{
-                  fontFamily: "Inter_400Regular",
-                  color: "white",
-                  fontSize: 24,
-                }}
-              >
-                Log Out
+
+            <View
+              style={{
+                borderColor: "white",
+                borderWidth: 1,
+                // bottom: 215,
+                height: 120,
+                width: 240,
+                borderRadius: 20,
+                justifyContent: "center",
+                alignItems: "center",
+                // position: "absolute",
+              }}
+            >
+              <Text style={{ color: "white", fontSize: 18 }}>
+                Your Caloric Goal:
               </Text>
+              <Text style={{ color: "white", fontSize: 18 }}>2200</Text>
+              <Text style={{ color: "white", fontSize: 18 }}>
+                Your Caloric Intake Today:
+              </Text>
+              <Text style={{ color: "white", fontSize: 18 }}>2300</Text>
             </View>
-          </TouchableOpacity>
+
+            <TouchableOpacity
+              style={{
+                backgroundColor: "#055f7d",
+                width: 230,
+                height: 60,
+                borderRadius: 30 / 2,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+              activeOpacity={0.7}
+              onPress={logOut}
+            >
+              <View>
+                <Text
+                  style={{
+                    fontFamily: "Inter_400Regular",
+                    color: "white",
+                    fontSize: 24,
+                  }}
+                >
+                  Log Out
+                </Text>
+              </View>
+            </TouchableOpacity>
+          </View>
+
         </View>
       </SafeAreaView>
     </LinearGradient>

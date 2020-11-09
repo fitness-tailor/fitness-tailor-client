@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 
 module.exports = StyleSheet.create({
+
   containerHome: {
     flex: 1,
     alignItems: "center",
@@ -72,12 +73,29 @@ module.exports = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  containerNutScreen: {
+  // ==================================
+  // Home Style
+  // ==================================
+  containerHome: {
+    flex: 1,
+    // flexDirection: "column",
     alignItems: "center",
+    justifyContent: "center",
+    // backgroundColor: "grey"
+  },
+  userInfoHome: {
+    position: "absolute",
+    top: "50%",
+    alignItems: "center",
+    justifyContent: "space-between",
+    height: "35%",
   },
   // ==================================
   // Nutrition Card Styles
   // ==================================
+  containerNutScreen: {
+    alignItems: "center",
+  },
   percentageContainerNutScreen: {
     marginTop: "4%",
     width: "90%",
@@ -154,23 +172,25 @@ module.exports = StyleSheet.create({
   // Recipe List Screen
   // ==================================
   containerRecipeList: {
-    alignItems: "center",
+    // alignItems: "center",
     width: "100%",
+    backgroundColor: 'rgb(37, 93, 120)',
   },
   scrollViewRecipeList: {
-    paddingHorizontal: "4%",
+    paddingHorizontal: "5%",
     padding: 0,
   },
   searchContainerRecipeList: {
     minWidth: "100%",
   },
   cardsContainerRecipeList: {
-    marginTop: "6%",
+    marginTop: "5%",
     alignItems: "center",
+    // backgroundColor: "black",
   },
   messageContainerRecipeList: {
-    padding: 5,
-    margin: 5,
+    // padding: 5,
+    // margin: 5,
   },
   errorMessageRecipeList: {
     fontSize: 20,
@@ -179,10 +199,10 @@ module.exports = StyleSheet.create({
     color: "red",
   },
   oneCardContainerRecipeList: {
-    borderWidth: 1,
+    // borderWidth: 1,
     marginBottom: "5%",
-    width: "100%",
-    borderRadius: 10,
+    // width: "100%",
+    // borderRadius: 10,
   },
   // ==================================
   // NutritionScreen

@@ -248,13 +248,11 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
         <View style={styles.recipeName}>
           <Text
             style={[
-              styles.boldFont,
               {
-                fontFamily: "Menlo",
                 fontSize: 24,
+                color: "white",
                 textAlign: "center",
                 paddingVertical: 4,
-                paddingHorizontal: 10,
               },
             ]}
           >
@@ -262,7 +260,7 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
           </Text>
         </View>
 
-        <View style={{ width: "100%", backgroundColor: "#E9DFF6" }}>
+        <View style={{ width: "100%", backgroundColor: "white" }}>
           <RowTitle />
 
           <RowData
@@ -344,16 +342,6 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
 
         <View style={styles.buttonsContainer}>
           <View style={styles.oneButtonContainer}>
-            <TouchableOpacity
-              style={styles.editButton}
-              onPress={toggleEditing}
-              activeOpacity="0.5"
-            >
-              <Text style={styles.buttonText}>
-                {!isEditingServeSize ? "Convert" : "Done?"}
-              </Text>
-            </TouchableOpacity>
-
             <View style={styles.editDisplay}>
               <Text style={styles.buttonText}>Serving Size</Text>
 
@@ -368,38 +356,43 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
                   style={{
                     flexDirection: "row",
                     justifyContent: "center",
-                    alignItems: "center",
-                    width: "75%",
                   }}
                 >
                   <TextInput
                     style={styles.servingInputBox}
                     value={servingSize}
                     placeholder={`${servingSize}`}
-                    placeholderTextColor="#696969"
+                    placeholderTextColor="white"
                     keyboardType={"numeric"}
                     onChangeText={(val) => setServingSize(val)}
                   />
                   <RNPickerSelect
                     selectedValue={servingUnit}
+                    value={servingUnit}
                     placeholder={{}}
-                    style={pickerStyles}
+                    style={{
+                      ...pickerSelectStyles,
+                    }}
                     onValueChange={(unit) => setServingUnit(unit)}
                     items={unitList}
                   />
                 </View>
               )}
             </View>
+            <TouchableOpacity
+
+              style={styles.addButton}
+              onPress={() => addToJournal(currentDate, totalNutrients)}
+
+              activeOpacity="0.5"
+            >
+              <Text style={styles.buttonText}>
+                {!isEditingServeSize ? "Convert Unit" : "Done"}
+              </Text>
+            </TouchableOpacity>
           </View>
 
           <View style={styles.oneButtonContainer}>
-            <TouchableOpacity
-              style={styles.addButton}
-              onPress={() => addToJournal(currentDate, totalNutrients)}
-              activeOpacity="0.5"
-            >
-              <Text style={styles.buttonText}>Add To</Text>
-            </TouchableOpacity>
 
             <View style={styles.editDisplay}>
               <Text style={styles.buttonText}>Date</Text>
@@ -409,38 +402,37 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
                   flexDirection: "row",
                   justifyContent: "center",
                   alignItems: "center",
-                  width: "75%",
                 }}
               >
                 <TextInput
                   style={styles.dateInputBox}
                   value={month}
                   placeholder={`${month}`}
-                  placeholderTextColor="#000000"
+                  placeholderTextColor="white"
                   keyboardType={"numeric"}
                   maxLength={2}
                   onChangeText={(val) =>
                     setCurrentDate({ month: val, date, year })
                   }
                 />
-                <Text style={{ fontSize: 24 }}>/</Text>
+                <Text style={{ fontSize: 24, color: "white" }}>/</Text>
                 <TextInput
                   style={styles.dateInputBox}
                   value={date}
                   placeholder={`${date}`}
-                  placeholderTextColor="#000000"
+                  placeholderTextColor="white"
                   keyboardType={"numeric"}
                   maxLength={2}
                   onChangeText={(val) =>
                     setCurrentDate({ month, date: val, year })
                   }
                 />
-                <Text style={{ fontSize: 24 }}>/</Text>
+                <Text style={{ fontSize: 24, color: "white" }}>/</Text>
                 <TextInput
                   style={styles.dateInputBox}
                   value={year}
                   placeholder={`${year}`}
-                  placeholderTextColor="#000000"
+                  color="white"
                   keyboardType={"numeric"}
                   maxLength={2}
                   onChangeText={(val) =>
@@ -449,6 +441,14 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
                 />
               </View>
             </View>
+            <TouchableOpacity
+              style={styles.addButton}
+              onPress={() => addToJournal()}
+              activeOpacity="0.5"
+            >
+              <Text style={styles.buttonText}>Add To Journal</Text>
+            </TouchableOpacity>
+
           </View>
         </View>
       </View>
@@ -464,20 +464,14 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, null)(RecipeCard);
 
 const styles = StyleSheet.create({
-  fontSize: { fontSize: 18 },
-  boldFont: { fontWeight: "bold" },
-  normalFont: { fontWeight: "normal" },
-  centeredText: { textAlign: "center" },
-  baseText: { fontFamily: "Menlo" },
-  bottomPadding: { paddingBottom: 2 },
   container: {
     width: "100%",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    borderWidth: 1,
+    // borderWidth: 1,
     borderRadius: 10,
-    backgroundColor: "#C8E8C4",
+    backgroundColor: 'rgb(22, 66, 92)',
   },
   recipeContainer: {
     alignItems: "center",
@@ -534,6 +528,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     marginTop: "3%",
     marginBottom: "5%",
+    // backgroundColor: 'rgb(254, 90, 90)',
   },
   oneButtonContainer: {
     flex: 1,
@@ -543,8 +538,8 @@ const styles = StyleSheet.create({
     marginHorizontal: "5%",
     marginTop: "5%",
     marginBottom: "2%",
-    backgroundColor: "limegreen",
-    borderWidth: 2,
+    backgroundColor: 'rgb(37, 93, 120)',
+    // borderWidth: 2,
     borderRadius: 10,
   },
   editDisplay: {
@@ -556,12 +551,12 @@ const styles = StyleSheet.create({
   },
   servingInputBox: {
     borderWidth: 1,
-    borderColor: "#F086A3",
+    borderColor: "white",
     textAlign: "center",
     marginHorizontal: 4,
     padding: 4,
-    fontSize: 22,
-    width: 90,
+    fontSize: 20,
+    width: 80,
   },
   // ==========
   // Date Buttons
@@ -570,47 +565,47 @@ const styles = StyleSheet.create({
     padding: "4%",
     margin: "5%",
     marginBottom: "2%",
-    backgroundColor: "deepskyblue",
-    borderWidth: 2,
+    backgroundColor: 'rgb(37, 93, 120)',
+    // borderWidth: 2,
     borderRadius: 10,
   },
   dateInputBox: {
     borderWidth: 1,
-    borderColor: "#F086A3",
+    borderColor: "white",
     textAlign: "center",
     marginHorizontal: 4,
     padding: 4,
-    fontSize: 22,
-    width: 40,
+    fontSize: 20,
+    width: 35,
   },
   buttonText: {
     textAlign: "center",
-    fontFamily: "Menlo",
-    fontWeight: "bold",
-    fontSize: 20,
-    color: "#000000",
+    fontSize: 18,
+    color: "white",
   },
 });
 
-const pickerStyles = StyleSheet.create({
+const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
     borderWidth: 1,
-    borderColor: "#F086A3",
+    borderColor: "white",
+    color: "white",
     textAlign: "center",
     marginHorizontal: 4,
     padding: 4,
-    fontSize: 22,
+    fontSize: 20,
     width: 50,
   },
   inputAndroid: {
     // Copied code of docs
     // TODO: Make styles responsive to androids
     borderWidth: 1,
-    borderColor: "#F086A3",
+    borderColor: "white",
+    color: "white",
     textAlign: "center",
     marginHorizontal: 4,
     padding: 4,
-    fontSize: 22,
+    fontSize: 20,
     width: 40,
   },
 });
