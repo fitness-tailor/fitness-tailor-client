@@ -2,8 +2,10 @@ import {
   FETCH_USER_AUTH,
   FETCH_USER_AUTH_SUCCESS,
   FETCH_USER_AUTH_ERROR,
+  FETCH_PROFILE_PIC,
+  FETCH_PROFILE_PIC_SUCCESS,
+  FETCH_PROFILE_PIC_ERROR,
   STORE_GENDER,
-  STORE_PROFILE_PIC,
 } from "./actionTypes.js";
 import firebase from "firebase";
 
@@ -27,6 +29,46 @@ const fetchUserAuthError = () => {
   };
 };
 
+const fetchProfilePic = () => {
+  return {
+    type: FETCH_PROFILE_PIC,
+  };
+};
+
+const fetchProfilePicSuccess = (image) => {
+  return {
+    type: FETCH_PROFILE_PIC_SUCCESS,
+    payload: image,
+  };
+};
+
+const fetchProfilePicError = () => {
+  return {
+    type: FETCH_PROFILE_PIC_ERROR,
+  };
+};
+
+export const getProfilePic = ({ uid, displayName }) => {
+  return (dispatch) => {
+    if (!!displayName) {
+      dispatch(fetchProfilePic());
+
+      let profilePicRef = firebase
+        .storage()
+        .ref(`users/${uid}_${displayName}/profilePic`);
+
+      profilePicRef
+        .getDownloadURL()
+        .then((url) => {
+          dispatch(fetchProfilePicSuccess(url));
+        })
+        .catch((error) => {
+          dispatch(fetchProfilePicError());
+        });
+    }
+  };
+};
+
 const storeGender = (gender) => {
   return {
     type: STORE_GENDER,
@@ -36,7 +78,7 @@ const storeGender = (gender) => {
 
 const fetchGender = (name) => {
   return (dispatch) => {
-    if (name) {
+    if (!!name) {
       firebase
         .database()
         .ref(`users/${name}`)
@@ -48,40 +90,14 @@ const fetchGender = (name) => {
   };
 };
 
-const storeProfilePic = (image) => {
-  return {
-    type: STORE_PROFILE_PIC,
-    payload: image,
-  };
-};
-
-export const fetchProfilePic = (name) => {
-  return (dispatch) => {
-    if (name) {
-      let ref = firebase.storage().ref(`profilePic/${name}`);
-      ref
-        .getDownloadURL()
-        .then((url) => {
-          dispatch(storeProfilePic(url));
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  };
-};
-
 export const getUserAuth = (name) => {
   return (dispatch) => {
     dispatch(fetchUserAuth());
 
-    if (name && typeof name === "string") {
-      dispatch(fetchGender(name));
-    }
-
     firebase.auth().onAuthStateChanged((user) => {
       if (user != null) {
         dispatch(fetchUserAuthSuccess(user));
+        dispatch(fetchGender(name));
       } else {
         dispatch(fetchUserAuthError());
       }
