@@ -1,16 +1,23 @@
 import { StyleSheet } from "react-native";
 
 module.exports = StyleSheet.create({
+
+  containerHome: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   title: {
-    fontSize: 32,
-    fontWeight: "700",
+    fontSize: 40,
     color: "white",
-    padding: 25,
+    textAlign: "center",
+    marginBottom: "4%",
+    fontFamily: "Montserrat_600SemiBold",
   },
   containerSignIn: {
     flex: 1,
     flexDirection: "column",
-    backgroundColor: 'rgb(22, 66, 92)',
+    backgroundColor: "rgb(22, 66, 92)",
   },
   SignIn: {
     flex: 1,
@@ -18,21 +25,48 @@ module.exports = StyleSheet.create({
     justifyContent: "center",
   },
   formSignIn: {
-    width: "70%",
+    top: "10%",
+    width: "80%",
+  },
+  inputSignInContainer: {
+    flexDirection: "row",
+    backgroundColor: "#0c3045",
+    marginBottom: 5,
+    alignItems: "center",
+    borderRadius: 50,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    marginBottom: 20,
   },
   inputSignIn: {
-    fontSize: 15,
+    fontSize: 22,
     borderColor: "white",
-    borderBottomWidth: 1,
-    paddingBottom: 1.5,
-    marginTop: 25,
+    marginHorizontal: "4%",
+    borderLeftWidth: 1,
+    width: "88%",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    backgroundColor: "#0c3045",
+    fontFamily: "OpenSans_400Regular",
   },
   signInButton: {
     alignItems: "center",
-    backgroundColor: 'rgb(37, 93, 120)',
+    backgroundColor: "rgb(37, 93, 120)",
     padding: 25,
-    borderRadius: 10,
-    marginTop: 30,
+    borderRadius: 100,
+    marginTop: 10,
+  },
+  signInButtonText: {
+    fontSize: 24,
+    color: "white",
+    fontFamily: "OpenSans_600SemiBold",
+  },
+  authOptionsText: {
+    fontWeight: "200",
+    fontSize: 20,
+    textAlign: "center",
+    color: "white",
+    fontFamily: "Lato_300Light",
   },
   containerLoading: {
     flex: 1,
@@ -84,57 +118,55 @@ module.exports = StyleSheet.create({
   containerProfile: {
     flex: 2,
     // justifyContent: "space-evenly",
-    alignItems: 'center',
-    backgroundColor: 'rgb(22, 66, 92)',
-
+    alignItems: "center",
+    backgroundColor: "rgb(22, 66, 92)",
   },
   userSumsProfile: {
-    backgroundColor: 'rgb(37, 93, 120)',
+    backgroundColor: "rgb(37, 93, 120)",
     flex: 1,
-    alignItems: 'center',
+    alignItems: "center",
     width: "100%",
-    justifyContent:'space-evenly',
+    justifyContent: "space-evenly",
   },
   userInputProfile: {
     // backgroundColor: 'blue',
     flex: 2,
     width: "90%",
-    justifyContent:'space-evenly',
+    justifyContent: "space-evenly",
     // flexDirection: 'row'
   },
   userGenderProfile: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   userActivityLevelProfile: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   userHeightProfile: {
     // backgroundColor: 'purple',
     // height: "30%",
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   userHeightNumbersProfile: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   userWeightProfile: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     // backgroundColor: 'grey',
     // height: "20%",
   },
   userWeightNumbersProfile: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   userAgeProfile: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   userAgeNumbersProfile: {
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   // ==================================
   // Recipe List Screen
@@ -178,12 +210,12 @@ module.exports = StyleSheet.create({
   containerNutScreen: {
     flex: 1,
     flexGrow: 1,
-    marginTop: 20
+    marginTop: 20,
   },
   dateNutScreen: {
-    marginTop: 50
+    marginTop: 50,
   },
   focusedNutScreen: {
-    color: 'grey'
-  }
-  });
+    color: "grey",
+  },
+});
