@@ -41,7 +41,7 @@ const HomeScreen = (props) => {
     if (props.user.displayName) {
       props.getProfilePic(props.user);
     }
-  }, []);
+  }, [props.user]);
 
   useEffect(() => {
     props.fetchRDA(props.gender);
@@ -51,7 +51,6 @@ const HomeScreen = (props) => {
     if (props.profilePic) {
       setImage(props.profilePic);
     }
-    console.log(props.errFetchingProfPic);
   }, [props.profilePic]);
 
   const uploadProfilePic = async (imageURI, { uid, displayName }) => {
