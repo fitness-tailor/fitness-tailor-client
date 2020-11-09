@@ -380,10 +380,8 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
               )}
             </View>
             <TouchableOpacity
-
               style={styles.addButton}
-              onPress={() => addToJournal(currentDate, totalNutrients)}
-
+              onPress={() => toggleEditing()}
               activeOpacity="0.5"
             >
               <Text style={styles.buttonText}>
@@ -393,7 +391,6 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
           </View>
 
           <View style={styles.oneButtonContainer}>
-
             <View style={styles.editDisplay}>
               <Text style={styles.buttonText}>Date</Text>
 
@@ -443,12 +440,11 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
             </View>
             <TouchableOpacity
               style={styles.addButton}
-              onPress={() => addToJournal()}
+              onPress={() => addToJournal(currentDate, totalNutrients)}
               activeOpacity="0.5"
             >
               <Text style={styles.buttonText}>Add To Journal</Text>
             </TouchableOpacity>
-
           </View>
         </View>
       </View>
@@ -471,7 +467,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     // borderWidth: 1,
     borderRadius: 10,
-    backgroundColor: 'rgb(22, 66, 92)',
+    backgroundColor: "rgb(22, 66, 92)",
   },
   recipeContainer: {
     alignItems: "center",
@@ -538,7 +534,7 @@ const styles = StyleSheet.create({
     marginHorizontal: "5%",
     marginTop: "5%",
     marginBottom: "2%",
-    backgroundColor: 'rgb(37, 93, 120)',
+    backgroundColor: "rgb(37, 93, 120)",
     // borderWidth: 2,
     borderRadius: 10,
   },
@@ -565,7 +561,7 @@ const styles = StyleSheet.create({
     padding: "4%",
     margin: "5%",
     marginBottom: "2%",
-    backgroundColor: 'rgb(37, 93, 120)',
+    backgroundColor: "rgb(37, 93, 120)",
     // borderWidth: 2,
     borderRadius: 10,
   },
