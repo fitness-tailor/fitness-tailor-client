@@ -42,24 +42,19 @@ const NutritionScreen = (props) => {
   }
 
   const onDatesChange = ({ startDate, endDate, focusedInput }) => {
-    setFocus(focusedInput);
+    // setFocus(focusedInput);
     setStartDate(startDate);
     displayRecipesOnDate(startDate);
+    console.log(focus)
     // setEndDate(endDate);
     // console.log(startDate)
   }
 
   const displayRecipesOnDate = (date) => {
-    // console.log(typeof startDate)
-    // console.log( startDate)
-    // console.log( "moment", moment(startDate).format("YYYY"))
-    // console.log( "moment", moment(startDate).format("MM"))
-    // console.log( "moment", moment(startDate).format("DD"))
-    // console.log(Date.parse(startDate))
 
-    let yr = moment(startDate).format("YYYY");
-    let mm = moment(startDate).format("MM");
-    let dd = moment(startDate).format("D");
+    let yr = moment(date).format("YYYY");
+    let mm = moment(date).format("MM");
+    let dd = moment(date).format("D");
 
       firebase
       .database()
@@ -73,8 +68,10 @@ const NutritionScreen = (props) => {
       })
     };
 
-  const onDateChange = ({ date }) =>
+  const onDateChange = ({ date }) => {
     setDate(date);
+    // displayRecipesOnDate(date);
+  }
 
     return (
       <SafeAreaView style={styles.containerNutScreen}>
@@ -94,7 +91,7 @@ const NutritionScreen = (props) => {
           return (
             <View>
               <Text>{recipe.name}</Text>
-              <Text>{recipe.calories}</Text>
+              <Text>{recipe.calories} calories</Text>
             </View>
           )
         })}
