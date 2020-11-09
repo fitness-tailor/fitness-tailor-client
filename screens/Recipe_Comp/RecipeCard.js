@@ -21,12 +21,12 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
   const { description, foodNutrients, fdcId } = recipe;
   const [totalNutrients, setTotalNutrients] = useState({});
   const [isEditingServeSize, setIsEditingServeSize] = useState(false);
-  const [servingSize, setServingSize] = useState(100);
+  const [servingSize, setServingSize] = useState("100");
   const [servingUnit, setServingUnit] = useState("g");
 
   const [currentDate, setCurrentDate] = useState({
-    month: new Date().getMonth() + 1,
-    date: new Date().getDate(),
+    month: String(new Date().getMonth() + 1),
+    date: String(new Date().getDate()),
     year: String(new Date().getFullYear()).substring(2),
   });
   let { month, date, year } = currentDate;
@@ -91,9 +91,9 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
 
   // Adds Nutrition Info to User's Journal and Archives
   const addToJournal = async (dateObj, nutritionObj) => {
-    const duplicate = removeKeysForDuplicate(nutritionObj);
+    const duplicateWithoutFuncs = removeKeysForDuplicate(nutritionObj);
     await addFoodToUserJournal(dateObj, nutritionObj);
-    await addFoodToArchives(duplicate);
+    await addFoodToArchives(duplicateWithoutFuncs);
   };
 
   // Parse through nutrition database
@@ -189,6 +189,7 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
 
   const handleServingSize = (size, unit) => {
     // changes value inside parsed nutrition object
+    size = Number(size);
     changePercentageOnConversion(size, unit);
     totalNutrients.SERVING_SIZE.value = size;
     totalNutrients.SERVING_SIZE.unit = unit;
@@ -232,7 +233,7 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
     } else if (isEditingServeSize) {
       handleServingSize(servingSize, servingUnit);
     }
-
+    // Toggle between editing options unless 1st case is true
     setIsEditingServeSize(!isEditingServeSize);
   };
 
@@ -409,7 +410,7 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
                   keyboardType={"numeric"}
                   maxLength={2}
                   onChangeText={(val) =>
-                    setCurrentDate({ month: val, date, year })
+                    setCurrentDate({ ...currentDate, month: val })
                   }
                 />
                 <Text style={{ fontSize: 24, color: "white" }}>/</Text>
@@ -421,7 +422,7 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
                   keyboardType={"numeric"}
                   maxLength={2}
                   onChangeText={(val) =>
-                    setCurrentDate({ month, date: val, year })
+                    setCurrentDate({ ...currentDate, date: val })
                   }
                 />
                 <Text style={{ fontSize: 24, color: "white" }}>/</Text>
@@ -433,7 +434,7 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
                   keyboardType={"numeric"}
                   maxLength={2}
                   onChangeText={(val) =>
-                    setCurrentDate({ month, date, year: val })
+                    setCurrentDate({ ...currentDate, year: val })
                   }
                 />
               </View>
@@ -548,6 +549,7 @@ const styles = StyleSheet.create({
   servingInputBox: {
     borderWidth: 1,
     borderColor: "white",
+    color: "white",
     textAlign: "center",
     marginHorizontal: 4,
     padding: 4,
@@ -568,6 +570,7 @@ const styles = StyleSheet.create({
   dateInputBox: {
     borderWidth: 1,
     borderColor: "white",
+    color: "white",
     textAlign: "center",
     marginHorizontal: 4,
     padding: 4,
