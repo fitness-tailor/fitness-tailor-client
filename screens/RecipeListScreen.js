@@ -17,7 +17,7 @@ import styles from "./styles.js";
 const RecipeListScreen = (props) => {
   return (
     <KeyboardAwareScrollView style={styles.containerRecipeList}>
-      <SafeAreaView >
+      <SafeAreaView>
         <ScrollView style={styles.scrollViewRecipeList}>
           <View style={styles.searchContainerRecipeList}>
             <RecipeFinder />
@@ -37,8 +37,8 @@ const RecipeListScreen = (props) => {
             ) : (
               props.recipes.map((recipe, key) => {
                 return (
-                  <View style={styles.oneCardContainerRecipeList}>
-                    <RecipeCard recipe={recipe} key={key} />
+                  <View key={key} style={styles.oneCardContainerRecipeList}>
+                    <RecipeCard recipe={recipe} />
                   </View>
                 );
               })
