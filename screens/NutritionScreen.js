@@ -7,11 +7,13 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  ScrollView
 } from 'react-native';
 import Dates from 'react-native-dates';
 import moment, { now } from 'moment';
 import { render } from "react-dom";
+import NutritionCard from "./Nutrition_Comp/NutritionCard.js"
 
 const NutritionScreen = (props) => {
   const [date, setDate] = useState(null);
@@ -59,17 +61,18 @@ const NutritionScreen = (props) => {
           focusedInput={focus}
           range
         />
-
-      <Text style={[styles.date, focus === 'startDate' && styles.focusedNutScreen]}>{startDate && startDate.format('LL')}</Text>
-      {recipes.map((recipe) => {
-        return (
-          <View>
-            <Text>{recipe.name}</Text>
-            <Text>{recipe.calories} calories</Text>
-          </View>
-        )
-      })}
-      </View>
+        </View>
+        <ScrollView style={styles.journalNut}>
+            <Text style={[styles.date, focus === 'startDate' && styles.focusedNutScreen]}>{startDate && startDate.format('LL')}</Text>
+            {recipes.map((recipe) => {
+              return (
+                <NutritionCard name={recipe.name} calories={recipe.calories}>
+                  {/* <Text>{recipe.name}</Text>
+                  <Text>{recipe.calories} calories</Text> */}
+                </NutritionCard>
+              )
+            })}
+          </ScrollView>
     </SafeAreaView>
   );
 };
