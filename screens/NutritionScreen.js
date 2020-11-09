@@ -1,5 +1,6 @@
 import styles from "./styles.js";
 import firebase from "firebase";
+import { connect } from "react-redux";
 import React, { useState, useEffect, Component } from 'react';
 import {
   SafeAreaView,
@@ -10,13 +11,14 @@ import {
 } from 'react-native';
 import Dates from 'react-native-dates';
 import moment, { now } from 'moment';
+import { render } from "react-dom";
 
 // export default class NutritionScreen extends Component {
 const NutritionScreen = (props) => {
   const [date, setDate] = useState(null);
   const [focus, setFocus] = useState('startDate');
   const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+  // const [endDate, setEndDate] = useState(null);
   const [recipes, setRecipes] = useState([]);
 
   // state = {
@@ -29,18 +31,10 @@ const NutritionScreen = (props) => {
 
   //add firebase functionality retrieving user foods
   // useEffect(() => {
+  //   console.log(startDate)
   //   firebase
   //     .database()
   //     .ref("users/" + props.displayName)
-  //     .on("value", function (snapshot) {
-  //       if (snapshot.val() === null) {
-  //         setHeightFeet("0");
-
-  //       } else {
-  //         setHeightFeet(snapshot.val().heightFeet);
-
-  //       }
-  //     });
   // }, []);
 
   const isDateBlocked = (date) => {
@@ -50,8 +44,34 @@ const NutritionScreen = (props) => {
   const onDatesChange = ({ startDate, endDate, focusedInput }) => {
     setFocus(focusedInput);
     setStartDate(startDate);
-    setEndDate(endDate);
+    displayRecipesOnDate(startDate);
+    // setEndDate(endDate);
+    // console.log(startDate)
   }
+
+  const displayRecipesOnDate = (date) => {
+    // console.log(typeof startDate)
+    // console.log( startDate)
+    // console.log( "moment", moment(startDate).format("YYYY"))
+    // console.log( "moment", moment(startDate).format("MM"))
+    // console.log( "moment", moment(startDate).format("DD"))
+    // console.log(Date.parse(startDate))
+
+    let yr = moment(startDate).format("YYYY");
+    let mm = moment(startDate).format("MM");
+    let dd = moment(startDate).format("D");
+
+      firebase
+      .database()
+      .ref(`users/${props.displayName}/foodJournal/${yr}/${mm}/${dd}`)
+      .on('value', (snapshot) => {
+        if(snapshot.val() === null) {
+          setRecipes([])
+        } else {
+          setRecipes(Object.values(snapshot.val()));
+        }
+      })
+    };
 
   const onDateChange = ({ date }) =>
     setDate(date);
@@ -63,17 +83,31 @@ const NutritionScreen = (props) => {
             onDatesChange={onDatesChange}
             isDateBlocked={isDateBlocked}
             startDate={startDate}
-            endDate={endDate}
+            // endDate={endDate}
             focusedInput={focus}
             range
           />
 
         {date && <Text style={styles.dateNutScreen}>{date && date.format('LL')}</Text>}
         <Text style={[styles.date, focus === 'startDate' && styles.focusedNutScreen]}>{startDate && startDate.format('LL')}</Text>
-        <Text style={[styles.date, focus === 'endDate' && styles.focusedNutScreen]}>{endDate && endDate.format('LL')}</Text>
+        {recipes.map((recipe) => {
+          return (
+            <View>
+              <Text>{recipe.name}</Text>
+              <Text>{recipe.calories}</Text>
+            </View>
+          )
+        })}
+        {/* <Text style={[styles.date, focus === 'endDate' && styles.focusedNutScreen]}>{endDate && endDate.format('LL')}</Text> */}
         </View>
       </SafeAreaView>
     );
 };
 
-export default NutritionScreen;
+
+const mapStateToProps = (state) => ({
+  displayName: state.auth.user.displayName,
+});
+
+// export default NutritionScreen;
+export default connect(mapStateToProps)(NutritionScreen);
