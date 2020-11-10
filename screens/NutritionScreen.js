@@ -21,10 +21,16 @@ const NutritionScreen = (props) => {
   const [startDate, setStartDate] = useState(null);
   // const [endDate, setEndDate] = useState(null);
   const [recipes, setRecipes] = useState([]);
+  const [totalCal, setTotalCal] = useState(0);
 
   const isDateBlocked = (date) => {
     date.isBefore(moment(), 'day');
   }
+
+  //run addCalories after every render
+  useEffect(() => {
+    addCalories();
+  })
 
   const onDatesChange = ({ startDate, endDate, focusedInput }) => {
     // setFocus(focusedInput);
@@ -33,8 +39,16 @@ const NutritionScreen = (props) => {
     // setEndDate(endDate);
   };
 
-  const displayRecipesOnDate = (date) => {
+  const addCalories = () => {
+    let calories = 0;
+    recipes.map((recipe) => {
+      calories += recipe.calories;
+    })
+    console.log(totalCal)
+    setTotalCal(calories);
+  }
 
+  const displayRecipesOnDate = (date) => {
     let yr = moment(date).format("YYYY");
     let mm = moment(date).format("MM");
     let dd = moment(date).format("D");
@@ -44,8 +58,9 @@ const NutritionScreen = (props) => {
     .on('value', (snapshot) => {
       if(snapshot.val() === null) {
         setRecipes([]);
+        setTotalCal(0);
       } else {
-        setRecipes(Object.values(snapshot.val()));
+        setRecipes(Object.values(snapshot.val()))
       }
     })
   };
@@ -65,6 +80,7 @@ const NutritionScreen = (props) => {
         </View>
         <ScrollView contentContainerStyle={styles.journalNut}>
             <Text style={[styles.date, focus === 'startDate' && styles.focusedNutScreen]}>{startDate && startDate.format('LL')}</Text>
+            <Text style={styles.totalCal}>{totalCal} Total Calories</Text>
             {recipes.map((recipe) => {
               return (
                 <NutritionCard name={recipe.name} calories={recipe.calories}>

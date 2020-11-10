@@ -232,7 +232,9 @@ module.exports = StyleSheet.create({
     margin: 5,
     // color: "grey",
   },
-
+  totalCal: {
+    fontSize: 18,
+  },
   journalNut: {
     // flex: 1,
     alignItems: "center",
