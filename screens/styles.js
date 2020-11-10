@@ -211,18 +211,10 @@ module.exports = StyleSheet.create({
     flex: 2,
     flexGrow: 1,
     flexDirection: "column",
-    // justifyContent: "center",
-    // alignContent: "center",
     backgroundColor: "white",
-    // marginTop: 20,
   },
   calendar: {
     flex: 1,
-    // backgroundColor: "blue",
-    // color: "blue",
-  },
-  dateNutScreen: {
-    // marginTop: 50,
   },
   focusedNutScreen: {
     color: "rgb(22, 66, 92)",
@@ -230,18 +222,11 @@ module.exports = StyleSheet.create({
   date: {
     fontSize: 20,
     margin: 5,
-    // color: "grey",
   },
   totalCal: {
     fontSize: 18,
   },
   journalNut: {
-    // flex: 1,
     alignItems: "center",
-    // justifyContent: "center",
-    // backgroundColor: "green",
-    // height: "50%",
-    // zIndex: 3,
-    // bottom: 100,
   },
 });

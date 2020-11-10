@@ -29,8 +29,6 @@ export default function NutritionCard(props) {
           <Text
             style={[
               styles.font,
-              // styles.centeredText,
-              // styles.normalFont,
             ]}
           >
             {props.name}
@@ -70,9 +68,7 @@ export default function NutritionCard(props) {
         >
           <Text
             style={[
-              // styles.fontSize,
               styles.editButton,
-              // styles.boldFont,
             ]}
           >
             Edit
@@ -84,9 +80,7 @@ export default function NutritionCard(props) {
         >
           <Text
             style={[
-              // styles.font,
               styles.editButton,
-              // styles.boldFont,
             ]}
           >
             Delete
@@ -102,51 +96,25 @@ const styles = StyleSheet.create({
     fontSize: 18,
     color: "white",
  },
-  // boldFont: { fontWeight: "bold" },
-  // normalFont: { fontWeight: "normal" },
-  // centeredText: { textAlign: "center" },
-  // baseText: { fontFamily: "Menlo" },
   container: {
     width: "80%",
     height: 80,
     flex: 1,
-    // flexDirection: "column",
-    // justifyContent: "center",
-    // alignItems: "center",
     borderRadius: 20,
-    // borderBottomWidth: 1,
     margin: 5,
     backgroundColor: "rgb(37, 93, 120)",
-    // color
-    // color: "white",
-    // justifyContent: "center",
   },
-  // cardDivider: {
-  //   borderRightWidth: 0.5,
-  //   // height: "100%",
-  // },
   recipeContainer: {
     flex: 1,
     justifyContent: "center",
-    // flexDirection: "column",
-    // alignItems: "center",
-    // f: "white",
   },
   // ==================================
   // Name Styles
   // ==================================
   nameContainer: {
     justifyContent: "space-around",
-    // backgroundColor: "grey",
-    // color: "white",
-    // alignContent: "space-between",
-    // flex: 1,
     flexDirection: "row",
-    // borderBottomWidth: 0.25,
     width: "100%",
-    // fontSize:
-    // paddingHorizontal: 20,
-    // paddingHorizontal: 10,
   },
   // ==================================
   // Serving Styles
@@ -187,8 +155,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     backgroundColor: "rgb(22, 66, 92)",
-    // borderWidth: 0.25,
-    // paddingVertical: 5,
     marginHorizontal: 20,
     borderRadius: 20,
   },
@@ -196,13 +162,5 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 16,
     color: "white",
-  },
-  buttonDivider: {
-    height: "100%",
-    borderWidth: 0.25,
-  },
-  deleteButton: {
-    textAlign: "center",
-    // color: "red",
   },
 });
