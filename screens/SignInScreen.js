@@ -85,7 +85,7 @@ class SignInScreen extends React.Component {
       <View
         style={{
           width: "90%",
-          height: 1,
+          height: 0,
         }}
       >
         <AuthErrorModal
