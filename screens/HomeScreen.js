@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { AppLoading } from "expo";
 import firebase from "firebase";
+import moment from 'moment';
 import {
   StyleSheet,
   Text,
@@ -11,6 +12,7 @@ import {
   Image,
   TouchableOpacity,
   Alert,
+  SnapshotViewIOSComponent,
 } from "react-native";
 import { getUserAuth, getProfilePic } from "../redux/actions/authActions.js";
 import { storeRDA } from "../redux/actions/recipeListActions.js";
@@ -22,19 +24,22 @@ import styles from "./styles.js";
 
 const HomeScreen = (props) => {
   const [image, setImage] = useState(null);
+  const [calExpenditure, setCalExpenditure] = useState(null);
+  const [calIntake, setCalIntake] = useState(null);
 
-  // useEffect(() => {
-  //   (async () => {
-  //     if (Platform.OS !== "web") {
-  //       const {
-  //         status,
-  //       } = await ImagePicker.requestCameraRollPermissionsAsync();
-  //       if (status !== "granted") {
-  //         alert("Sorry, we need camera roll permissions to make this work!");
-  //       }
-  //     }
-  //   })();
-  // }, []);
+
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS !== "web") {
+        const {
+          status,
+        } = await ImagePicker.requestCameraRollPermissionsAsync();
+        if (status !== "granted") {
+          alert("Sorry, we need camera roll permissions to make this work!");
+        }
+      }
+    })();
+  }, []);
 
   useEffect(() => {
     props.fetchUser(props.user.displayName);
@@ -52,6 +57,11 @@ const HomeScreen = (props) => {
       setImage(props.profilePic);
     }
   }, [props.profilePic]);
+
+  useEffect(() => {
+    getCalExpend();
+    getCalIntake();
+  })
 
   const uploadProfilePic = async (imageURI, { uid, displayName }) => {
     const response = await fetch(imageURI);
@@ -81,6 +91,31 @@ const HomeScreen = (props) => {
         });
     }
   };
+
+  const getCalExpend = () => {
+    firebase
+    .database()
+    .ref(`users/${props.displayName}/bmrPlusExcer`)
+    .on("value", function (snapshot) {
+      setCalExpenditure(snapshot.val());
+    })
+  };
+
+  const getCalIntake = () => {
+    let yr = moment().format("YYYY");
+    let mm = moment().format("MM");
+    let dd = moment().format("D");
+    firebase
+    .database()
+    .ref(`users/${props.displayName}/foodJournal/${yr}/${mm}/${dd}`)
+    .on("value", function(snapshot) {
+      let calories = 0;
+      Object.values(snapshot.val()).map((recipe) => {
+        calories += recipe.calories;
+      })
+      setCalIntake(calories)
+    })
+  }
 
   const logOut = () => {
     firebase.auth().signOut();
@@ -165,13 +200,13 @@ const HomeScreen = (props) => {
               }}
             >
               <Text style={{ color: "white", fontSize: 18 }}>
-                Your Caloric Goal:
+                Your Caloric Expenditure:
               </Text>
-              <Text style={{ color: "white", fontSize: 18 }}>2200</Text>
+            <Text style={{ color: "white", fontSize: 18 }}>{calExpenditure}</Text>
               <Text style={{ color: "white", fontSize: 18 }}>
                 Your Caloric Intake Today:
               </Text>
-              <Text style={{ color: "white", fontSize: 18 }}>2300</Text>
+            <Text style={{ color: "white", fontSize: 18 }}>{calIntake}</Text>
             </View>
 
             <TouchableOpacity
@@ -210,6 +245,7 @@ const mapStateToProps = (state) => ({
   isLoading: state.auth.isLoading,
   isProfPicLoading: state.auth.isProfPicLoading,
   user: state.auth.user,
+  displayName: state.auth.user.displayName,
   error: state.auth.error,
   gender: state.auth.gender,
   RDA: state.recipeList.RDA,
