@@ -16,12 +16,14 @@ import firebase from "firebase";
 import styles from "./styles.js";
 import { Fontisto, AntDesign } from "@expo/vector-icons";
 import FadeInView from "./Animation_View_Comps/AuthView.js";
+import AuthErrorModal from "./Modals/AuthErrorModal.js";
 
 class SignInScreen extends React.Component {
   state = {
     email: "",
     password: "",
     error: "",
+    errorModalVisible: false,
     loading: false,
   };
 
@@ -30,7 +32,15 @@ class SignInScreen extends React.Component {
   }
 
   onLoginFailure(errorMessage) {
-    this.setState({ error: errorMessage, loading: false });
+    this.setState({
+      error: errorMessage,
+      loading: false,
+      errorModalVisible: true,
+    });
+  }
+
+  closeErrorModal() {
+    this.setState({ errorModalVisible: false });
   }
 
   forgotPassword() {
@@ -71,6 +81,20 @@ class SignInScreen extends React.Component {
   }
 
   render() {
+    let modal = this.state.errorModalVisible ? (
+      <View
+        style={{
+          width: "90%",
+          height: 1,
+        }}
+      >
+        <AuthErrorModal
+          error={this.state.error}
+          closeErrorModal={this.closeErrorModal.bind(this)}
+        />
+      </View>
+    ) : null;
+
     return (
       <TouchableWithoutFeedback
         onPress={() => {
@@ -81,6 +105,7 @@ class SignInScreen extends React.Component {
           <KeyboardAvoidingView style={styles.SignIn}>
             <FadeInView>
               <Text style={styles.title}>NUTRIFIC</Text>
+
               <View style={styles.formSignIn}>
                 <View style={styles.inputSignInContainer}>
                   <Fontisto name="email" size={30} color="#B1B1B1"></Fontisto>
@@ -114,16 +139,7 @@ class SignInScreen extends React.Component {
                 </View>
 
                 {this.renderLoading()}
-                <Text
-                  style={{
-                    fontSize: 12,
-                    textAlign: "center",
-                    color: "red",
-                    width: "85%",
-                  }}
-                >
-                  {this.state.error}
-                </Text>
+                {modal}
 
                 <TouchableOpacity
                   style={styles.signInButton}
