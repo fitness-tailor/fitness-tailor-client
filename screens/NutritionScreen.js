@@ -44,7 +44,6 @@ const NutritionScreen = (props) => {
     recipes.map((recipe) => {
       calories += recipe.calories;
     })
-    console.log(totalCal)
     setTotalCal(calories);
   }
 
@@ -81,9 +80,9 @@ const NutritionScreen = (props) => {
         <ScrollView contentContainerStyle={styles.journalNut}>
             <Text style={[styles.date, focus === 'startDate' && styles.focusedNutScreen]}>{startDate && startDate.format('LL')}</Text>
             <Text style={styles.totalCal}>{totalCal} Total Calories</Text>
-            {recipes.map((recipe) => {
+            {recipes.map((recipe, key) => {
               return (
-                <NutritionCard name={recipe.name} calories={recipe.calories}>
+                <NutritionCard key={key} name={recipe.name} calories={recipe.calories}>
                   {/* <Text>{recipe.name}</Text>
                   <Text>{recipe.calories} calories</Text> */}
                 </NutritionCard>
