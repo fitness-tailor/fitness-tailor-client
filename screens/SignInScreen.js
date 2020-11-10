@@ -94,7 +94,6 @@ class SignInScreen extends React.Component {
       >
         <ForgotPasswordModal
           closePasswordModal={this.closePasswordModal.bind(this)}
-          forgotPassword={this.forgotPassword.bind(this)}
         />
       </View>
     ) : null;
