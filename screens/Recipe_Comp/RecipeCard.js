@@ -20,6 +20,7 @@ import RowData from "./RowData.js";
 const RecipeCard = ({ recipe, RDA, displayName }) => {
   const { description, foodNutrients, fdcId } = recipe;
   const [totalNutrients, setTotalNutrients] = useState({});
+  const [baseNutCopy, setBaseNutCopy] = useState({});
   const [isEditingServeSize, setIsEditingServeSize] = useState(false);
   const [servingSize, setServingSize] = useState("100");
   const [servingUnit, setServingUnit] = useState("g");
@@ -32,9 +33,13 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
   let { month, date, year } = currentDate;
 
   useEffect(() => {
-    // Hold Parsed Nutrition Data in state
-    let nutritionData = parseNutritionData(foodNutrients, fdcId);
+    let nutritionData = parseNutritionData(foodNutrients, fdcId, true);
+    let baseCopy = parseNutritionData(foodNutrients, fdcId);
+
+    // totalNutrients data will be shown to user
     setTotalNutrients(nutritionData);
+    // base data will be saved to archives based on user input
+    setBaseNutCopy(baseCopy);
   }, []);
 
   // Deletes Keys that firebase can't accept
@@ -97,9 +102,10 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
   };
 
   // Parse through nutrition database
-  const parseNutritionData = (nutritionArray, id) => {
+  const parseNutritionData = (nutritionArray, id, allowPercentages = false) => {
     let parsedObject = {
       ID: id,
+      NAME: description,
       SERVING_SIZE: { value: 100, unit: "g" },
       CALORIES: { value: null },
       TOTAL_FAT: { value: null, unit: null },
@@ -172,7 +178,8 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
       }
     }
 
-    addPercentagesKey(parsedObject);
+    if (allowPercentages) addPercentagesKey(parsedObject);
+
     return parsedObject;
   };
 
@@ -188,7 +195,7 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
   };
 
   const handleServingSize = (size, unit) => {
-    // changes value inside parsed nutrition object
+    // changes nutrition value relative to serving size
     size = Number(size);
     changePercentageOnConversion(size, unit);
     totalNutrients.SERVING_SIZE.value = size;
