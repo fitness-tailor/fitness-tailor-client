@@ -38,25 +38,15 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
 
     // totalNutrients data will be shown to user
     setTotalNutrients(nutritionData);
-    // base data will be saved to archives based on user input
+    // base data will be saved to archives only if user adds to journal
     setBaseNutCopy(baseCopy);
   }, []);
 
-  // Deletes Keys that firebase can't accept
-  // Purpose: Firebase can't store function values
-  const removeKeysForDuplicate = (nutObj) => {
-    let duplicateObj = JSON.parse(JSON.stringify(nutObj));
-    delete duplicateObj.ID;
-    for (let key in duplicateObj) {
-      if (duplicateObj[key].percentage) {
-        delete duplicateObj[key].percentage;
-      }
-    }
-    return duplicateObj;
-  };
-
   // Add Food Info to User's Journal
-  const addFoodToUserJournal = ({ month, date, year }, { CALORIES }) => {
+  const addToUserJournal = (
+    { month, date, year },
+    { CALORIES, SERVING_SIZE }
+  ) => {
     const storeFoodInUserRef = firebase
       .database()
       .ref(`users/${displayName}/foodJournal/20${year}/${month}/${date}`);
@@ -65,19 +55,21 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
       referenceID: fdcId,
       name: description,
       calories: CALORIES.value,
+      servingSize: SERVING_SIZE.value,
+      servingUnit: SERVING_SIZE.unit,
     });
   };
 
-  // Add Food Info to Food Archives if Food ID doesn't exist
-  const addFoodToArchives = (duplicateObj) => {
+  // Add Food Info of 100 g serving size to Food Archives
+  // Only if Food ID doesn't exist
+  const addToArchives = (nutriData) => {
     const foodArchivesRef = firebase.database().ref(`foodArchives/${fdcId}`);
 
-    // Transaction method prevents adding food to archives
-    // If it already exists
+    // Transaction adds to archives unless id already exists
     foodArchivesRef.transaction(
       (currentData) => {
         if (currentData === null) {
-          return duplicateObj;
+          return nutriData;
         } else {
           return;
         }
@@ -95,10 +87,9 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
   };
 
   // Adds Nutrition Info to User's Journal and Archives
-  const addToJournal = async (dateObj, nutritionObj) => {
-    const duplicateWithoutFuncs = removeKeysForDuplicate(nutritionObj);
-    await addFoodToUserJournal(dateObj, nutritionObj);
-    await addFoodToArchives(duplicateWithoutFuncs);
+  const addFoodToDatabase = async (dateObj, nutritionObj) => {
+    await addToUserJournal(dateObj, nutritionObj);
+    await addToArchives(baseNutCopy);
   };
 
   // Parse through nutrition database
@@ -448,7 +439,7 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
             </View>
             <TouchableOpacity
               style={styles.addButton}
-              onPress={() => addToJournal(currentDate, totalNutrients)}
+              onPress={() => addFoodToDatabase(currentDate, totalNutrients)}
               activeOpacity="0.5"
             >
               <Text style={styles.buttonText}>Add To Journal</Text>
