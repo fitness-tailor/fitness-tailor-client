@@ -28,15 +28,12 @@ export default function NutritionCard(props) {
         <View style={styles.nameContainer}>
           <Text
             style={[
-              styles.fontSize,
-              styles.centeredText,
-              styles.normalFont,
-              styles.baseText,
+              styles.font,
             ]}
           >
             {props.name}
           </Text>
-          <Text style={[styles.fontSize, styles.baseText]}>
+          <Text style={[styles.font]}>
               <Text style={styles.boldFont}>calories: </Text>
               {props.calories}
             </Text>
@@ -66,15 +63,12 @@ export default function NutritionCard(props) {
       {/* Buttons */}
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          style={[styles.buttonStyles, { backgroundColor: "#17aeff" }]}
+          style={[styles.buttonStyles]}
           activeOpacity="0.6"
         >
           <Text
             style={[
-              styles.fontSize,
               styles.editButton,
-              styles.boldFont,
-              styles.baseText,
             ]}
           >
             Edit
@@ -82,14 +76,11 @@ export default function NutritionCard(props) {
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.buttonStyles, { backgroundColor: "#E71D36" }]}
+          style={[styles.buttonStyles]}
         >
           <Text
             style={[
-              styles.fontSize,
               styles.editButton,
-              styles.boldFont,
-              styles.baseText,
             ]}
           >
             Delete
@@ -101,50 +92,40 @@ export default function NutritionCard(props) {
 }
 
 const styles = StyleSheet.create({
-  // fontSize: { fontSize: 18 },
-  // boldFont: { fontWeight: "bold" },
-  // normalFont: { fontWeight: "normal" },
-  // centeredText: { textAlign: "center" },
-  // baseText: { fontFamily: "Menlo" },
+  font: {
+    fontSize: 18,
+    color: "white",
+ },
   container: {
-    width: "100%",
-    // height: 150,
+    width: "80%",
+    height: 80,
     flex: 1,
-    flexDirection: "column",
-    // justifyContent: "space-around",
-  },
-  cardDivider: {
-    borderRightWidth: 0.5,
-    height: "100%",
+    borderRadius: 20,
+    margin: 5,
+    backgroundColor: "rgb(37, 93, 120)",
   },
   recipeContainer: {
-    // flex: 4,
-    flexDirection: "column",
-    alignItems: "center",
+    flex: 1,
+    justifyContent: "center",
   },
   // ==================================
   // Name Styles
   // ==================================
   nameContainer: {
     justifyContent: "space-around",
-    // alignContent: "space-between",
-    // flex: 1,
     flexDirection: "row",
-    // borderBottomWidth: 0.25,
     width: "100%",
-    // paddingHorizontal: 20,
-    // paddingHorizontal: 10,
   },
   // ==================================
   // Serving Styles
   // ==================================
-  servingContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    flex: 1,
-    borderBottomWidth: 0.25,
-    width: "100%",
-  },
+  // servingContainer: {
+  //   alignItems: "center",
+  //   justifyContent: "center",
+  //   flex: 1,
+  //   borderBottomWidth: 0.25,
+  //   width: "100%",
+  // },
   // ==================================
   // Calories Styles
   // ==================================
@@ -173,21 +154,13 @@ const styles = StyleSheet.create({
   buttonStyles: {
     flex: 1,
     justifyContent: "center",
-    borderWidth: 0.25,
-    paddingVertical: 5,
-    // marginHorizontal: 20,
+    backgroundColor: "rgb(22, 66, 92)",
+    marginHorizontal: 20,
     borderRadius: 20,
   },
   editButton: {
     textAlign: "center",
+    fontSize: 16,
     color: "white",
-  },
-  buttonDivider: {
-    height: "100%",
-    borderWidth: 0.25,
-  },
-  deleteButton: {
-    textAlign: "center",
-    color: "red",
   },
 });

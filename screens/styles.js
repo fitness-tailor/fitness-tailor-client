@@ -208,22 +208,25 @@ module.exports = StyleSheet.create({
   // NutritionScreen
   // ==================================
   containerNutScreen: {
-    flex: 1,
+    flex: 2,
     flexGrow: 1,
-    // marginTop: 20,
+    flexDirection: "column",
+    backgroundColor: "white",
   },
-  dateNutScreen: {
-    marginTop: 50,
+  calendar: {
+    flex: 1,
   },
   focusedNutScreen: {
-    color: "black",
+    color: "rgb(22, 66, 92)",
   },
-
+  date: {
+    fontSize: 20,
+    margin: 5,
+  },
+  totalCal: {
+    fontSize: 18,
+  },
   journalNut: {
-    // flex: 2,
-    // backgroundColor: "green",
-    // height: "50%",
-    // zIndex: 3,
-    // bottom: 100,
+    alignItems: "center",
   },
 });
