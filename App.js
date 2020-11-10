@@ -22,7 +22,11 @@ import {
   Inter_600SemiBold,
   Inter_400Regular,
 } from "@expo-google-fonts/inter";
-import { OpenSans_600SemiBold } from "@expo-google-fonts/open-sans";
+import {
+  OpenSans_400Regular,
+  OpenSans_600SemiBold,
+  OpenSans_700Bold,
+} from "@expo-google-fonts/open-sans";
 import { Montserrat_600SemiBold } from "@expo-google-fonts/montserrat";
 import { Lato_300Light } from "@expo-google-fonts/lato";
 
@@ -57,9 +61,11 @@ const AppContainer = createAppContainer(
 
 const App = () => {
   let [fontsLoaded] = useFonts({
-    Inter_600SemiBold,
     Inter_400Regular,
+    Inter_600SemiBold,
+    OpenSans_400Regular,
     OpenSans_600SemiBold,
+    OpenSans_700Bold,
     Montserrat_600SemiBold,
     Lato_300Light,
   });

@@ -16,6 +16,9 @@ import RNPickerSelect from "react-native-picker-select";
 import convert from "convert-units";
 import RowTitle from "./RowTitle.js";
 import RowData from "./RowData.js";
+import MainRowData from "./MainRowData.js";
+import Dividers from "./Dividers.js";
+import NutritionRowData from "./NutritionRowData.js";
 
 const RecipeCard = ({ recipe, RDA, displayName }) => {
   const { description, foodNutrients, fdcId } = recipe;
@@ -259,83 +262,164 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
           </Text>
         </View>
 
-        <View style={{ width: "100%", backgroundColor: "white" }}>
-          <RowTitle />
+        <View
+          style={{
+            width: "100%",
+            backgroundColor: "white",
+            borderWidth: 1,
+            alignItems: "center",
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 28,
+              fontWeight: "bold",
+              textAlign: "center",
+              marginVertical: 3,
+              fontFamily: "OpenSans_700Bold",
+            }}
+          >
+            Nutrition Facts
+          </Text>
 
-          <RowData
+          <Dividers borderWidth={1} />
+
+          <MainRowData
             id="Serving Size"
             nutValue={totalNutrients.SERVING_SIZE.value}
             nutUnit={totalNutrients.SERVING_SIZE.unit}
-            percentage={null}
+            fontSize={20}
           />
 
-          <RowData
+          <Dividers borderWidth={5} />
+
+          <Text
+            style={{
+              fontSize: 16,
+              textAlign: "left",
+              width: "97%",
+              marginTop: 4,
+              marginBottom: -2,
+              paddingHorizontal: 4,
+              fontFamily: "OpenSans_700Bold",
+            }}
+          >
+            Amount per serving
+          </Text>
+
+          <MainRowData
             id="Calories"
             nutValue={totalNutrients.CALORIES.value}
-            percentage={totalNutrients.CALORIES.percentage()}
+            fontSize={26}
           />
 
-          <RowData
+          <Dividers borderWidth={3} />
+
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: "bold",
+              textAlign: "right",
+              width: "97%",
+              marginVertical: 4,
+              paddingHorizontal: 4,
+            }}
+          >
+            % Daily Value
+          </Text>
+
+          <Dividers borderWidth={1.5} />
+
+          <NutritionRowData
             id="Total Fat"
             nutValue={totalNutrients.TOTAL_FAT.value}
             nutUnit={totalNutrients.TOTAL_FAT.unit}
             percentage={totalNutrients.TOTAL_FAT.percentage()}
+            fontWeight={"700"}
           />
 
-          <RowData
+          <Dividers borderWidth={1} />
+
+          <NutritionRowData
             id="Sat. Fat"
             nutValue={totalNutrients.SAT_FAT.value}
             nutUnit={totalNutrients.SAT_FAT.unit}
             percentage={totalNutrients.SAT_FAT.percentage()}
+            paddingLeft={20}
+            titleFontFamily={"OpenSans_400Regular"}
           />
 
-          <RowData
+          <Dividers borderWidth={1} />
+
+          <NutritionRowData
             id="Trans. Fat"
             nutValue={totalNutrients.TRANS_FAT.value}
             nutUnit={totalNutrients.TRANS_FAT.unit}
             percentage={null}
+            paddingLeft={20}
+            titleFontFamily={"OpenSans_400Regular"}
           />
 
-          <RowData
+          <Dividers borderWidth={1} />
+
+          <NutritionRowData
             id="Cholesterol"
             nutValue={totalNutrients.CHOLESTEROL.value}
             nutUnit={totalNutrients.CHOLESTEROL.unit}
             percentage={totalNutrients.CHOLESTEROL.percentage()}
+            fontWeight={"700"}
           />
 
-          <RowData
+          <Dividers borderWidth={1} />
+
+          <NutritionRowData
             id="Sodium"
             nutValue={totalNutrients.SODIUM.value}
             nutUnit={totalNutrients.SODIUM.unit}
             percentage={totalNutrients.SODIUM.percentage()}
+            fontWeight={"700"}
           />
 
-          <RowData
-            id="Total Carbs."
+          <Dividers borderWidth={1} />
+
+          <NutritionRowData
+            id="Total Carbohydrate"
             nutValue={totalNutrients.CARBS.value}
             nutUnit={totalNutrients.CARBS.unit}
             percentage={totalNutrients.CARBS.percentage()}
+            fontWeight={"700"}
           />
 
-          <RowData
+          <Dividers borderWidth={1} />
+
+          <NutritionRowData
             id="Dietary Fiber"
             nutValue={totalNutrients.FIBER.value}
             nutUnit={totalNutrients.FIBER.unit}
             percentage={totalNutrients.FIBER.percentage()}
+            paddingLeft={20}
+            titleFontFamily={"OpenSans_400Regular"}
           />
 
-          <RowData
+          <Dividers borderWidth={1} />
+
+          <NutritionRowData
             id="Total Sugar"
             nutValue={totalNutrients.TOTAL_SUGAR.value}
             nutUnit={totalNutrients.TOTAL_SUGAR.unit}
             percentage={null}
+            paddingLeft={20}
+            titleFontFamily={"OpenSans_400Regular"}
           />
 
-          <RowData
+          <Dividers borderWidth={1} />
+
+          <NutritionRowData
             id="Protein"
             nutValue={totalNutrients.PROTEIN.value}
             nutUnit={totalNutrients.PROTEIN.unit}
             percentage={totalNutrients.PROTEIN.percentage()}
+            fontWeight={"700"}
           />
         </View>
 
