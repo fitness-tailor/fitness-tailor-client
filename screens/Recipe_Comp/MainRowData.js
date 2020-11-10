@@ -12,42 +12,27 @@ export default function MainRowData({
 
   let valueDisplay = "";
 
-  if (nutValue === "N/A") {
-    valueDisplay = "N/A";
-  } else if (id === "Serving Size") {
+  if (id === "Serving Size") {
     valueDisplay = `${nutValue} ${nutUnit}`;
-  } else {
-    valueDisplay = `${Math.round(nutValue)} ${nutUnit}`;
+  } else if (id === "Calories") {
+    valueDisplay = `${Math.round(nutValue)}`;
   }
+
+  let styleObj = {
+    fontSize: fontSize,
+    fontFamily: "OpenSans_700Bold",
+  };
 
   return (
     <View style={styles.nutritionRow}>
-      <Text
-        style={{
-          fontSize: fontSize,
-          fontWeight: "bold",
-        }}
-      >
-        {id}
-      </Text>
+      <Text style={styleObj}>{id}</Text>
 
-      <Text
-        style={{
-          fontSize: fontSize,
-          fontWeight: "bold",
-        }}
-      >
-        {valueDisplay}
-      </Text>
+      <Text style={styleObj}>{valueDisplay}</Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  recipeFont: {
-    fontSize: 20,
-    fontWeight: "bold",
-  },
   nutritionRow: {
     flexDirection: "row",
     width: "97%",
@@ -55,15 +40,4 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
     justifyContent: "space-between",
   },
-  // ============================
-  // Nutrient Title
-  // ============================
-  nutrientTitle: {},
-  // ============================
-  // Nutrient Amount
-  // ============================
-  nutrientAmount: {},
-  // ============================
-  // Nutrient Percentage
-  // ============================
 });
