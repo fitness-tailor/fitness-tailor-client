@@ -17,6 +17,7 @@ import styles from "./styles.js";
 import { Fontisto, AntDesign } from "@expo/vector-icons";
 import FadeInView from "./Animation_View_Comps/AuthView.js";
 import AuthErrorModal from "./Modals/AuthErrorModal.js";
+import ForgotPasswordModal from "./Modals/ForgotPasswordModal.js";
 
 class SignInScreen extends React.Component {
   state = {
@@ -24,6 +25,7 @@ class SignInScreen extends React.Component {
     password: "",
     error: "",
     errorModalVisible: false,
+    passwordModalVisible: false,
     loading: false,
   };
 
@@ -41,6 +43,10 @@ class SignInScreen extends React.Component {
 
   closeErrorModal() {
     this.setState({ errorModalVisible: false });
+  }
+
+  closePasswordModal() {
+    this.setState({ passwordModalVisible: false });
   }
 
   forgotPassword() {
@@ -81,7 +87,7 @@ class SignInScreen extends React.Component {
   }
 
   render() {
-    let modal = this.state.errorModalVisible ? (
+    let errorModal = this.state.errorModalVisible ? (
       <View
         style={{
           width: "90%",
@@ -91,6 +97,19 @@ class SignInScreen extends React.Component {
         <AuthErrorModal
           error={this.state.error}
           closeErrorModal={this.closeErrorModal.bind(this)}
+        />
+      </View>
+    ) : null;
+
+    let passwordModal = this.state.passwordModalVisible ? (
+      <View
+        style={{
+          width: "90%",
+          height: 0,
+        }}
+      >
+        <ForgotPasswordModal
+          closePasswordModal={this.closePasswordModal.bind(this)}
         />
       </View>
     ) : null;
@@ -139,7 +158,8 @@ class SignInScreen extends React.Component {
                 </View>
 
                 {this.renderLoading()}
-                {modal}
+                {errorModal}
+                {passwordModal}
 
                 <TouchableOpacity
                   style={styles.signInButton}
@@ -158,9 +178,12 @@ class SignInScreen extends React.Component {
                   </Text>
                   <Text
                     style={styles.authOptionsText}
-                    onPress={() => {
-                      this.forgotPassword();
-                    }}
+                    // onPress={() => {
+                    //   this.forgotPassword();
+                    // }}
+                    onPress={() =>
+                      this.setState({ passwordModalVisible: true })
+                    }
                   >
                     Forgot Password?
                   </Text>
