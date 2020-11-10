@@ -49,22 +49,6 @@ class SignInScreen extends React.Component {
     this.setState({ passwordModalVisible: false });
   }
 
-  forgotPassword() {
-    firebase
-      .auth()
-      .sendPasswordResetEmail(this.state.email)
-      .then(() => {
-        this.setState({
-          error: "Password reset email has been sent!",
-        });
-      })
-      .catch(() => {
-        this.setState({
-          error: "Enter email above!",
-        });
-      });
-  }
-
   renderLoading() {
     if (this.state.loading) {
       return (
@@ -110,6 +94,7 @@ class SignInScreen extends React.Component {
       >
         <ForgotPasswordModal
           closePasswordModal={this.closePasswordModal.bind(this)}
+          forgotPassword={this.forgotPassword.bind(this)}
         />
       </View>
     ) : null;
