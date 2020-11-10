@@ -16,6 +16,7 @@ import RNPickerSelect from "react-native-picker-select";
 import convert from "convert-units";
 import RowTitle from "./RowTitle.js";
 import RowData from "./RowData.js";
+import MainRowData from "./MainRowData.js";
 
 const RecipeCard = ({ recipe, RDA, displayName }) => {
   const { description, foodNutrients, fdcId } = recipe;
@@ -259,7 +260,39 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
           </Text>
         </View>
 
-        <View style={{ width: "100%", backgroundColor: "white" }}>
+        <View
+          style={{
+            width: "100%",
+            backgroundColor: "white",
+            borderWidth: 1,
+            alignItems: "center",
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 28,
+              fontWeight: "bold",
+              textAlign: "center",
+              marginVertical: 3,
+            }}
+          >
+            Nutrition Facts
+          </Text>
+
+          <View
+            style={{
+              width: "97%",
+              justifyContent: "center",
+              borderBottomWidth: 1,
+            }}
+          />
+
+          <MainRowData
+            id="Serving Size"
+            nutValue={totalNutrients.SERVING_SIZE.value}
+            nutUnit={totalNutrients.SERVING_SIZE.unit}
+          />
+
           <RowTitle />
 
           <RowData
@@ -268,69 +301,59 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
             nutUnit={totalNutrients.SERVING_SIZE.unit}
             percentage={null}
           />
-
           <RowData
             id="Calories"
             nutValue={totalNutrients.CALORIES.value}
             percentage={totalNutrients.CALORIES.percentage()}
           />
-
           <RowData
             id="Total Fat"
             nutValue={totalNutrients.TOTAL_FAT.value}
             nutUnit={totalNutrients.TOTAL_FAT.unit}
             percentage={totalNutrients.TOTAL_FAT.percentage()}
           />
-
           <RowData
             id="Sat. Fat"
             nutValue={totalNutrients.SAT_FAT.value}
             nutUnit={totalNutrients.SAT_FAT.unit}
             percentage={totalNutrients.SAT_FAT.percentage()}
           />
-
           <RowData
             id="Trans. Fat"
             nutValue={totalNutrients.TRANS_FAT.value}
             nutUnit={totalNutrients.TRANS_FAT.unit}
             percentage={null}
           />
-
           <RowData
             id="Cholesterol"
             nutValue={totalNutrients.CHOLESTEROL.value}
             nutUnit={totalNutrients.CHOLESTEROL.unit}
             percentage={totalNutrients.CHOLESTEROL.percentage()}
           />
-
           <RowData
             id="Sodium"
             nutValue={totalNutrients.SODIUM.value}
             nutUnit={totalNutrients.SODIUM.unit}
             percentage={totalNutrients.SODIUM.percentage()}
           />
-
           <RowData
             id="Total Carbs."
             nutValue={totalNutrients.CARBS.value}
             nutUnit={totalNutrients.CARBS.unit}
             percentage={totalNutrients.CARBS.percentage()}
           />
-
           <RowData
             id="Dietary Fiber"
             nutValue={totalNutrients.FIBER.value}
             nutUnit={totalNutrients.FIBER.unit}
             percentage={totalNutrients.FIBER.percentage()}
           />
-
           <RowData
             id="Total Sugar"
             nutValue={totalNutrients.TOTAL_SUGAR.value}
             nutUnit={totalNutrients.TOTAL_SUGAR.unit}
             percentage={null}
           />
-
           <RowData
             id="Protein"
             nutValue={totalNutrients.PROTEIN.value}
