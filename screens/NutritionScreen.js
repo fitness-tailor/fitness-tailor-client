@@ -54,6 +54,7 @@ const NutritionScreen = (props) => {
     <SafeAreaView style={styles.containerNutScreen}>
       <View >
         <Dates
+          // style={styles.calendar}
           onDatesChange={onDatesChange}
           isDateBlocked={isDateBlocked}
           startDate={startDate}
@@ -62,7 +63,7 @@ const NutritionScreen = (props) => {
           range
         />
         </View>
-        <ScrollView style={styles.journalNut}>
+        <ScrollView contentContainerStyle={styles.journalNut}>
             <Text style={[styles.date, focus === 'startDate' && styles.focusedNutScreen]}>{startDate && startDate.format('LL')}</Text>
             {recipes.map((recipe) => {
               return (

@@ -208,19 +208,35 @@ module.exports = StyleSheet.create({
   // NutritionScreen
   // ==================================
   containerNutScreen: {
-    flex: 1,
+    flex: 2,
     flexGrow: 1,
+    flexDirection: "column",
+    // justifyContent: "center",
+    // alignContent: "center",
+    backgroundColor: "white",
     // marginTop: 20,
   },
+  calendar: {
+    flex: 1,
+    // backgroundColor: "blue",
+    // color: "blue",
+  },
   dateNutScreen: {
-    marginTop: 50,
+    // marginTop: 50,
   },
   focusedNutScreen: {
-    color: "black",
+    color: "rgb(22, 66, 92)",
+  },
+  date: {
+    fontSize: 20,
+    margin: 5,
+    // color: "grey",
   },
 
   journalNut: {
-    // flex: 2,
+    // flex: 1,
+    alignItems: "center",
+    // justifyContent: "center",
     // backgroundColor: "green",
     // height: "50%",
     // zIndex: 3,
