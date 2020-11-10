@@ -20,6 +20,7 @@ import RowData from "./RowData.js";
 const RecipeCard = ({ recipe, RDA, displayName }) => {
   const { description, foodNutrients, fdcId } = recipe;
   const [totalNutrients, setTotalNutrients] = useState({});
+  const [baseNutCopy, setBaseNutCopy] = useState({});
   const [isEditingServeSize, setIsEditingServeSize] = useState(false);
   const [servingSize, setServingSize] = useState("100");
   const [servingUnit, setServingUnit] = useState("g");
@@ -32,26 +33,20 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
   let { month, date, year } = currentDate;
 
   useEffect(() => {
-    // Hold Parsed Nutrition Data in state
-    let nutritionData = parseNutritionData(foodNutrients, fdcId);
+    let nutritionData = parseNutritionData(foodNutrients, fdcId, true);
+    let baseCopy = parseNutritionData(foodNutrients, fdcId);
+
+    // totalNutrients data will be shown to user
     setTotalNutrients(nutritionData);
+    // base data will be saved to archives only if user adds to journal
+    setBaseNutCopy(baseCopy);
   }, []);
 
-  // Deletes Keys that firebase can't accept
-  // Purpose: Firebase can't store function values
-  const removeKeysForDuplicate = (nutObj) => {
-    let duplicateObj = JSON.parse(JSON.stringify(nutObj));
-    delete duplicateObj.ID;
-    for (let key in duplicateObj) {
-      if (duplicateObj[key].percentage) {
-        delete duplicateObj[key].percentage;
-      }
-    }
-    return duplicateObj;
-  };
-
   // Add Food Info to User's Journal
-  const addFoodToUserJournal = ({ month, date, year }, { CALORIES }) => {
+  const addToUserJournal = (
+    { month, date, year },
+    { CALORIES, SERVING_SIZE }
+  ) => {
     const storeFoodInUserRef = firebase
       .database()
       .ref(`users/${displayName}/foodJournal/20${year}/${month}/${date}`);
@@ -60,19 +55,21 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
       referenceID: fdcId,
       name: description,
       calories: CALORIES.value,
+      servingSize: SERVING_SIZE.value,
+      servingUnit: SERVING_SIZE.unit,
     });
   };
 
-  // Add Food Info to Food Archives if Food ID doesn't exist
-  const addFoodToArchives = (duplicateObj) => {
+  // Add Food Info of 100 g serving size to Food Archives
+  // Only if Food ID doesn't exist
+  const addToArchives = (nutriData) => {
     const foodArchivesRef = firebase.database().ref(`foodArchives/${fdcId}`);
 
-    // Transaction method prevents adding food to archives
-    // If it already exists
+    // Transaction adds to archives unless id already exists
     foodArchivesRef.transaction(
       (currentData) => {
         if (currentData === null) {
-          return duplicateObj;
+          return nutriData;
         } else {
           return;
         }
@@ -90,16 +87,16 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
   };
 
   // Adds Nutrition Info to User's Journal and Archives
-  const addToJournal = async (dateObj, nutritionObj) => {
-    const duplicateWithoutFuncs = removeKeysForDuplicate(nutritionObj);
-    await addFoodToUserJournal(dateObj, nutritionObj);
-    await addFoodToArchives(duplicateWithoutFuncs);
+  const addFoodToDatabase = async (dateObj, nutritionObj) => {
+    await addToUserJournal(dateObj, nutritionObj);
+    await addToArchives(baseNutCopy);
   };
 
   // Parse through nutrition database
-  const parseNutritionData = (nutritionArray, id) => {
+  const parseNutritionData = (nutritionArray, id, allowPercentages = false) => {
     let parsedObject = {
       ID: id,
+      NAME: description,
       SERVING_SIZE: { value: 100, unit: "g" },
       CALORIES: { value: null },
       TOTAL_FAT: { value: null, unit: null },
@@ -172,7 +169,8 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
       }
     }
 
-    addPercentagesKey(parsedObject);
+    if (allowPercentages) addPercentagesKey(parsedObject);
+
     return parsedObject;
   };
 
@@ -188,7 +186,7 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
   };
 
   const handleServingSize = (size, unit) => {
-    // changes value inside parsed nutrition object
+    // changes nutrition value relative to serving size
     size = Number(size);
     changePercentageOnConversion(size, unit);
     totalNutrients.SERVING_SIZE.value = size;
@@ -441,7 +439,7 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
             </View>
             <TouchableOpacity
               style={styles.addButton}
-              onPress={() => addToJournal(currentDate, totalNutrients)}
+              onPress={() => addFoodToDatabase(currentDate, totalNutrients)}
               activeOpacity="0.5"
             >
               <Text style={styles.buttonText}>Add To Journal</Text>
