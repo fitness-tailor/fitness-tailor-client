@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import axios from "axios";
 
-export default function NutritionCard() {
+export default function NutritionCard(props) {
   const editNutritionData = () => {
     // TODO: add function to edit nutrition data
     // HINT: axios put/update
@@ -34,30 +34,33 @@ export default function NutritionCard() {
               styles.baseText,
             ]}
           >
-            Pasta Marinara Pasta Marinara Pasta Marinara Pasta Marinara Pasta
-            Marinara
+            {props.name}
           </Text>
+          <Text style={[styles.fontSize, styles.baseText]}>
+              <Text style={styles.boldFont}>calories: </Text>
+              {props.calories}
+            </Text>
         </View>
 
         {/* Recipe Serving Size */}
-        <View style={styles.servingContainer}>
+        {/* <View style={styles.servingContainer}>
           <View style={styles.servingTotal}>
             <Text style={[styles.fontSize, styles.baseText]}>
               <Text style={styles.boldFont}>Serving Size: </Text>
               100 g
             </Text>
           </View>
-        </View>
+        </View> */}
 
         {/* Recipe Calories */}
-        <View style={styles.caloriesContainer}>
+        {/* <View style={styles.caloriesContainer}>
           <View style={styles.calTotal}>
             <Text style={[styles.fontSize, styles.baseText]}>
               <Text style={styles.boldFont}>calories: </Text>
-              90
+              {props.calories}
             </Text>
           </View>
-        </View>
+        </View> */}
       </View>
 
       {/* Buttons */}
@@ -98,23 +101,24 @@ export default function NutritionCard() {
 }
 
 const styles = StyleSheet.create({
-  fontSize: { fontSize: 18 },
-  boldFont: { fontWeight: "bold" },
-  normalFont: { fontWeight: "normal" },
-  centeredText: { textAlign: "center" },
-  baseText: { fontFamily: "Menlo" },
+  // fontSize: { fontSize: 18 },
+  // boldFont: { fontWeight: "bold" },
+  // normalFont: { fontWeight: "normal" },
+  // centeredText: { textAlign: "center" },
+  // baseText: { fontFamily: "Menlo" },
   container: {
     width: "100%",
-    height: 250,
+    // height: 150,
+    flex: 1,
     flexDirection: "column",
-    justifyContent: "space-around",
+    // justifyContent: "space-around",
   },
   cardDivider: {
     borderRightWidth: 0.5,
     height: "100%",
   },
   recipeContainer: {
-    flex: 4,
+    // flex: 4,
     flexDirection: "column",
     alignItems: "center",
   },
@@ -122,12 +126,14 @@ const styles = StyleSheet.create({
   // Name Styles
   // ==================================
   nameContainer: {
-    justifyContent: "center",
-    flex: 2,
-    borderBottomWidth: 0.25,
+    justifyContent: "space-around",
+    // alignContent: "space-between",
+    // flex: 1,
+    flexDirection: "row",
+    // borderBottomWidth: 0.25,
     width: "100%",
-    paddingHorizontal: 20,
-    paddingHorizontal: 10,
+    // paddingHorizontal: 20,
+    // paddingHorizontal: 10,
   },
   // ==================================
   // Serving Styles
@@ -142,18 +148,18 @@ const styles = StyleSheet.create({
   // ==================================
   // Calories Styles
   // ==================================
-  caloriesContainer: {
-    flex: 1,
-    alignItems: "center",
-    flexDirection: "row",
-    justifyContent: "space-around",
-    borderBottomWidth: 0.25,
-    width: "100%",
-  },
-  calTotal: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
+  // caloriesContainer: {
+  //   flex: 1,
+  //   alignItems: "center",
+  //   flexDirection: "row",
+  //   justifyContent: "space-around",
+  //   borderBottomWidth: 0.25,
+  //   width: "100%",
+  // },
+  // calTotal: {
+  //   alignItems: "center",
+  //   justifyContent: "center",
+  // },
   // ==================================
   // Button Styles
   // ==================================
@@ -165,11 +171,11 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   buttonStyles: {
-    flex: 2,
+    flex: 1,
     justifyContent: "center",
     borderWidth: 0.25,
     paddingVertical: 5,
-    marginHorizontal: 20,
+    // marginHorizontal: 20,
     borderRadius: 20,
   },
   editButton: {

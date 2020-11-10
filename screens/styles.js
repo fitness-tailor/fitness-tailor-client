@@ -210,12 +210,20 @@ module.exports = StyleSheet.create({
   containerNutScreen: {
     flex: 1,
     flexGrow: 1,
-    marginTop: 20,
+    // marginTop: 20,
   },
   dateNutScreen: {
     marginTop: 50,
   },
   focusedNutScreen: {
-    color: "grey",
+    color: "black",
+  },
+
+  journalNut: {
+    // flex: 2,
+    // backgroundColor: "green",
+    // height: "50%",
+    // zIndex: 3,
+    // bottom: 100,
   },
 });
