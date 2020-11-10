@@ -17,6 +17,7 @@ import convert from "convert-units";
 import RowTitle from "./RowTitle.js";
 import RowData from "./RowData.js";
 import MainRowData from "./MainRowData.js";
+import Dividers from "./Dividers.js";
 
 const RecipeCard = ({ recipe, RDA, displayName }) => {
   const { description, foodNutrients, fdcId } = recipe;
@@ -279,33 +280,54 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
             Nutrition Facts
           </Text>
 
-          <View
-            style={{
-              width: "97%",
-              justifyContent: "center",
-              borderBottomWidth: 1,
-            }}
-          />
+          <Dividers borderWidth={1} />
 
           <MainRowData
             id="Serving Size"
             nutValue={totalNutrients.SERVING_SIZE.value}
             nutUnit={totalNutrients.SERVING_SIZE.unit}
+            fontSize={20}
           />
 
-          <RowTitle />
+          <Dividers borderWidth={5} />
 
-          <RowData
-            id="Serving Size"
-            nutValue={totalNutrients.SERVING_SIZE.value}
-            nutUnit={totalNutrients.SERVING_SIZE.unit}
-            percentage={null}
-          />
-          <RowData
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: "bold",
+              textAlign: "left",
+              width: "97%",
+              marginTop: 4,
+              marginBottom: -2,
+              paddingHorizontal: 4,
+            }}
+          >
+            Amount per serving
+          </Text>
+
+          <MainRowData
             id="Calories"
             nutValue={totalNutrients.CALORIES.value}
-            percentage={totalNutrients.CALORIES.percentage()}
+            fontSize={26}
           />
+
+          <Dividers borderWidth={3} />
+
+          <Text
+            style={{
+              fontSize: 18,
+              fontWeight: "bold",
+              textAlign: "right",
+              width: "97%",
+              marginVertical: 4,
+              paddingHorizontal: 4,
+            }}
+          >
+            % Daily Value
+          </Text>
+
+          <Dividers borderWidth={1.5} />
+
           <RowData
             id="Total Fat"
             nutValue={totalNutrients.TOTAL_FAT.value}
