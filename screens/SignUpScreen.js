@@ -17,6 +17,7 @@ import firebase from "firebase";
 import styles from "./styles.js";
 import { Fontisto, AntDesign } from "@expo/vector-icons";
 import FadeInView from "./Animation_View_Comps/AuthView.js";
+import AuthErrorModal from "./Modals/AuthErrorModal.js";
 
 class SignUpScreen extends React.Component {
   state = {
@@ -24,6 +25,7 @@ class SignUpScreen extends React.Component {
     email: "",
     password: "",
     error: "",
+    errorModalVisible: false,
     loading: false,
   };
 
@@ -32,7 +34,15 @@ class SignUpScreen extends React.Component {
   }
 
   onLoginFailure(errorMessage) {
-    this.setState({ error: errorMessage, loading: false });
+    this.setState({
+      error: errorMessage,
+      loading: false,
+      errorModalVisible: true,
+    });
+  }
+
+  closeErrorModal() {
+    this.setState({ errorModalVisible: false });
   }
 
   renderLoading() {
@@ -72,6 +82,20 @@ class SignUpScreen extends React.Component {
   }
 
   render() {
+    let modal = this.state.errorModalVisible ? (
+      <View
+        style={{
+          width: "90%",
+          height: 0,
+        }}
+      >
+        <AuthErrorModal
+          error={this.state.error}
+          closeErrorModal={this.closeErrorModal.bind(this)}
+        />
+      </View>
+    ) : null;
+
     return (
       <TouchableWithoutFeedback
         onPress={() => {
@@ -133,16 +157,7 @@ class SignUpScreen extends React.Component {
                 </View>
 
                 {this.renderLoading()}
-                <Text
-                  style={{
-                    fontSize: 12,
-                    textAlign: "center",
-                    color: "red",
-                    width: "85%",
-                  }}
-                >
-                  {this.state.error}
-                </Text>
+                {modal}
 
                 <TouchableOpacity
                   style={styles.signInButton}
