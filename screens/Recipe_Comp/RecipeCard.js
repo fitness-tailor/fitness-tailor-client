@@ -30,13 +30,6 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
   const [servingSize, setServingSize] = useState("100");
   const [servingUnit, setServingUnit] = useState("g");
 
-  const [currentDate, setCurrentDate] = useState({
-    month: String(new Date().getMonth() + 1),
-    date: String(new Date().getDate()),
-    year: String(new Date().getFullYear()).substring(2),
-  });
-  let { month, date, year } = currentDate;
-
   useEffect(() => {
     let nutritionData = parseNutritionData(foodNutrients, fdcId, true);
     let baseCopy = parseNutritionData(foodNutrients, fdcId);
@@ -46,63 +39,6 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
     // base data will be saved to archives only if user adds to journal
     setBaseNutCopy(baseCopy);
   }, []);
-
-  // ===================================
-  //// START HERE
-  // ===================================
-  // // Add Food Info to User's Journal
-  // const addToUserJournal = (
-  //   { month, date, year },
-  //   { CALORIES, SERVING_SIZE }
-  // ) => {
-  //   const storeFoodInUserRef = firebase
-  //     .database()
-  //     .ref(`users/${displayName}/foodJournal/20${year}/${month}/${date}`);
-
-  //   storeFoodInUserRef.push().set({
-  //     referenceID: fdcId,
-  //     name: description,
-  //     calories: CALORIES.value,
-  //     servingSize: SERVING_SIZE.value,
-  //     servingUnit: SERVING_SIZE.unit,
-  //   });
-  // };
-
-  // // Add Food Info of 100 g serving size to Food Archives
-  // // Only if Food ID doesn't exist
-  // const addToArchives = (nutriData) => {
-  //   const foodArchivesRef = firebase.database().ref(`foodArchives/${fdcId}`);
-
-  //   // Transaction adds to archives unless id already exists
-  //   foodArchivesRef.transaction(
-  //     (currentData) => {
-  //       if (currentData === null) {
-  //         return nutriData;
-  //       } else {
-  //         return;
-  //       }
-  //     },
-  //     (error, committed, snapshot) => {
-  //       if (error) {
-  //         console.log("Transaction failed abnormally!", error);
-  //       } else if (!committed) {
-  //         console.log(`Did not save since fdcId: ${fdcId} already exists`);
-  //       } else {
-  //         console.log(`fdcId: ${fdcId} has been added to archives!`);
-  //       }
-  //     }
-  //   );
-  // };
-
-  // // Adds Nutrition Info to User's Journal and Archives
-  // const addFoodToDatabase = async (dateObj, nutritionObj) => {
-  //   await addToUserJournal(dateObj, nutritionObj);
-  //   await addToArchives(baseNutCopy);
-  // };
-
-  // ===================================
-  //// END HERE
-  // ===================================
 
   // Parse through nutrition database
   const parseNutritionData = (nutritionArray, id, allowPercentages = false) => {
@@ -197,11 +133,6 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
     }
   };
 
-  const unitList = [
-    { label: "g", value: "g" },
-    { label: "oz", value: "oz" },
-  ];
-
   const closeServingModal = () => setServingModalVisible(false);
   const closeDateModal = () => setDateModalVisible(false);
 
@@ -230,40 +161,10 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
   return JSON.stringify(totalNutrients) === "{}" ? null : (
     <SafeAreaView style={styles.container}>
       <View style={styles.recipeContainer}>
-        <View style={styles.recipeName}>
-          <Text
-            style={[
-              {
-                fontSize: 24,
-                color: "white",
-                textAlign: "center",
-                paddingVertical: 4,
-              },
-            ]}
-          >
-            {description}
-          </Text>
-        </View>
+        <Text style={styles.foodTitleText}>{description}</Text>
 
-        <View
-          style={{
-            width: "100%",
-            backgroundColor: "white",
-            borderWidth: 1,
-            alignItems: "center",
-          }}
-        >
-          <Text
-            style={{
-              fontSize: 28,
-              fontWeight: "bold",
-              textAlign: "center",
-              marginVertical: 3,
-              fontFamily: "OpenSans_700Bold",
-            }}
-          >
-            Nutrition Facts
-          </Text>
+        <View style={styles.nutritionFactsContainer}>
+          <Text style={styles.nutritionFactsTitle}>Nutrition Facts</Text>
 
           <Dividers borderWidth={1} />
 
@@ -276,19 +177,7 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
 
           <Dividers borderWidth={5} />
 
-          <Text
-            style={{
-              fontSize: 16,
-              textAlign: "left",
-              width: "97%",
-              marginTop: 4,
-              marginBottom: -2,
-              paddingHorizontal: 4,
-              fontFamily: "OpenSans_700Bold",
-            }}
-          >
-            Amount per serving
-          </Text>
+          <Text style={styles.amountPerServingTitle}>Amount per serving</Text>
 
           <MainRowData
             id="Calories"
@@ -298,18 +187,7 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
 
           <Dividers borderWidth={3} />
 
-          <Text
-            style={{
-              fontSize: 18,
-              fontWeight: "bold",
-              textAlign: "right",
-              width: "97%",
-              marginVertical: 4,
-              paddingHorizontal: 4,
-            }}
-          >
-            % Daily Value
-          </Text>
+          <Text style={styles.dailyValPercentageTitle}>% Daily Value</Text>
 
           <Dividers borderWidth={1.5} />
 
@@ -407,27 +285,23 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
         </View>
 
         <View style={styles.buttonsContainer}>
-          <View style={styles.oneButtonContainer}>
-            <TouchableOpacity
-              style={styles.addButton}
-              onPress={() => setServingModalVisible(true)}
-              activeOpacity="0.5"
-            >
-              <Text style={styles.buttonText}>Convert Serve</Text>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity
+            style={styles.buttonStyles}
+            onPress={() => setServingModalVisible(true)}
+            activeOpacity="0.5"
+          >
+            <Text style={styles.buttonText}>Convert Serve</Text>
+          </TouchableOpacity>
 
-          <View style={styles.oneButtonContainer}>
-            <TouchableOpacity
-              style={styles.addButton}
-              onPress={() => {
-                setDateModalVisible(true);
-              }}
-              activeOpacity="0.5"
-            >
-              <Text style={styles.buttonText}>Add To Journal</Text>
-            </TouchableOpacity>
-          </View>
+          <TouchableOpacity
+            style={styles.buttonStyles}
+            onPress={() => {
+              setDateModalVisible(true);
+            }}
+            activeOpacity="0.5"
+          >
+            <Text style={styles.buttonText}>Add To Journal</Text>
+          </TouchableOpacity>
         </View>
       </View>
       {servingModal}
@@ -449,7 +323,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
-    // borderWidth: 1,
     borderRadius: 10,
     backgroundColor: "rgb(22, 66, 92)",
   },
@@ -460,110 +333,73 @@ const styles = StyleSheet.create({
     paddingTop: "2%",
     width: "100%",
   },
-  recipeFont: {
-    fontSize: 20,
+  foodTitleText: {
+    fontSize: 24,
+    color: "white",
     textAlign: "center",
-  },
-  recipeName: {
+    paddingVertical: 4,
+    fontFamily: "Montserrat_600SemiBold",
     marginBottom: "2%",
   },
-  nutrientsContainer: {
-    flexDirection: "row",
+  // ============================
+  // Nutrition Facts Styles
+  // ============================
+  nutritionFactsContainer: {
+    width: "100%",
+    backgroundColor: "white",
+    borderWidth: 1,
+    alignItems: "center",
+  },
+  nutritionFactsTitle: {
+    fontSize: 28,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginVertical: 3,
+    fontFamily: "OpenSans_700Bold",
   },
   // ============================
-  // Nutrient Title
+  // Miscellaneous Nutrition Title Styles
   // ============================
-  nutrientTitleWrapper: {
-    borderWidth: 0.5,
-    flex: 1.5,
+  amountPerServingTitle: {
+    fontSize: 16,
+    textAlign: "left",
+    width: "97%",
+    marginTop: 4,
+    marginBottom: -2,
+    paddingHorizontal: 4,
+    fontFamily: "OpenSans_700Bold",
   },
-  nutrientTitle: {
-    borderBottomWidth: 0.5,
-  },
-  // ============================
-  // Nutrient Amount
-  // ============================
-  nutrientAmountWrapper: {
-    borderWidth: 0.5,
-    flex: 1,
-  },
-  nutrientAmount: {
-    borderBottomWidth: 0.5,
-  },
-  // ============================
-  // Nutrient Percentage
-  // ============================
-  nutrientPercentageWrapper: {
-    borderWidth: 0.5,
-    flex: 0.8,
-  },
-  nutrientPercentage: {
-    borderBottomWidth: 0.5,
+  dailyValPercentageTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "right",
+    width: "97%",
+    marginVertical: 4,
+    paddingHorizontal: 4,
   },
   // ============================
-  // Add Button
+  // Button Styles
   // ============================
   buttonsContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
+    width: "100%",
     marginTop: "3%",
     marginBottom: "5%",
-    // backgroundColor: 'rgb(254, 90, 90)',
+    marginHorizontal: "3%",
   },
-  oneButtonContainer: {
-    flex: 1,
-  },
-  editButton: {
-    padding: "4%",
-    marginHorizontal: "5%",
-    marginTop: "5%",
-    marginBottom: "2%",
+  buttonStyles: {
+    padding: 12,
+    marginTop: 10,
+    marginBottom: 5,
     backgroundColor: "rgb(37, 93, 120)",
-    // borderWidth: 2,
-    borderRadius: 10,
-  },
-  editDisplay: {
-    display: "flex",
-    marginTop: 5,
-    justifyContent: "space-around",
-    height: 70,
-    alignItems: "center",
-  },
-  servingInputBox: {
-    borderWidth: 1,
-    borderColor: "white",
-    color: "white",
-    textAlign: "center",
-    marginHorizontal: 4,
-    padding: 4,
-    fontSize: 20,
-    width: 80,
-  },
-  // ==========
-  // Date Buttons
-  // ==========
-  addButton: {
-    padding: "4%",
-    margin: "5%",
-    marginBottom: "2%",
-    backgroundColor: "rgb(37, 93, 120)",
-    // borderWidth: 2,
-    borderRadius: 10,
-  },
-  dateInputBox: {
-    borderWidth: 1,
-    borderColor: "white",
-    color: "white",
-    textAlign: "center",
-    marginHorizontal: 4,
-    padding: 4,
-    fontSize: 20,
-    width: 35,
+    borderRadius: 30,
   },
   buttonText: {
     textAlign: "center",
     fontSize: 18,
     color: "white",
+    fontFamily: "Montserrat_400Regular",
   },
 });
 
