@@ -27,7 +27,10 @@ import {
   OpenSans_600SemiBold,
   OpenSans_700Bold,
 } from "@expo-google-fonts/open-sans";
-import { Montserrat_600SemiBold } from "@expo-google-fonts/montserrat";
+import {
+  Montserrat_400Regular,
+  Montserrat_600SemiBold,
+} from "@expo-google-fonts/montserrat";
 import { Lato_300Light } from "@expo-google-fonts/lato";
 
 // TODO: Replace the following with your app's Firebase project configuration
@@ -66,6 +69,7 @@ const App = () => {
     OpenSans_400Regular,
     OpenSans_600SemiBold,
     OpenSans_700Bold,
+    Montserrat_400Regular,
     Montserrat_600SemiBold,
     Lato_300Light,
   });
