@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  Modal,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -8,6 +7,7 @@ import {
   TextInput,
   Alert,
 } from "react-native";
+import Modal from "react-native-modal";
 import firebase from "firebase";
 import RNPickerSelect from "react-native-picker-select";
 import { connect } from "react-redux";
@@ -27,7 +27,32 @@ function DateModal({
     date: String(new Date().getDate()),
     year: String(new Date().getFullYear()).substring(2),
   });
+  const [monthList, setMonthList] = useState([]);
+  const [dateList, setDateList] = useState([]);
+  const [yearList, setYearList] = useState([]);
+  const [duplicateList, setDuplicateList] = useState([]);
   let { month, date, year } = currentDate;
+
+  useEffect(() => {
+    let mList = createPickerList(12);
+    let dList = createPickerList(31);
+    let yList = [
+      {
+        label: `20${String(Number(year) - 1)}`,
+        value: String(Number(year) - 1),
+      },
+      { label: `20${year}`, value: year },
+      {
+        label: `20${String(Number(year) + 1)}`,
+        value: String(Number(year) + 1),
+      },
+    ];
+    setMonthList(mList);
+    setDateList(dList);
+    setYearList(yList);
+    setDuplicateList(yList);
+    // let duplicateYearList = createDuplicateArray(yearList);
+  }, []);
 
   // Add Food Info to User's Journal
   const addToUserJournal = (
@@ -91,19 +116,16 @@ function DateModal({
     return array;
   };
 
-  let monthList = createPickerList(12);
-  let dateList = createPickerList(31);
-  let yearList = [
-    {
-      label: String(Number(year) - 1),
-      value: String(Number(year) - 1),
-    },
-    { label: year, value: year },
-  ];
+  // const createDuplicateArray = (array) => JSON.parse(JSON.stringify(array));
 
   return (
     <View style={styles.centeredView}>
-      <Modal animationType="fade" transparent={true} visible={true}>
+      <Modal
+        isVisible={true}
+        hasBackdrop={true}
+        backdropColor="black"
+        backdropOpacity={0.8}
+      >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <View style={styles.header}>
@@ -161,8 +183,11 @@ function DateModal({
                   value={year}
                   placeholder={{}}
                   style={{ ...pickerSelectStyles }}
-                  onValueChange={(val) =>
-                    setCurrentDate({ ...currentDate, year: val })
+                  onValueChange={(val, index) =>
+                    setCurrentDate({
+                      ...currentDate,
+                      year: yearList[index].value,
+                    })
                   }
                   items={yearList}
                 />
