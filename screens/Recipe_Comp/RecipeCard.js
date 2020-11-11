@@ -388,9 +388,6 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
 
         <View style={styles.buttonsContainer}>
           <View style={styles.oneButtonContainer}>
-            <View style={styles.editDisplay}>
-              <Text style={styles.buttonText}>Serving Size</Text>
-            </View>
             <TouchableOpacity
               style={styles.addButton}
               onPress={() => setServingModalVisible(true)}
