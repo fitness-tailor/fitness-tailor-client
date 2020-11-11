@@ -104,11 +104,12 @@ const HomeScreen = (props) => {
       ? Alert.alert("Error getting your profile pics")
       : null;
 
-  const closeLogOutModal = () => setLogOutModalVisible(false);
-
-  let logOutModal = logOutModalVisible ? (
-    <LogOutModal closeLogOutModal={closeLogOutModal} />
-  ) : null;
+  let logOutModal = (
+    <LogOutModal
+      setLogOutModalVisible={setLogOutModalVisible}
+      logOutModalVisible={logOutModalVisible}
+    />
+  );
 
   return (
     <LinearGradient
