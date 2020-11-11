@@ -14,15 +14,27 @@ import { connect } from "react-redux";
 
 
 const NutritionCard = (props) => {
-  const editNutritionData = () => {
-    // TODO: add function to edit nutrition data
-    // HINT: axios put/update
+  const [editting, setEditting] = useState(false);
+  const [calories, setCalories] = useState(props.calories);
+  const [recipe, setRecipe] = useState(props.name);
+  let yr = moment(props.date).format("YYYY");
+  let mm = moment(props.date).format("MM");
+  let dd = moment(props.date).format("D");
+
+  const sendEdit = () => {
+    console.log("yo")
+    setEditting(false);
+    firebase
+    .database()
+    .ref(`users/${props.displayName}/foodJournal/${yr}/${mm}/${dd}/${props.id}`)
+    .update({
+      name: recipe,
+      calories: calories,
+    })
   };
 
   const deleteNutritionData = () => {
-    let yr = moment(props.date).format("YYYY");
-    let mm = moment(props.date).format("MM");
-    let dd = moment(props.date).format("D");
+
     firebase
     .database()
     .ref(`users/${props.displayName}/foodJournal/${yr}/${mm}/${dd}/${props.id}`)
@@ -34,17 +46,15 @@ const NutritionCard = (props) => {
       <View style={styles.recipeContainer}>
         {/* Recipe Name */}
         <View style={styles.nameContainer}>
-          <Text
-            style={[
-              styles.font,
-            ]}
-          >
-            {props.name}
-          </Text>
-          <Text style={[styles.font]}>
-              <Text style={styles.boldFont}>calories: </Text>
-              {props.calories}
-            </Text>
+          {editting ? <><Text>Edit Name: </Text><TextInput onChangeText={text=> setRecipe(text)}>{recipe}</TextInput></>:
+            <Text style={[styles.font]}>
+              {recipe}
+            </Text>}
+          {editting ? <><Text>Edit Calories: </Text><TextInput onChangeText={text=> setCalories(text)}>{calories}</TextInput></>:
+            <Text style={[styles.font]}>
+              <Text style={styles.boldFont}>Calories: </Text>
+              {calories}
+            </Text>}
         </View>
 
         {/* Recipe Serving Size */}
@@ -70,9 +80,24 @@ const NutritionCard = (props) => {
 
       {/* Buttons */}
       <View style={styles.buttonContainer}>
+      {editting ?
+          <TouchableOpacity
+          style={[styles.buttonStyles]}
+          activeOpacity="0.6"
+          onPress={() => sendEdit()}
+        >
+          <Text
+            style={[
+              styles.editButton,
+            ]}
+          >
+            Done
+          </Text>
+        </TouchableOpacity> :
         <TouchableOpacity
           style={[styles.buttonStyles]}
           activeOpacity="0.6"
+          onPress={() => setEditting(true)}
         >
           <Text
             style={[
@@ -81,7 +106,7 @@ const NutritionCard = (props) => {
           >
             Edit
           </Text>
-        </TouchableOpacity>
+          </TouchableOpacity> }
 
         <TouchableOpacity
           style={[styles.buttonStyles]}
