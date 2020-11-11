@@ -42,6 +42,7 @@ const HomeScreen = (props) => {
     })();
   }, []);
 
+
   useEffect(() => {
     props.fetchUser(props.user.displayName);
     if (props.user.displayName) {
@@ -59,11 +60,7 @@ const HomeScreen = (props) => {
     }
   }, [props.profilePic]);
 
-  useEffect(() => {
-    getCalExpend();
-    getCalIntake();
-    getCalGoal();
-  })
+
 
   const uploadProfilePic = async (imageURI, { uid, displayName }) => {
     const response = await fetch(imageURI);
@@ -94,6 +91,13 @@ const HomeScreen = (props) => {
     }
   };
 
+  useEffect(() => {
+    getCalIntake();
+    getCalExpend();
+    getCalGoal();
+  }, [props.user])
+
+
   const getCalExpend = () => {
     firebase
     .database()
@@ -111,11 +115,15 @@ const HomeScreen = (props) => {
     .database()
     .ref(`users/${props.displayName}/foodJournal/${yr}/${mm}/${dd}`)
     .on("value", function(snapshot) {
-      let calories = 0;
-      Object.values(snapshot.val()).map((recipe) => {
-        calories += recipe.calories;
-      })
-      setCalIntake(calories)
+      if(snapshot.val() === null) {
+        setCalIntake(null);
+      } else {
+        let calories = 0;
+        Object.values(snapshot.val()).map((recipe) => {
+          calories += recipe.calories;
+        })
+        setCalIntake(calories)
+      }
     })
   }
 
@@ -124,14 +132,18 @@ const HomeScreen = (props) => {
     .database()
     .ref(`users/${props.displayName}`)
     .on("value", function(snapshot) {
-      let goal = snapshot.val().goal;
-      let bmrPlusExcer = snapshot.val().bmrPlusExcer
-      if(goal === "maintain") {
-        setCalGoal(bmrPlusExcer)
-      } else if(goal === "lose") {
-        setCalGoal(parseInt(bmrPlusExcer) - 500)
-      } else if(goal === "gain") {
-        setCalGoal(parseInt(bmrPlusExcer) + 500)
+      if(snapshot.val() === null) {
+        setCalGoal(null);
+      } else {
+        const goal = snapshot.val().goal;
+        const bmrPlusExcer = snapshot.val().bmrPlusExcer
+        if(goal === "maintain") {
+          setCalGoal(bmrPlusExcer)
+        } else if(goal === "lose") {
+          setCalGoal(parseInt(bmrPlusExcer) - 500)
+        } else if(goal === "gain") {
+          setCalGoal(parseInt(bmrPlusExcer) + 500)
+        }
       }
     })
   }
