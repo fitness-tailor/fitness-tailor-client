@@ -22,7 +22,6 @@ const NutritionCard = (props) => {
   let dd = moment(props.date).format("D");
 
   const sendEdit = () => {
-    console.log("yo")
     setEditting(false);
     firebase
     .database()
