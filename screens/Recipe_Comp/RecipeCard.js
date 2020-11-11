@@ -133,30 +133,27 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
     }
   };
 
-  const closeServingModal = () => setServingModalVisible(false);
-
-  let servingModal = servingModalVisible ? (
+  let servingModal = (
     <ServingModal
-      closeServingModal={closeServingModal}
       totalNutrients={totalNutrients}
+      servingModalVisible={servingModalVisible}
+      setServingModalVisible={setServingModalVisible}
       servingSize={servingSize}
       servingUnit={servingUnit}
       setServingSize={setServingSize}
       setServingUnit={setServingUnit}
     />
-  ) : null;
+  );
 
   let dateModal = (
-    <View>
-      <DateModal
-        dateModalVisible={dateModalVisible}
-        setDateModalVisible={setDateModalVisible}
-        totalNutrients={totalNutrients}
-        baseNutCopy={baseNutCopy}
-        fdcId={fdcId}
-        description={description}
-      />
-    </View>
+    <DateModal
+      dateModalVisible={dateModalVisible}
+      setDateModalVisible={setDateModalVisible}
+      totalNutrients={totalNutrients}
+      baseNutCopy={baseNutCopy}
+      fdcId={fdcId}
+      description={description}
+    />
   );
 
   // only render if nutrients is not an empty object
