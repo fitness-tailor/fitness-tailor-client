@@ -14,8 +14,6 @@ import firebase from "firebase";
 import { connect } from "react-redux";
 import RNPickerSelect from "react-native-picker-select";
 import convert from "convert-units";
-import RowTitle from "./RowTitle.js";
-import RowData from "./RowData.js";
 import MainRowData from "./MainRowData.js";
 import Dividers from "./Dividers.js";
 import NutritionRowData from "./NutritionRowData.js";
