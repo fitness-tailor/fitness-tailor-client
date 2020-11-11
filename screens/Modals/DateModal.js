@@ -13,45 +13,31 @@ import RNPickerSelect from "react-native-picker-select";
 import { connect } from "react-redux";
 
 function DateModal({
-  closeDateModal,
+  dateModalVisible,
+  setDateModalVisible,
   totalNutrients,
   baseNutCopy,
   description,
   fdcId,
   displayName,
 }) {
-  const [inputSize, setInputSize] = useState("100");
-  const [inputUnit, setInputUnit] = useState("g");
   const [currentDate, setCurrentDate] = useState({
-    month: String(new Date().getMonth() + 1),
-    date: String(new Date().getDate()),
-    year: String(new Date().getFullYear()).substring(2),
+    month: new Date().getMonth() + 1,
+    date: new Date().getDate(),
+    year: new Date().getFullYear(),
   });
   const [monthList, setMonthList] = useState([]);
   const [dateList, setDateList] = useState([]);
   const [yearList, setYearList] = useState([]);
-  const [duplicateList, setDuplicateList] = useState([]);
   let { month, date, year } = currentDate;
 
   useEffect(() => {
     let mList = createPickerList(12);
     let dList = createPickerList(31);
-    let yList = [
-      {
-        label: `20${String(Number(year) - 1)}`,
-        value: String(Number(year) - 1),
-      },
-      { label: `20${year}`, value: year },
-      {
-        label: `20${String(Number(year) + 1)}`,
-        value: String(Number(year) + 1),
-      },
-    ];
+    let yList = createYearPickerList(year);
     setMonthList(mList);
     setDateList(dList);
     setYearList(yList);
-    setDuplicateList(yList);
-    // let duplicateYearList = createDuplicateArray(yearList);
   }, []);
 
   // Add Food Info to User's Journal
@@ -61,7 +47,7 @@ function DateModal({
   ) => {
     const storeFoodInUserRef = firebase
       .database()
-      .ref(`users/${displayName}/foodJournal/20${year}/${month}/${date}`);
+      .ref(`users/${displayName}/foodJournal/${year}/${month}/${date}`);
 
     storeFoodInUserRef.push().set({
       referenceID: fdcId,
@@ -82,7 +68,7 @@ function DateModal({
       (currentData) => {
         if (currentData === null) {
           Alert.alert("Success", "Your food has been saved to your journal", [
-            { text: "Ok", onPress: () => closeDateModal() },
+            { text: "Ok", onPress: () => setDateModalVisible(false) },
           ]);
           return nutriData;
         } else {
@@ -106,23 +92,37 @@ function DateModal({
   const addFoodToDatabase = async (dateObj, nutritionObj) => {
     await addToUserJournal(dateObj, nutritionObj);
     await addToArchives(baseNutCopy);
-    await setTimeout(closeDateModal, 3000);
+    await setTimeout(() => {
+      setDateModalVisible(false);
+    }, 5000);
   };
 
+  // creates list for month and date.
   const createPickerList = (max, array = []) => {
     for (let val = 1; val <= max; val++) {
-      array.push({ label: `${val}`, value: `${val}` });
+      array.push({ label: `${val}`, value: val });
     }
     return array;
   };
 
-  // const createDuplicateArray = (array) => JSON.parse(JSON.stringify(array));
+  // creates list with previous, current and next year only.
+  const createYearPickerList = (year, array = []) => {
+    for (let val = year - 1; val <= year + 1; val++) {
+      array.push({ label: `${val}`, value: val });
+    }
+    return array;
+  };
 
   return (
     <View style={styles.centeredView}>
       <Modal
-        isVisible={true}
+        isVisible={dateModalVisible}
         hasBackdrop={true}
+        animationIn="slideInUp"
+        animationInTiming={1000}
+        animationOut="fadeOut"
+        animationOutTiming={1000}
+        backdropTransitionOutTiming={0}
         backdropColor="black"
         backdropOpacity={0.8}
       >
@@ -132,25 +132,15 @@ function DateModal({
               <Text style={styles.headerTextStyle}>Save Your Nutrition</Text>
             </View>
 
-            <Text style={styles.displayMsg}>
-              Input the day you consumed this item
-            </Text>
+            <Text style={styles.displayMsg}>Input date of consumption</Text>
 
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-around",
-                alignItems: "center",
-                width: "80%",
-                marginBottom: 30,
-              }}
-            >
-              <View style={{ alignItems: "center" }}>
+            <View style={styles.mainPickerContainer}>
+              <View style={styles.subPickerContainer}>
                 <Text style={styles.dateTitle}>Month</Text>
 
                 <RNPickerSelect
-                  selectedValue={currentDate.month}
-                  value={currentDate.month}
+                  selectedValue={month}
+                  value={month}
                   placeholder={{}}
                   style={{ ...pickerSelectStyles }}
                   onValueChange={(val) =>
@@ -160,7 +150,7 @@ function DateModal({
                 />
               </View>
 
-              <View style={{ alignItems: "center" }}>
+              <View style={styles.subPickerContainer}>
                 <Text style={styles.dateTitle}>Date</Text>
 
                 <RNPickerSelect
@@ -175,7 +165,7 @@ function DateModal({
                 />
               </View>
 
-              <View style={{ alignItems: "center" }}>
+              <View style={styles.subPickerContainer}>
                 <Text style={styles.dateTitle}>Year</Text>
 
                 <RNPickerSelect
@@ -183,11 +173,8 @@ function DateModal({
                   value={year}
                   placeholder={{}}
                   style={{ ...pickerSelectStyles }}
-                  onValueChange={(val, index) =>
-                    setCurrentDate({
-                      ...currentDate,
-                      year: yearList[index].value,
-                    })
+                  onValueChange={(val) =>
+                    setCurrentDate({ ...currentDate, year: val })
                   }
                   items={yearList}
                 />
@@ -197,7 +184,7 @@ function DateModal({
             <View style={styles.buttonsContainer}>
               <TouchableOpacity
                 style={{ ...styles.buttonStyles, backgroundColor: "#EA4848" }}
-                onPress={() => closeDateModal()}
+                onPress={() => setDateModalVisible(false)}
               >
                 <Text style={styles.buttonTextStyle}>Cancel</Text>
               </TouchableOpacity>
@@ -226,10 +213,10 @@ const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
     color: "black",
     textAlign: "center",
-    marginHorizontal: 4,
-    padding: 10,
+    marginHorizontal: 14,
+    paddingVertical: 10,
     fontSize: 22,
-    width: 50,
+    width: 70,
     borderBottomWidth: 1,
     backgroundColor: "#EEC16D",
     fontFamily: "OpenSans_400Regular",
@@ -256,7 +243,7 @@ const styles = StyleSheet.create({
   modalView: {
     backgroundColor: "white",
     borderRadius: 20,
-    width: "80%",
+    width: "84%",
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -288,10 +275,18 @@ const styles = StyleSheet.create({
     padding: 20,
     fontFamily: "OpenSans_400Regular",
   },
+  mainPickerContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    width: "90%",
+    marginBottom: 30,
+  },
+  subPickerContainer: { alignItems: "center" },
   dateTitle: {
     fontFamily: "OpenSans_400Regular",
     marginBottom: 4,
-    fontSize: 16,
+    fontSize: 18,
   },
   servingInput: {
     fontSize: 22,

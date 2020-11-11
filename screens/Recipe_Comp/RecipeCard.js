@@ -134,7 +134,6 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
   };
 
   const closeServingModal = () => setServingModalVisible(false);
-  const closeDateModal = () => setDateModalVisible(false);
 
   let servingModal = servingModalVisible ? (
     <ServingModal
@@ -147,15 +146,18 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
     />
   ) : null;
 
-  let dateModal = dateModalVisible ? (
-    <DateModal
-      closeDateModal={closeDateModal}
-      totalNutrients={totalNutrients}
-      baseNutCopy={baseNutCopy}
-      fdcId={fdcId}
-      description={description}
-    />
-  ) : null;
+  let dateModal = (
+    <View>
+      <DateModal
+        dateModalVisible={dateModalVisible}
+        setDateModalVisible={setDateModalVisible}
+        totalNutrients={totalNutrients}
+        baseNutCopy={baseNutCopy}
+        fdcId={fdcId}
+        description={description}
+      />
+    </View>
+  );
 
   // only render if nutrients is not an empty object
   return JSON.stringify(totalNutrients) === "{}" ? null : (
