@@ -21,7 +21,7 @@ const NutritionScreen = (props) => {
   const [startDate, setStartDate] = useState(null);
   // const [endDate, setEndDate] = useState(null);
   const [recipes, setRecipes] = useState([]);
-  const [totalCal, setTotalCal] = useState(0);
+  const [totalCal, setTotalCal] = useState(null);
 
   const isDateBlocked = (date) => {
     date.isBefore(moment(), 'day');
@@ -79,7 +79,7 @@ const NutritionScreen = (props) => {
         </View>
         <ScrollView contentContainerStyle={styles.journalNut}>
             <Text style={[styles.date, focus === 'startDate' && styles.focusedNutScreen]}>{startDate && startDate.format('LL')}</Text>
-            <Text style={styles.totalCal}>{totalCal} Total Calories</Text>
+            <Text style={styles.totalCal}>{totalCal ? `${totalCal} Total Calories` : null}</Text>
             {recipes.map((recipe, key) => {
               return (
                 <NutritionCard key={key} name={recipe.name} calories={recipe.calories}>
