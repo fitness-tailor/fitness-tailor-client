@@ -8,7 +8,6 @@ import {
   TextInput,
   Alert,
 } from "react-native";
-import { Entypo, FontAwesome5 } from "@expo/vector-icons";
 import firebase from "firebase";
 
 export default function ForgotPasswordModal({ closePasswordModal }) {
