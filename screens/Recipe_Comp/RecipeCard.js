@@ -18,6 +18,7 @@ import MainRowData from "./MainRowData.js";
 import Dividers from "./Dividers.js";
 import NutritionRowData from "./NutritionRowData.js";
 import ServingModal from "../Modals/ServingModal.js";
+import DateModal from "../Modals/DateModal.js";
 
 const RecipeCard = ({ recipe, RDA, displayName }) => {
   const { description, foodNutrients, fdcId } = recipe;
@@ -25,6 +26,7 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
   const [baseNutCopy, setBaseNutCopy] = useState({});
   const [isEditingServeSize, setIsEditingServeSize] = useState(false);
   const [servingModalVisible, setServingModalVisible] = useState(false);
+  const [dateModalVisible, setDateModalVisible] = useState(false);
   const [servingSize, setServingSize] = useState("100");
   const [servingUnit, setServingUnit] = useState("g");
 
@@ -45,55 +47,62 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
     setBaseNutCopy(baseCopy);
   }, []);
 
-  // Add Food Info to User's Journal
-  const addToUserJournal = (
-    { month, date, year },
-    { CALORIES, SERVING_SIZE }
-  ) => {
-    const storeFoodInUserRef = firebase
-      .database()
-      .ref(`users/${displayName}/foodJournal/20${year}/${month}/${date}`);
+  // ===================================
+  //// START HERE
+  // ===================================
+  // // Add Food Info to User's Journal
+  // const addToUserJournal = (
+  //   { month, date, year },
+  //   { CALORIES, SERVING_SIZE }
+  // ) => {
+  //   const storeFoodInUserRef = firebase
+  //     .database()
+  //     .ref(`users/${displayName}/foodJournal/20${year}/${month}/${date}`);
 
-    storeFoodInUserRef.push().set({
-      referenceID: fdcId,
-      name: description,
-      calories: CALORIES.value,
-      servingSize: SERVING_SIZE.value,
-      servingUnit: SERVING_SIZE.unit,
-    });
-  };
+  //   storeFoodInUserRef.push().set({
+  //     referenceID: fdcId,
+  //     name: description,
+  //     calories: CALORIES.value,
+  //     servingSize: SERVING_SIZE.value,
+  //     servingUnit: SERVING_SIZE.unit,
+  //   });
+  // };
 
-  // Add Food Info of 100 g serving size to Food Archives
-  // Only if Food ID doesn't exist
-  const addToArchives = (nutriData) => {
-    const foodArchivesRef = firebase.database().ref(`foodArchives/${fdcId}`);
+  // // Add Food Info of 100 g serving size to Food Archives
+  // // Only if Food ID doesn't exist
+  // const addToArchives = (nutriData) => {
+  //   const foodArchivesRef = firebase.database().ref(`foodArchives/${fdcId}`);
 
-    // Transaction adds to archives unless id already exists
-    foodArchivesRef.transaction(
-      (currentData) => {
-        if (currentData === null) {
-          return nutriData;
-        } else {
-          return;
-        }
-      },
-      (error, committed, snapshot) => {
-        if (error) {
-          console.log("Transaction failed abnormally!", error);
-        } else if (!committed) {
-          console.log(`Did not save since fdcId: ${fdcId} already exists`);
-        } else {
-          console.log(`fdcId: ${fdcId} has been added to archives!`);
-        }
-      }
-    );
-  };
+  //   // Transaction adds to archives unless id already exists
+  //   foodArchivesRef.transaction(
+  //     (currentData) => {
+  //       if (currentData === null) {
+  //         return nutriData;
+  //       } else {
+  //         return;
+  //       }
+  //     },
+  //     (error, committed, snapshot) => {
+  //       if (error) {
+  //         console.log("Transaction failed abnormally!", error);
+  //       } else if (!committed) {
+  //         console.log(`Did not save since fdcId: ${fdcId} already exists`);
+  //       } else {
+  //         console.log(`fdcId: ${fdcId} has been added to archives!`);
+  //       }
+  //     }
+  //   );
+  // };
 
-  // Adds Nutrition Info to User's Journal and Archives
-  const addFoodToDatabase = async (dateObj, nutritionObj) => {
-    await addToUserJournal(dateObj, nutritionObj);
-    await addToArchives(baseNutCopy);
-  };
+  // // Adds Nutrition Info to User's Journal and Archives
+  // const addFoodToDatabase = async (dateObj, nutritionObj) => {
+  //   await addToUserJournal(dateObj, nutritionObj);
+  //   await addToArchives(baseNutCopy);
+  // };
+
+  // ===================================
+  //// END HERE
+  // ===================================
 
   // Parse through nutrition database
   const parseNutritionData = (nutritionArray, id, allowPercentages = false) => {
@@ -194,6 +203,7 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
   ];
 
   const closeServingModal = () => setServingModalVisible(false);
+  const closeDateModal = () => setDateModalVisible(false);
 
   let servingModal = servingModalVisible ? (
     <ServingModal
@@ -203,6 +213,16 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
       servingUnit={servingUnit}
       setServingSize={setServingSize}
       setServingUnit={setServingUnit}
+    />
+  ) : null;
+
+  let dateModal = dateModalVisible ? (
+    <DateModal
+      closeDateModal={closeDateModal}
+      totalNutrients={totalNutrients}
+      baseNutCopy={baseNutCopy}
+      fdcId={fdcId}
+      description={description}
     />
   ) : null;
 
@@ -398,56 +418,11 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
           </View>
 
           <View style={styles.oneButtonContainer}>
-            <View style={styles.editDisplay}>
-              <Text style={styles.buttonText}>Date</Text>
-
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <TextInput
-                  style={styles.dateInputBox}
-                  value={month}
-                  placeholder={`${month}`}
-                  placeholderTextColor="white"
-                  keyboardType={"numeric"}
-                  maxLength={2}
-                  onChangeText={(val) =>
-                    setCurrentDate({ ...currentDate, month: val })
-                  }
-                />
-                <Text style={{ fontSize: 24, color: "white" }}>/</Text>
-                <TextInput
-                  style={styles.dateInputBox}
-                  value={date}
-                  placeholder={`${date}`}
-                  placeholderTextColor="white"
-                  keyboardType={"numeric"}
-                  maxLength={2}
-                  onChangeText={(val) =>
-                    setCurrentDate({ ...currentDate, date: val })
-                  }
-                />
-                <Text style={{ fontSize: 24, color: "white" }}>/</Text>
-                <TextInput
-                  style={styles.dateInputBox}
-                  value={year}
-                  placeholder={`${year}`}
-                  color="white"
-                  keyboardType={"numeric"}
-                  maxLength={2}
-                  onChangeText={(val) =>
-                    setCurrentDate({ ...currentDate, year: val })
-                  }
-                />
-              </View>
-            </View>
             <TouchableOpacity
               style={styles.addButton}
-              onPress={() => addFoodToDatabase(currentDate, totalNutrients)}
+              onPress={() => {
+                setDateModalVisible(true);
+              }}
               activeOpacity="0.5"
             >
               <Text style={styles.buttonText}>Add To Journal</Text>
@@ -456,6 +431,7 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
         </View>
       </View>
       {servingModal}
+      {dateModal}
     </SafeAreaView>
   );
 };
