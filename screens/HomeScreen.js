@@ -206,18 +206,18 @@ const HomeScreen = (props) => {
             </Text>
 
             <View style={styles.calGoals} >
+                <Text style={{ color: "white", fontSize: 18 }}>
+                  Daily Caloric Expenditure: {calExpenditure}
+                </Text>
+
               <Text style={{ color: "white", fontSize: 18 }}>
-                Your Caloric Expenditure:
+                Daily Caloric Goal: {calGoal}
               </Text>
-            <Text style={{ color: "white", fontSize: 18 }}>{calExpenditure}</Text>
+
               <Text style={{ color: "white", fontSize: 18 }}>
-                Your Caloric Goal Today:
+                Caloric Intake Today: {calIntake}
               </Text>
-            <Text style={{ color: "white", fontSize: 18 }}>{calGoal}</Text>
-              <Text style={{ color: "white", fontSize: 18 }}>
-                Your Caloric Intake Today:
-              </Text>
-            <Text style={{ color: "white", fontSize: 18 }}>{calIntake}</Text>
+
             </View>
 
             <TouchableOpacity

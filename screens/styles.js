@@ -94,11 +94,12 @@ module.exports = StyleSheet.create({
   calGoals: {
     borderColor: "white",
     borderWidth: 1,
+    // fontSize: 12,/
     // bottom: 215,
-    height: 150,
+    height: 100,
     width: '100%',
     borderRadius: 20,
-    justifyContent: "center",
+    justifyContent: "space-around",
     alignItems: "center",
     // position: "absolute",
   },
