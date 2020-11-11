@@ -26,6 +26,7 @@ const HomeScreen = (props) => {
   const [image, setImage] = useState(null);
   const [calExpenditure, setCalExpenditure] = useState(null);
   const [calIntake, setCalIntake] = useState(null);
+  const [calGoal, setCalGoal] = useState(null);
 
 
   useEffect(() => {
@@ -61,6 +62,7 @@ const HomeScreen = (props) => {
   useEffect(() => {
     getCalExpend();
     getCalIntake();
+    getCalGoal();
   })
 
   const uploadProfilePic = async (imageURI, { uid, displayName }) => {
@@ -114,6 +116,23 @@ const HomeScreen = (props) => {
         calories += recipe.calories;
       })
       setCalIntake(calories)
+    })
+  }
+
+  const getCalGoal = () => {
+    firebase
+    .database()
+    .ref(`users/${props.displayName}`)
+    .on("value", function(snapshot) {
+      let goal = snapshot.val().goal;
+      let bmrPlusExcer = snapshot.val().bmrPlusExcer
+      if(goal === "maintain") {
+        setCalGoal(bmrPlusExcer)
+      } else if(goal === "lose") {
+        setCalGoal(parseInt(bmrPlusExcer) - 500)
+      } else if(goal === "gain") {
+        setCalGoal(parseInt(bmrPlusExcer) + 500)
+      }
     })
   }
 
@@ -186,23 +205,15 @@ const HomeScreen = (props) => {
               {props.user.displayName}
             </Text>
 
-            <View
-              style={{
-                borderColor: "white",
-                borderWidth: 1,
-                // bottom: 215,
-                height: 120,
-                width: 240,
-                borderRadius: 20,
-                justifyContent: "center",
-                alignItems: "center",
-                // position: "absolute",
-              }}
-            >
+            <View style={styles.calGoals} >
               <Text style={{ color: "white", fontSize: 18 }}>
                 Your Caloric Expenditure:
               </Text>
             <Text style={{ color: "white", fontSize: 18 }}>{calExpenditure}</Text>
+              <Text style={{ color: "white", fontSize: 18 }}>
+                Your Caloric Goal Today:
+              </Text>
+            <Text style={{ color: "white", fontSize: 18 }}>{calGoal}</Text>
               <Text style={{ color: "white", fontSize: 18 }}>
                 Your Caloric Intake Today:
               </Text>
