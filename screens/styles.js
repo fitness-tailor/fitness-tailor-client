@@ -88,7 +88,20 @@ module.exports = StyleSheet.create({
     top: "50%",
     alignItems: "center",
     justifyContent: "space-between",
-    height: "35%",
+    height: "40%",
+    width: "80%",
+  },
+  calGoals: {
+    borderColor: "white",
+    borderWidth: 1,
+    // fontSize: 12,/
+    // bottom: 215,
+    height: 100,
+    width: '100%',
+    borderRadius: 20,
+    justifyContent: "space-around",
+    alignItems: "center",
+    // position: "absolute",
   },
   // ==================================
   // Nutrition Card Styles
