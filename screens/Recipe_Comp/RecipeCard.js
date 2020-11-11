@@ -17,12 +17,14 @@ import convert from "convert-units";
 import MainRowData from "./MainRowData.js";
 import Dividers from "./Dividers.js";
 import NutritionRowData from "./NutritionRowData.js";
+import ServingModal from "../Modals/ServingModal.js";
 
 const RecipeCard = ({ recipe, RDA, displayName }) => {
   const { description, foodNutrients, fdcId } = recipe;
   const [totalNutrients, setTotalNutrients] = useState({});
   const [baseNutCopy, setBaseNutCopy] = useState({});
   const [isEditingServeSize, setIsEditingServeSize] = useState(false);
+  const [servingModalVisible, setServingModalVisible] = useState(false);
   const [servingSize, setServingSize] = useState("100");
   const [servingUnit, setServingUnit] = useState("g");
 
@@ -186,60 +188,23 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
     }
   };
 
-  const handleServingSize = (size, unit) => {
-    // changes nutrition value relative to serving size
-    size = Number(size);
-    changePercentageOnConversion(size, unit);
-    totalNutrients.SERVING_SIZE.value = size;
-    totalNutrients.SERVING_SIZE.unit = unit;
-  };
-
-  const changePercentageOnConversion = (size, convertUnits) => {
-    let { value, unit } = totalNutrients.SERVING_SIZE;
-
-    let newValues = convert(size).from(convertUnits).to("g");
-    let previousValues = convert(value).from(unit).to("g");
-    let factor = newValues / previousValues;
-
-    for (let key in totalNutrients) {
-      if (!totalNutrients[key].value && totalNutrients[key].value === 0) {
-        continue;
-      } else {
-        totalNutrients[key].value *= factor;
-      }
-    }
-  };
-
-  // TODO: create new function for converting to other units. i.e.) "cups, oz, quarts".
-
-  // Checks if serving size inputs are empty
-  const checkForEmptyInputs = () => {
-    if (!servingUnit && !servingSize) {
-      alert("Please Input Serving Unit and Yield");
-    } else if (!servingUnit) {
-      alert("Please Input Serving Units");
-    } else if (!servingSize) {
-      alert("Please Input Serving Yield");
-    }
-  };
-
-  // Toggles editing when converting serving size
-  const toggleEditing = () => {
-    // Don't submit data if input fields are empty
-    if (isEditingServeSize && (!servingUnit || !servingSize)) {
-      checkForEmptyInputs();
-      return;
-    } else if (isEditingServeSize) {
-      handleServingSize(servingSize, servingUnit);
-    }
-    // Toggle between editing options unless 1st case is true
-    setIsEditingServeSize(!isEditingServeSize);
-  };
-
   const unitList = [
     { label: "g", value: "g" },
     { label: "oz", value: "oz" },
   ];
+
+  const closeServingModal = () => setServingModalVisible(false);
+
+  let servingModal = servingModalVisible ? (
+    <ServingModal
+      closeServingModal={closeServingModal}
+      totalNutrients={totalNutrients}
+      servingSize={servingSize}
+      servingUnit={servingUnit}
+      setServingSize={setServingSize}
+      setServingUnit={setServingUnit}
+    />
+  ) : null;
 
   // only render if nutrients is not an empty object
   return JSON.stringify(totalNutrients) === "{}" ? null : (
@@ -425,49 +390,13 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
           <View style={styles.oneButtonContainer}>
             <View style={styles.editDisplay}>
               <Text style={styles.buttonText}>Serving Size</Text>
-
-              {!isEditingServeSize && (
-                <Text
-                  style={[styles.buttonText, { fontSize: 22 }]}
-                >{`${totalNutrients.SERVING_SIZE.value} ${totalNutrients.SERVING_SIZE.unit}`}</Text>
-              )}
-
-              {isEditingServeSize && (
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "center",
-                  }}
-                >
-                  <TextInput
-                    style={styles.servingInputBox}
-                    value={servingSize}
-                    placeholder={`${servingSize}`}
-                    placeholderTextColor="white"
-                    keyboardType={"numeric"}
-                    onChangeText={(val) => setServingSize(val)}
-                  />
-                  <RNPickerSelect
-                    selectedValue={servingUnit}
-                    value={servingUnit}
-                    placeholder={{}}
-                    style={{
-                      ...pickerSelectStyles,
-                    }}
-                    onValueChange={(unit) => setServingUnit(unit)}
-                    items={unitList}
-                  />
-                </View>
-              )}
             </View>
             <TouchableOpacity
               style={styles.addButton}
-              onPress={() => toggleEditing()}
+              onPress={() => setServingModalVisible(true)}
               activeOpacity="0.5"
             >
-              <Text style={styles.buttonText}>
-                {!isEditingServeSize ? "Convert Unit" : "Done"}
-              </Text>
+              <Text style={styles.buttonText}>Convert Serve</Text>
             </TouchableOpacity>
           </View>
 
@@ -529,6 +458,7 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
           </View>
         </View>
       </View>
+      {servingModal}
     </SafeAreaView>
   );
 };
