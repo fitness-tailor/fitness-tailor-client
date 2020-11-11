@@ -42,7 +42,7 @@ const NutritionScreen = (props) => {
   const addCalories = () => {
     let calories = 0;
     recipes.map((recipe) => {
-      calories += recipe.calories;
+      calories += parseInt(recipe[1].calories);
     })
     setTotalCal(calories);
   }
