@@ -8,17 +8,25 @@ import {
   Image,
   Button,
 } from "react-native";
-import axios from "axios";
+import firebase from "firebase";
+import moment from "moment";
+import { connect } from "react-redux";
 
-export default function NutritionCard(props) {
+
+const NutritionCard = (props) => {
   const editNutritionData = () => {
     // TODO: add function to edit nutrition data
     // HINT: axios put/update
   };
 
   const deleteNutritionData = () => {
-    // TODO: add function to delete nutrition data
-    // HINT: axios delete
+    let yr = moment(props.date).format("YYYY");
+    let mm = moment(props.date).format("MM");
+    let dd = moment(props.date).format("D");
+    firebase
+    .database()
+    .ref(`users/${props.displayName}/foodJournal/${yr}/${mm}/${dd}/${props.id}`)
+    .remove()
   };
 
   return (
@@ -77,6 +85,7 @@ export default function NutritionCard(props) {
 
         <TouchableOpacity
           style={[styles.buttonStyles]}
+          onPress={deleteNutritionData}
         >
           <Text
             style={[
@@ -90,6 +99,13 @@ export default function NutritionCard(props) {
     </View>
   );
 }
+
+const mapStateToProps = (state) => ({
+  displayName: state.auth.user.displayName,
+  RDA: state.recipeList.RDA,
+});
+
+export default connect(mapStateToProps)(NutritionCard);
 
 const styles = StyleSheet.create({
   font: {

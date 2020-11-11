@@ -59,7 +59,7 @@ const NutritionScreen = (props) => {
         setRecipes([]);
         setTotalCal(0);
       } else {
-        setRecipes(Object.values(snapshot.val()))
+        setRecipes(Object.entries(snapshot.val()))
       }
     })
   };
@@ -82,9 +82,7 @@ const NutritionScreen = (props) => {
             <Text style={styles.totalCal}>{totalCal ? `${totalCal} Total Calories` : null}</Text>
             {recipes.map((recipe, key) => {
               return (
-                <NutritionCard key={key} name={recipe.name} calories={recipe.calories}>
-                  {/* <Text>{recipe.name}</Text>
-                  <Text>{recipe.calories} calories</Text> */}
+                <NutritionCard key={key} id={recipe[0]} name={recipe[1].name} calories={recipe[1].calories} date={startDate}>
                 </NutritionCard>
               )
             })}
