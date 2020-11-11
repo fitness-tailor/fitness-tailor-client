@@ -26,6 +26,7 @@ const ProfileScreen = (props) => {
   const [bmr, setBMR] = useState("");
   const [bmrPlusExcer, setbmrPlusExcer] = useState("");
   const [activityLevel, setActivityLevel] = useState("");
+  const [goal, setGoal] = useState("");
   const [gender, setGender] = useState("");
 
   useEffect(() => {
@@ -50,6 +51,7 @@ const ProfileScreen = (props) => {
           setBMI(snapshot.val().BMI);
           setBMR(snapshot.val().BMR);
           setActivityLevel(snapshot.val().activityLevel);
+          setGoal(snapshot.val().goal);
           setbmrPlusExcer(snapshot.val().bmrPlusExcer);
         }
       });
@@ -87,8 +89,6 @@ const ProfileScreen = (props) => {
   const calculateBMR = (gender, weight, heightFeet, heightInch, age) => {
     let heightCM = convertToCM(heightFeet, heightInch);
     let weightKG = convertToKg(weight);
-    console.log(heightCM);
-    console.log(weightKG);
     if(gender === "male") {
       return (10 * weightKG) + (6.25 * heightCM) - (5 * age) + 5;
     } else if (gender === "female") {
@@ -122,6 +122,7 @@ const ProfileScreen = (props) => {
           heightInch: heightInch,
           gender: gender,
           activityLevel: activityLevel,
+          goal: goal,
         })
         .then(() => {
           let BMI = calculateBMI(heightFeet, heightInch, weight);
@@ -151,6 +152,12 @@ const ProfileScreen = (props) => {
     // { label: "Non-Binary", value: "non-binary" },
   ];
 
+  const goalList = [
+    { label: "Lose Weight", value: "lose" },
+    { label: "Maintain Weight", value: "maintain" },
+    { label: "Gain Weight", value: "gain" },
+  ];
+
   const activityLevelList = [
     { label: "Little to No Exercise", value: 1.2 },
     { label: "1-3 Days Light", value: 1.375 },
@@ -171,7 +178,7 @@ const ProfileScreen = (props) => {
         <Text style={{"fontSize": 20, color: "white"}}>Your BMR is {bmr}</Text>
         <Text style={{"fontSize": 20, color: "white"}}>Your Daily Caloric Expenditure is {bmrPlusExcer}</Text>
       </View>
-    
+
       <View style={styles.userInputProfile}>
         <View style={styles.userGenderProfile}>
           <Text style={{"fontSize": 20, color: "white"}}>Gender</Text>
@@ -188,12 +195,24 @@ const ProfileScreen = (props) => {
 
         <View style={styles.userActivityLevelProfile}>
           <Text style={{"fontSize": 20, color: "white"}}>Activity Level</Text>
-
           <RNPickerSelect
             selectedValue={activityLevel}
             items={activityLevelList}
             onValueChange={(itemValue) => setActivityLevel(itemValue)}
             value={activityLevel}
+            style={{
+              ...pickerSelectStyles,
+            }}
+          />
+        </View>
+
+        <View style={styles.userActivityLevelProfile}>
+          <Text style={{"fontSize": 20, color: "white"}}>Goal</Text>
+          <RNPickerSelect
+            selectedValue={goal}
+            items={goalList}
+            onValueChange={(itemValue) => setGoal(itemValue)}
+            value={goal}
             style={{
               ...pickerSelectStyles,
             }}
