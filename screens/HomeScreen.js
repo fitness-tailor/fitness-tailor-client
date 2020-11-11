@@ -21,13 +21,14 @@ import * as ImagePicker from "expo-image-picker";
 import { AntDesign } from "@expo/vector-icons";
 import Constants from "expo-constants";
 import styles from "./styles.js";
+import LogOutModal from "./Modals/LogOutModal.js";
 
 const HomeScreen = (props) => {
   const [image, setImage] = useState(null);
+  const [logOutModalVisible, setLogOutModalVisible] = useState(false);
   const [calExpenditure, setCalExpenditure] = useState(null);
   const [calIntake, setCalIntake] = useState(null);
   const [calGoal, setCalGoal] = useState(null);
-
 
   useEffect(() => {
     (async () => {
@@ -41,7 +42,6 @@ const HomeScreen = (props) => {
       }
     })();
   }, []);
-
 
   useEffect(() => {
     props.fetchUser(props.user.displayName);
@@ -147,11 +147,7 @@ const HomeScreen = (props) => {
       }
     })
   }
-
-  const logOut = () => {
-    firebase.auth().signOut();
-  };
-
+  
   let profilePic = !image ? (
     <View>
       <AntDesign name="pluscircle" size={230} color="#dcdcdc" />
@@ -172,6 +168,12 @@ const HomeScreen = (props) => {
       ? Alert.alert("Error getting your profile pics")
       : null;
 
+  const closeLogOutModal = () => setLogOutModalVisible(false);
+
+  let logOutModal = logOutModalVisible ? (
+    <LogOutModal closeLogOutModal={closeLogOutModal} />
+  ) : null;
+
   return (
     <LinearGradient
       colors={["#ff5a5a", "#ff5a5a", "#013c57", "#013c57"]}
@@ -186,7 +188,6 @@ const HomeScreen = (props) => {
     >
       <SafeAreaView style={{ flex: 1 }}>
         <View style={styles.containerHome}>
-
           <TouchableOpacity
             activeOpacity={0.7}
             style={{
@@ -194,7 +195,6 @@ const HomeScreen = (props) => {
               height: 230,
               width: 230,
               top: "13%",
-              // bottom: 50,
               borderRadius: 230 / 2,
               position: "absolute",
               zIndex: 1,
@@ -211,7 +211,7 @@ const HomeScreen = (props) => {
                 color: "#32b4be",
                 fontSize: 35,
                 textTransform: "uppercase",
-                fontFamily: "Inter_600SemiBold",
+                fontFamily: "OpenSans_600SemiBold",
               }}
             >
               {props.user.displayName}
@@ -221,7 +221,7 @@ const HomeScreen = (props) => {
                 <Text style={{ color: "white", fontSize: 18 }}>
                   Daily Caloric Expenditure: {calExpenditure}
                 </Text>
-
+    
               <Text style={{ color: "white", fontSize: 18 }}>
                 Daily Caloric Goal: {calGoal}
               </Text>
@@ -242,7 +242,7 @@ const HomeScreen = (props) => {
                 alignItems: "center",
               }}
               activeOpacity={0.7}
-              onPress={logOut}
+              onPress={() => setLogOutModalVisible(true)}
             >
               <View>
                 <Text
@@ -257,7 +257,7 @@ const HomeScreen = (props) => {
               </View>
             </TouchableOpacity>
           </View>
-
+          {logOutModal}
         </View>
       </SafeAreaView>
     </LinearGradient>
