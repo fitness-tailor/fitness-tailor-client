@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,7 +7,6 @@ import {
   TextInput,
   Alert,
 } from "react-native";
-import firebase from "firebase";
 import RNPickerSelect from "react-native-picker-select";
 import Modal from "react-native-modal";
 import convert from "convert-units";
