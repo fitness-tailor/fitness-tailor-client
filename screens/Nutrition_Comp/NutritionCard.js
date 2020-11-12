@@ -12,29 +12,35 @@ import firebase from "firebase";
 import moment from "moment";
 import { connect } from "react-redux";
 import EditModal from "../Modals/EditModal.js";
+import DeleteModal from "../Modals/DeleteModal.js";
 
 const NutritionCard = (props) => {
   const [editting, setEditting] = useState(false);
   const [editModalVisible, setEditModalVisible] = useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [calories, setCalories] = useState(props.calories);
   const [recipe, setRecipe] = useState(props.name);
   let yr = moment(props.date).format("YYYY");
   let mm = moment(props.date).format("MM");
   let dd = moment(props.date).format("D");
 
-  const sendEdit = () => {
-    setEditting(false);
-    firebase
-      .database()
-      .ref(
-        `users/${props.displayName}/foodJournal/${yr}/${mm}/${dd}/${props.id}`
-      )
-      .update({
-        name: recipe,
-        calories: calories,
-      });
-  };
+  // Delete this function here from Nutrition Card
+  // Since it now lives in Edit Modal
+  // const sendEdit = () => {
+  //   setEditting(false);
+  //   firebase
+  //     .database()
+  //     .ref(
+  //       `users/${props.displayName}/foodJournal/${yr}/${mm}/${dd}/${props.id}`
+  //     )
+  //     .update({
+  //       name: recipe,
+  //       calories: calories,
+  //     });
+  // };
 
+  // Delete this function here from Nutrition Card
+  // Since it now lives in Delete Modal
   const deleteNutritionData = () => {
     firebase
       .database()
@@ -53,6 +59,17 @@ const NutritionCard = (props) => {
       calories={calories}
       setCalories={setCalories}
       displayName={props.displayName}
+      id={props.id}
+      yr={yr}
+      mm={mm}
+      dd={dd}
+    />
+  );
+
+  let deleteModal = (
+    <DeleteModal
+      deleteModalVisible={deleteModalVisible}
+      setDeleteModalVisible={setDeleteModalVisible}
       id={props.id}
       yr={yr}
       mm={mm}
@@ -142,13 +159,16 @@ const NutritionCard = (props) => {
 
         <TouchableOpacity
           style={[styles.buttonStyles]}
-          onPress={deleteNutritionData}
+          onPress={() => setDeleteModalVisible(true)}
         >
           <Text style={[styles.editButton]}>Delete</Text>
         </TouchableOpacity>
       </View>
       {/* Hardcoded size to prevent maintain current design */}
-      <View style={{ height: 0, width: 0 }}>{editModal}</View>
+      <View style={{ height: 0, width: 0 }}>
+        {editModal}
+        {deleteModal}
+      </View>
     </View>
   );
 };

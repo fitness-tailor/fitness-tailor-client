@@ -6,18 +6,25 @@ import RNPickerSelect from "react-native-picker-select";
 import { connect } from "react-redux";
 
 function DeleteModal({
-  dateModalVisible,
-  setDateModalVisible,
-  totalNutrients,
-  baseNutCopy,
-  description,
-  fdcId,
+  deleteModalVisible,
+  setDeleteModalVisible,
   displayName,
+  yr,
+  mm,
+  dd,
+  id,
 }) {
+  const deleteNutritionData = () => {
+    firebase
+      .database()
+      .ref(`users/${displayName}/foodJournal/${yr}/${mm}/${dd}/${id}`)
+      .remove();
+  };
+
   return (
     <View style={styles.centeredView}>
       <Modal
-        isVisible={dateModalVisible}
+        isVisible={deleteModalVisible}
         hasBackdrop={true}
         animationIn="slideInUp"
         animationInTiming={1000}
@@ -39,15 +46,15 @@ function DeleteModal({
 
             <View style={styles.buttonsContainer}>
               <TouchableOpacity
-                style={{ ...styles.buttonStyles, backgroundColor: "#EA4848" }}
-                onPress={() => setDateModalVisible(false)}
+                style={styles.buttonStyles}
+                onPress={() => setDeleteModalVisible(false)}
               >
                 <Text style={styles.buttonTextStyle}>No</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
-                style={{ ...styles.buttonStyles, backgroundColor: "#26A637" }}
-                onPress={() => addFoodToDatabase(currentDate, totalNutrients)}
+                style={styles.buttonStyles}
+                onPress={() => deleteNutritionData()}
               >
                 <Text style={styles.buttonTextStyle}>Yes</Text>
               </TouchableOpacity>
@@ -167,6 +174,7 @@ const styles = StyleSheet.create({
     marginBottom: 25,
     marginHorizontal: 5,
     elevation: 2,
+    backgroundColor: "#C0BEAF",
   },
   buttonTextStyle: {
     color: "black",
