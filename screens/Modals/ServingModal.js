@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  Modal,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -10,10 +9,12 @@ import {
 } from "react-native";
 import firebase from "firebase";
 import RNPickerSelect from "react-native-picker-select";
+import Modal from "react-native-modal";
 import convert from "convert-units";
 
 export default function ServingModal({
-  closeServingModal,
+  servingModalVisible,
+  setServingModalVisible,
   servingSize,
   servingUnit,
   totalNutrients,
@@ -24,9 +25,7 @@ export default function ServingModal({
   const [inputUnit, setInputUnit] = useState("g");
 
   const handleServingSize = (size, unit) => {
-    // change default size
     setServingSize(size);
-    // changes nutrition value relative to serving size
     size = Number(size);
     changePercentageOnConversion(size, unit);
     totalNutrients.SERVING_SIZE.value = size;
@@ -62,15 +61,14 @@ export default function ServingModal({
 
   // Toggles editing when converting serving size
   const toggleEditing = () => {
-    // Don't submit data if input fields are empty
     if (!inputSize || !inputUnit) {
+      // Don't submit data if input fields are empty
       checkForEmptyInputs();
       return;
     } else {
       handleServingSize(inputSize, inputUnit);
     }
-    // Closes modal
-    closeServingModal();
+    setServingModalVisible(false);
   };
 
   const unitList = [
@@ -80,7 +78,17 @@ export default function ServingModal({
 
   return (
     <View style={styles.centeredView}>
-      <Modal animationType="fade" transparent={true} visible={true}>
+      <Modal
+        isVisible={servingModalVisible}
+        hasBackdrop={true}
+        animationIn="slideInUp"
+        animationInTiming={1000}
+        animationOut="fadeOut"
+        animationOutTiming={1000}
+        backdropTransitionOutTiming={0}
+        backdropColor="black"
+        backdropOpacity={0.8}
+      >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <View style={styles.header}>
@@ -118,7 +126,7 @@ export default function ServingModal({
             <View style={styles.buttonsContainer}>
               <TouchableOpacity
                 style={{ ...styles.buttonStyles, backgroundColor: "#EA4848" }}
-                onPress={() => closeServingModal()}
+                onPress={() => setServingModalVisible(false)}
               >
                 <Text style={styles.buttonTextStyle}>Cancel</Text>
               </TouchableOpacity>

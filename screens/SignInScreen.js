@@ -71,39 +71,23 @@ class SignInScreen extends React.Component {
   }
 
   render() {
-    let errorModal = this.state.errorModalVisible ? (
-      <View
-        style={{
-          width: "90%",
-          height: 0,
-        }}
-      >
-        <AuthErrorModal
-          error={this.state.error}
-          closeErrorModal={this.closeErrorModal.bind(this)}
-        />
-      </View>
-    ) : null;
+    let errorModal = (
+      <AuthErrorModal
+        error={this.state.error}
+        errorModalVisible={this.state.errorModalVisible}
+        closeErrorModal={this.closeErrorModal.bind(this)}
+      />
+    );
 
-    let passwordModal = this.state.passwordModalVisible ? (
-      <View
-        style={{
-          width: "90%",
-          height: 0,
-        }}
-      >
-        <ForgotPasswordModal
-          closePasswordModal={this.closePasswordModal.bind(this)}
-        />
-      </View>
-    ) : null;
+    let passwordModal = (
+      <ForgotPasswordModal
+        passwordModalVisible={this.state.passwordModalVisible}
+        closePasswordModal={this.closePasswordModal.bind(this)}
+      />
+    );
 
     return (
-      <TouchableWithoutFeedback
-        onPress={() => {
-          Keyboard.dismiss();
-        }}
-      >
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <SafeAreaView style={styles.containerSignIn}>
           <KeyboardAvoidingView style={styles.SignIn}>
             <FadeInView>
@@ -142,8 +126,6 @@ class SignInScreen extends React.Component {
                 </View>
 
                 {this.renderLoading()}
-                {errorModal}
-                {passwordModal}
 
                 <TouchableOpacity
                   style={styles.signInButton}
@@ -162,9 +144,6 @@ class SignInScreen extends React.Component {
                   </Text>
                   <Text
                     style={styles.authOptionsText}
-                    // onPress={() => {
-                    //   this.forgotPassword();
-                    // }}
                     onPress={() =>
                       this.setState({ passwordModalVisible: true })
                     }
@@ -172,6 +151,8 @@ class SignInScreen extends React.Component {
                     Forgot Password?
                   </Text>
                 </View>
+                {errorModal}
+                {passwordModal}
               </View>
             </FadeInView>
           </KeyboardAvoidingView>
