@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
   TextInput,
-  Alert,
 } from "react-native";
 import firebase from "firebase";
 import Modal from "react-native-modal";

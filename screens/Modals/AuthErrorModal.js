@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Entypo, FontAwesome5 } from "@expo/vector-icons";
+import { Entypo } from "@expo/vector-icons";
 import Modal from "react-native-modal";
 
 export default function AuthErrorModal({

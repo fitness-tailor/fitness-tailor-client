@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { AppLoading } from "expo";
 import firebase from "firebase";
 import {
   StyleSheet,
   Text,
   View,
   SafeAreaView,
-  Button,
   Image,
   TouchableOpacity,
   Alert,
@@ -32,7 +30,10 @@ const HomeScreen = (props) => {
           status,
         } = await ImagePicker.requestCameraRollPermissionsAsync();
         if (status !== "granted") {
-          alert("Sorry, we need camera roll permissions to make this work!");
+          Alert.alert(
+            "Oops",
+            "We need camera roll permissions to make this work!"
+          );
         }
       }
     })();

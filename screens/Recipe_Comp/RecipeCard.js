@@ -4,16 +4,10 @@ import {
   Text,
   SafeAreaView,
   View,
-  TextInput,
   TouchableOpacity,
-  Image,
-  Button,
 } from "react-native";
-import axios from "axios";
 import firebase from "firebase";
 import { connect } from "react-redux";
-import RNPickerSelect from "react-native-picker-select";
-import convert from "convert-units";
 import MainRowData from "./MainRowData.js";
 import Dividers from "./Dividers.js";
 import NutritionRowData from "./NutritionRowData.js";
