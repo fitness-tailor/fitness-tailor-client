@@ -16,10 +16,11 @@ export default function ServingModal({
   servingModalVisible,
   setServingModalVisible,
   servingSize,
-  servingUnit,
-  totalNutrients,
   setServingSize,
+  servingUnit,
   setServingUnit,
+  totalNutrients,
+  setTotalNutrients,
 }) {
   const [inputSize, setInputSize] = useState(servingSize);
   const [inputUnit, setInputUnit] = useState("g");
@@ -28,8 +29,14 @@ export default function ServingModal({
     setServingSize(size);
     size = Number(size);
     changePercentageOnConversion(size, unit);
-    totalNutrients.SERVING_SIZE.value = size;
-    totalNutrients.SERVING_SIZE.unit = unit;
+    setTotalNutrients({
+      ...totalNutrients,
+      SERVING_SIZE: {
+        ...totalNutrients.SERVING_SIZE,
+        value: size,
+        unit: unit,
+      },
+    });
   };
 
   const changePercentageOnConversion = (size, convertUnits) => {
@@ -42,8 +49,18 @@ export default function ServingModal({
     for (let key in totalNutrients) {
       if (!totalNutrients[key].value && totalNutrients[key].value === 0) {
         continue;
+      } else if (key === "ID" || key === "NAME") {
+        continue;
       } else {
-        totalNutrients[key].value *= factor;
+        let factoredVal = (totalNutrients[key].value *= factor);
+
+        setTotalNutrients((prevState) => ({
+          ...prevState,
+          key: {
+            ...prevState[key],
+            value: factoredVal,
+          },
+        }));
       }
     }
   };
