@@ -41,14 +41,14 @@ const NutritionCard = (props) => {
 
   // Delete this function here from Nutrition Card
   // Since it now lives in Delete Modal
-  const deleteNutritionData = () => {
-    firebase
-      .database()
-      .ref(
-        `users/${props.displayName}/foodJournal/${yr}/${mm}/${dd}/${props.id}`
-      )
-      .remove();
-  };
+  // const deleteNutritionData = () => {
+  //   firebase
+  //     .database()
+  //     .ref(
+  //       `users/${props.displayName}/foodJournal/${yr}/${mm}/${dd}/${props.id}`
+  //     )
+  //     .remove();
+  // };
 
   let editModal = (
     <EditModal

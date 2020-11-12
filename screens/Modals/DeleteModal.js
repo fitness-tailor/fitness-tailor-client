@@ -14,11 +14,15 @@ function DeleteModal({
   dd,
   id,
 }) {
-  const deleteNutritionData = () => {
-    firebase
+  const deleteNutritionData = async () => {
+    await firebase
       .database()
       .ref(`users/${displayName}/foodJournal/${yr}/${mm}/${dd}/${id}`)
       .remove();
+
+    await Alert.alert("Success", "This entry has been deleted", [
+      { text: "Ok", onPress: () => setDeleteModalVisible(false) },
+    ]);
   };
 
   return (
