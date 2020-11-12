@@ -32,7 +32,7 @@ function EditModal({
   // such that food name is not lost on the card
   let [inputName, setInputName] = useState(recipe);
 
-  const sendEdit = async () => {
+  const sendEdit = () => {
     // Set Recipe in card to what was put in the input
     setRecipe(inputName);
 
@@ -90,8 +90,6 @@ function EditModal({
               <TouchableOpacity
                 style={{ ...styles.buttonStyles, backgroundColor: "#E16151" }}
                 onPress={() => {
-                  // Without setTimeout, the input changes as modal closes
-                  // With setTimeout, user won't see input change, Test with commenting and uncommenting setTimeout
                   setTimeout(() => {
                     setInputName(recipe);
                   }, 1000);
