@@ -69,7 +69,7 @@ function EditModal({
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <View style={styles.header}>
-              <Text style={styles.headerTextStyle}>Edit Food Data</Text>
+              <Text style={styles.headerTextStyle}>Edit Entry</Text>
             </View>
 
             <Text style={styles.displayMsg}>What will you edit?</Text>
