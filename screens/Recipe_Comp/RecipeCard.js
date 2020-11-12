@@ -136,6 +136,7 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
   let servingModal = (
     <ServingModal
       totalNutrients={totalNutrients}
+      setTotalNutrients={setTotalNutrients}
       servingModalVisible={servingModalVisible}
       setServingModalVisible={setServingModalVisible}
       servingSize={servingSize}
