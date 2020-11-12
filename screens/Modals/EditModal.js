@@ -12,20 +12,56 @@ import firebase from "firebase";
 import RNPickerSelect from "react-native-picker-select";
 import { connect } from "react-redux";
 
+// First argument of component is just props. But Destructured
+// const {recipe, setRecipe...} = props <= Basically this
+// allows you to `setRecipe(...)` instead of `props.setRecipe(...)`
 function EditModal({
   recipe,
   setRecipe,
   setEditModalVisible,
   editModalVisible,
-  fdcId,
+  calories,
+  setCalories,
   displayName,
+  id,
+  yr,
+  mm,
+  dd,
 }) {
-  const [foodName, setFoodName] = useState(recipe);
+  // Allows recipe to be immutable
+  // such that food name is not lost on the card
+  let [inputName, setInputName] = useState(recipe);
+
+  const sendEdit = () => {
+    console.log("before", recipe);
+    setRecipe(inputName);
+    console.log("After", recipe);
+
+    // firebase
+    //   .database()
+    //   .ref(`users/${displayName}/foodJournal/${yr}/${mm}/${dd}/${id}`)
+    //   .update({
+    //     name: recipe,
+    //     calories: calories,
+    //   })
+    //   .then(() => {
+    //     Alert.alert("Success", "Your edits have been saved to our database!", [
+    //       { text: "Ok", onPress: () => setEditModalVisible(false) },
+    //     ]);
+    //   })
+    //   .catch((err) => {
+    //     Alert.alert(
+    //       "Error",
+    //       "An error occured! We could not save your edits",
+    //       []
+    //     );
+    //   });
+  };
 
   return (
     <View style={styles.centeredView}>
       <Modal
-        isVisible={dateModalVisible}
+        isVisible={editModalVisible}
         hasBackdrop={true}
         animationIn="slideInUp"
         animationInTiming={1000}
@@ -38,10 +74,10 @@ function EditModal({
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <View style={styles.header}>
-              <Text style={styles.headerTextStyle}>Save Your Nutrition</Text>
+              <Text style={styles.headerTextStyle}>Edit Your Food</Text>
             </View>
 
-            <Text style={styles.displayMsg}>Input date of consumption</Text>
+            <Text style={styles.displayMsg}>What would you like to edit?</Text>
 
             <View
               style={{
@@ -51,18 +87,25 @@ function EditModal({
               }}
             >
               <TextInput
-                style={styles.servingInput}
-                value={foodName}
-                placeholder={`${foodName}`}
+                style={styles.nameInput}
+                value={inputName}
+                multiline
+                numberOfLines={3}
+                placeholder={`${inputName}`}
                 placeholderTextColor="gray"
-                onChangeText={(text) => setFoodName(text)}
+                onChangeText={(text) => setInputName(text)}
               />
             </View>
 
             <View style={styles.buttonsContainer}>
               <TouchableOpacity
                 style={{ ...styles.buttonStyles, backgroundColor: "#EA4848" }}
-                onPress={() => setDateModalVisible(false)}
+                onPress={() => {
+                  setTimeout(() => {
+                    setInputName(recipe);
+                  }, 1000);
+                  setEditModalVisible(false);
+                }}
               >
                 <Text style={styles.buttonTextStyle}>Cancel</Text>
               </TouchableOpacity>
@@ -166,10 +209,11 @@ const styles = StyleSheet.create({
     marginBottom: 4,
     fontSize: 18,
   },
-  servingInput: {
+  nameInput: {
     fontSize: 22,
     marginBottom: "8%",
-    width: "50%",
+    width: "100%",
+    height: 100,
     textAlign: "center",
     borderBottomWidth: 1,
     padding: 10,

@@ -46,10 +46,17 @@ const NutritionCard = (props) => {
 
   let editModal = (
     <EditModal
-      recipe={recipe}
-      setRecipe={setRecipe}
       editModalVisible={editModalVisible}
       setEditModalVisible={setEditModalVisible}
+      recipe={recipe}
+      setRecipe={setRecipe}
+      calories={calories}
+      setCalories={setCalories}
+      displayName={props.displayName}
+      id={props.id}
+      yr={yr}
+      mm={mm}
+      dd={dd}
     />
   );
 
@@ -117,7 +124,7 @@ const NutritionCard = (props) => {
           <TouchableOpacity
             style={[styles.buttonStyles]}
             activeOpacity="0.6"
-            onPress={() => setEditting(true)}
+            onPress={() => setEditModalVisible(true)}
           >
             <Text style={[styles.editButton]}>Edit</Text>
           </TouchableOpacity>
