@@ -32,30 +32,25 @@ function EditModal({
   // such that food name is not lost on the card
   let [inputName, setInputName] = useState(recipe);
 
-  const sendEdit = () => {
-    console.log("before", recipe);
+  const sendEdit = async () => {
+    // Set Recipe in card to what was put in the input
     setRecipe(inputName);
-    console.log("After", recipe);
 
-    // firebase
-    //   .database()
-    //   .ref(`users/${displayName}/foodJournal/${yr}/${mm}/${dd}/${id}`)
-    //   .update({
-    //     name: recipe,
-    //     calories: calories,
-    //   })
-    //   .then(() => {
-    //     Alert.alert("Success", "Your edits have been saved to our database!", [
-    //       { text: "Ok", onPress: () => setEditModalVisible(false) },
-    //     ]);
-    //   })
-    //   .catch((err) => {
-    //     Alert.alert(
-    //       "Error",
-    //       "An error occured! We could not save your edits",
-    //       []
-    //     );
-    //   });
+    firebase
+      .database()
+      .ref(`users/${displayName}/foodJournal/${yr}/${mm}/${dd}/${id}`)
+      .update({
+        name: inputName,
+        calories: calories,
+      })
+      .then(() => {
+        Alert.alert("Success", "Your edits have been saved to our database!", [
+          { text: "Ok", onPress: () => setEditModalVisible(false) },
+        ]);
+      })
+      .catch((err) => {
+        Alert.alert("Error", "An error occured! We could not save your edits");
+      });
   };
 
   return (
@@ -74,18 +69,12 @@ function EditModal({
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <View style={styles.header}>
-              <Text style={styles.headerTextStyle}>Edit Your Food</Text>
+              <Text style={styles.headerTextStyle}>Edit Food Data</Text>
             </View>
 
-            <Text style={styles.displayMsg}>What would you like to edit?</Text>
+            <Text style={styles.displayMsg}>What will you edit?</Text>
 
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-around",
-                width: "80%",
-              }}
-            >
+            <View style={styles.inputContainer}>
               <TextInput
                 style={styles.nameInput}
                 value={inputName}
@@ -99,8 +88,10 @@ function EditModal({
 
             <View style={styles.buttonsContainer}>
               <TouchableOpacity
-                style={{ ...styles.buttonStyles, backgroundColor: "#EA4848" }}
+                style={{ ...styles.buttonStyles, backgroundColor: "#E16151" }}
                 onPress={() => {
+                  // Without setTimeout, the input changes as modal closes
+                  // With setTimeout, user won't see input change, Test with commenting and uncommenting setTimeout
                   setTimeout(() => {
                     setInputName(recipe);
                   }, 1000);
@@ -111,10 +102,10 @@ function EditModal({
               </TouchableOpacity>
 
               <TouchableOpacity
-                style={{ ...styles.buttonStyles, backgroundColor: "#26A637" }}
-                onPress={() => addFoodToDatabase(currentDate, totalNutrients)}
+                style={{ ...styles.buttonStyles, backgroundColor: "#78BFCE" }}
+                onPress={() => sendEdit()}
               >
-                <Text style={styles.buttonTextStyle}>Save</Text>
+                <Text style={styles.buttonTextStyle}>Edit</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -196,6 +187,11 @@ const styles = StyleSheet.create({
     padding: 20,
     fontFamily: "OpenSans_400Regular",
   },
+  inputContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    width: "80%",
+  },
   mainPickerContainer: {
     flexDirection: "row",
     justifyContent: "space-around",
@@ -213,7 +209,7 @@ const styles = StyleSheet.create({
     fontSize: 22,
     marginBottom: "8%",
     width: "100%",
-    height: 100,
+    maxHeight: 130,
     textAlign: "center",
     borderBottomWidth: 1,
     padding: 10,

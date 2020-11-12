@@ -112,7 +112,8 @@ const NutritionCard = (props) => {
       </View>
       {/* Buttons */}
       <View style={styles.buttonContainer}>
-        {editting ? (
+        {/* This commented code below unneccasry due to Modals */}
+        {/* {editting ? (
           <TouchableOpacity
             style={[styles.buttonStyles]}
             activeOpacity="0.6"
@@ -128,7 +129,16 @@ const NutritionCard = (props) => {
           >
             <Text style={[styles.editButton]}>Edit</Text>
           </TouchableOpacity>
-        )}
+        )} */}
+        {/* This commented code above unneccasry due to Modals */}
+
+        <TouchableOpacity
+          style={[styles.buttonStyles]}
+          activeOpacity="0.6"
+          onPress={() => setEditModalVisible(true)}
+        >
+          <Text style={[styles.editButton]}>Edit</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity
           style={[styles.buttonStyles]}
