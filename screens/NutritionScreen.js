@@ -10,34 +10,21 @@ import {
   View,
   ScrollView
 } from 'react-native';
-import Dates from 'react-native-dates';
+import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
 import moment, { now } from 'moment';
 import { render } from "react-dom";
 import NutritionCard from "./Nutrition_Comp/NutritionCard.js"
 
 const NutritionScreen = (props) => {
   const [date, setDate] = useState(null);
-  const [focus, setFocus] = useState('startDate');
-  const [startDate, setStartDate] = useState(null);
-  // const [endDate, setEndDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(null);
   const [recipes, setRecipes] = useState([]);
   const [totalCal, setTotalCal] = useState(null);
-
-  const isDateBlocked = (date) => {
-    date.isBefore(moment(), 'day');
-  }
 
   //run addCalories after every render
   useEffect(() => {
     addCalories();
   })
-
-  const onDatesChange = ({ startDate, endDate, focusedInput }) => {
-    // setFocus(focusedInput);
-    setStartDate(startDate);
-    displayRecipesOnDate(startDate);
-    // setEndDate(endDate);
-  };
 
   const addCalories = () => {
     let calories = 0;
@@ -48,9 +35,12 @@ const NutritionScreen = (props) => {
   }
 
   const displayRecipesOnDate = (date) => {
-    let yr = moment(date).format("YYYY");
-    let mm = moment(date).format("MM");
-    let dd = moment(date).format("D");
+    setSelectedDate(date.dateString);
+    let formatted = moment(date.dateString).format("MMMM D, YYYY")
+    setDate(formatted)
+    let yr = date.year;
+    let mm = date.month;
+    let dd = date.day;
     firebase
     .database()
     .ref(`users/${props.displayName}/foodJournal/${yr}/${mm}/${dd}`)
@@ -67,22 +57,22 @@ const NutritionScreen = (props) => {
   return (
     <SafeAreaView style={styles.containerNutScreen}>
       <View >
-        <Dates
-          // style={styles.calendar}
-          onDatesChange={onDatesChange}
-          isDateBlocked={isDateBlocked}
-          startDate={startDate}
-          // endDate={endDate}
-          focusedInput={focus}
-          range
+        <Calendar
+          onDayPress={(day) => displayRecipesOnDate(day)}
+          markedDates={{
+            [selectedDate] : {selected: true, selectedColor: '#00adf5'},
+          }}
+          theme={{
+            arrowColor: "rgb(22, 66, 92)",
+          }}
         />
         </View>
         <ScrollView contentContainerStyle={styles.journalNut}>
-            <Text style={[styles.date, focus === 'startDate' && styles.focusedNutScreen]}>{startDate && startDate.format('LL')}</Text>
+            <Text style={[styles.date]}>{date}</Text>
             <Text style={styles.totalCal}>{totalCal ? `${totalCal} Total Calories` : null}</Text>
             {recipes.map((recipe, key) => {
               return (
-                <NutritionCard key={key} id={recipe[0]} name={recipe[1].name} calories={recipe[1].calories} date={startDate}>
+                <NutritionCard key={key} id={recipe[0]} name={recipe[1].name} calories={recipe[1].calories} date={date}>
                 </NutritionCard>
               )
             })}
