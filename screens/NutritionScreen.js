@@ -16,6 +16,7 @@ import moment, { now } from 'moment';
 import { render } from "react-dom";
 import NutritionCard from "./Nutrition_Comp/NutritionCard.js";
 import AddModal from "./Modals/AddModal.js";
+import { AntDesign } from "@expo/vector-icons";
 
 const NutritionScreen = (props) => {
   const [date, setDate] = useState(null);
@@ -92,7 +93,7 @@ const NutritionScreen = (props) => {
             onPress={() => setAddModalVisible(true)}
             activeOpacity="0.5"
             >
-            <Text style={styles.buttonText}>+</Text>
+              <AntDesign name="pluscircle" size={50} color="rgb(37, 93, 120)"/>
           </TouchableOpacity>}
           </ScrollView>
           {addModal}

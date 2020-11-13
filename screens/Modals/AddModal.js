@@ -9,10 +9,11 @@ import {
 } from "react-native";
 // import RNPickerSelect from "react-native-picker-select";
 import Modal from "react-native-modal";
-import styles from "../styles.js";
+// import styles from "../styles.js";
 import { connect } from "react-redux";
 import firebase from "firebase";
 import moment from 'moment';
+
 
 function AddModal({
   addModalVisible,
@@ -43,7 +44,7 @@ function AddModal({
   }
 
   return (
-    <View>
+    <View style={styles.centeredView}>
       <Modal
         isVisible={addModalVisible}
         hasBackdrop={true}
@@ -54,9 +55,11 @@ function AddModal({
         backdropTransitionOutTiming={0}
         backdropColor="black"
         backdropOpacity={0.8}>
-
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
+            <View style={styles.header}>
+              <Text style={styles.headerTextStyle}>Add To Journal</Text>
+            </View>
 
             <View
                 style={{
@@ -68,6 +71,7 @@ function AddModal({
             <TextInput
               value={name}
               placeholder={`${name}`}
+              style={styles.input}
               placeholderTextColor="black"
               onChangeText={(val) => setName(val)}
             />
@@ -75,6 +79,7 @@ function AddModal({
               // style={styles.servingInput}
               value={calories}
               placeholder={`${calories}`}
+              style={styles.input}
               placeholderTextColor="black"
               keyboardType={"numeric"}
               maxLength={6}
@@ -94,7 +99,7 @@ function AddModal({
                 style={{ ...styles.buttonStyles, backgroundColor: "#26A637" }}
                 onPress={() => addToJournal()}
               >
-                <Text style={styles.buttonTextStyle}>Add To Journal</Text>
+                <Text style={styles.buttonTextStyle}>Save</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -109,3 +114,103 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, null)(AddModal);
+
+
+const styles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalView: {
+    backgroundColor: "white",
+    borderRadius: 20,
+    width: "84%",
+    height: "30%",
+    justifyContent: "space-between",
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  header: {
+    width: "100%",
+    backgroundColor: "#F2D092",
+    alignItems: "center",
+    paddingVertical: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+  },
+  headerTextStyle: {
+    color: "black",
+    fontWeight: "bold",
+    textAlign: "center",
+    fontFamily: "OpenSans_600SemiBold",
+    fontSize: 26,
+  },
+  input: {
+    color: "black",
+    textAlign: "center",
+    marginHorizontal: 14,
+    paddingVertical: 10,
+    fontSize: 22,
+    width: 70,
+    borderBottomWidth: 1,
+    backgroundColor: "#EEC16D",
+    fontFamily: "OpenSans_400Regular",
+  },
+  displayMsg: {
+    textAlign: "center",
+    fontSize: 20,
+    padding: 20,
+    fontFamily: "OpenSans_400Regular",
+  },
+  mainPickerContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    width: "90%",
+    marginBottom: 30,
+  },
+  subPickerContainer: { alignItems: "center" },
+  dateTitle: {
+    fontFamily: "OpenSans_400Regular",
+    marginBottom: 4,
+    fontSize: 18,
+  },
+  servingInput: {
+    fontSize: 22,
+    marginBottom: "8%",
+    width: "50%",
+    textAlign: "center",
+    borderBottomWidth: 1,
+    padding: 10,
+    backgroundColor: "#EEC16D",
+    fontFamily: "OpenSans_400Regular",
+  },
+  buttonsContainer: {
+    flexDirection: "row",
+    paddingHorizontal: 10,
+  },
+  buttonStyles: {
+    flex: 1,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 100,
+    borderRadius: 20,
+    marginBottom: 25,
+    marginHorizontal: 5,
+    elevation: 2,
+  },
+  buttonTextStyle: {
+    color: "black",
+    fontFamily: "OpenSans_600SemiBold",
+    textAlign: "center",
+    fontSize: 18,
+  },
+});
