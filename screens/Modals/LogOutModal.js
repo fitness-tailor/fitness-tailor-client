@@ -1,21 +1,34 @@
-import React, { useState } from "react";
+import React from "react";
 import {
-  Modal,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
   TextInput,
-  Alert,
 } from "react-native";
 import firebase from "firebase";
+import Modal from "react-native-modal";
 
-export default function LogOutModal({ closeLogOutModal }) {
+export default function LogOutModal({
+  closeLogOutModal,
+  setLogOutModalVisible,
+  logOutModalVisible,
+}) {
   const logOut = () => firebase.auth().signOut();
 
   return (
     <View style={styles.centeredView}>
-      <Modal animationType="fade" transparent={true} visible={true}>
+      <Modal
+        isVisible={logOutModalVisible}
+        hasBackdrop={true}
+        animationIn="slideInUp"
+        animationInTiming={1000}
+        animationOut="fadeOut"
+        animationOutTiming={800}
+        backdropTransitionOutTiming={0}
+        backdropColor="black"
+        backdropOpacity={0.7}
+      >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <View style={styles.header}>
@@ -27,7 +40,7 @@ export default function LogOutModal({ closeLogOutModal }) {
             <View style={styles.buttonsContainer}>
               <TouchableOpacity
                 style={styles.buttonStyles}
-                onPress={() => closeLogOutModal()}
+                onPress={() => setLogOutModalVisible(false)}
               >
                 <Text style={styles.buttonText}>No</Text>
               </TouchableOpacity>

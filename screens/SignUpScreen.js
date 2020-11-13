@@ -45,15 +45,6 @@ class SignUpScreen extends React.Component {
     this.setState({ errorModalVisible: false });
   }
 
-  renderLoading() {
-    if (this.state.loading) {
-      return (
-        <View>
-          <ActivityIndicator size={"large"} />
-        </View>
-      );
-    }
-  }
   async signInWithEmail() {
     await firebase
       .auth()
@@ -82,26 +73,16 @@ class SignUpScreen extends React.Component {
   }
 
   render() {
-    let modal = this.state.errorModalVisible ? (
-      <View
-        style={{
-          width: "90%",
-          height: 0,
-        }}
-      >
-        <AuthErrorModal
-          error={this.state.error}
-          closeErrorModal={this.closeErrorModal.bind(this)}
-        />
-      </View>
-    ) : null;
+    let errorModal = (
+      <AuthErrorModal
+        error={this.state.error}
+        errorModalVisible={this.state.errorModalVisible}
+        closeErrorModal={this.closeErrorModal.bind(this)}
+      />
+    );
 
     return (
-      <TouchableWithoutFeedback
-        onPress={() => {
-          Keyboard.dismiss();
-        }}
-      >
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <SafeAreaView style={styles.containerSignIn}>
           <KeyboardAvoidingView style={styles.SignIn}>
             <FadeInView>
@@ -123,7 +104,6 @@ class SignUpScreen extends React.Component {
                     }
                   />
                 </View>
-
                 <View style={styles.inputSignInContainer}>
                   <Fontisto name="email" size={30} color="#B1B1B1"></Fontisto>
                   <TextInput
@@ -139,7 +119,6 @@ class SignUpScreen extends React.Component {
                     onChangeText={(email) => this.setState({ email })}
                   />
                 </View>
-
                 <View style={styles.inputSignInContainer}>
                   <AntDesign name="lock" size={30} color="#B1B1B1"></AntDesign>
                   <TextInput
@@ -156,8 +135,11 @@ class SignUpScreen extends React.Component {
                   />
                 </View>
 
-                {this.renderLoading()}
-                {modal}
+                {this.state.loading && (
+                  <View>
+                    <ActivityIndicator size={"large"} />
+                  </View>
+                )}
 
                 <TouchableOpacity
                   style={styles.signInButton}
@@ -175,6 +157,7 @@ class SignUpScreen extends React.Component {
                     Already have an account?
                   </Text>
                 </View>
+                {errorModal}
               </View>
             </FadeInView>
           </KeyboardAvoidingView>

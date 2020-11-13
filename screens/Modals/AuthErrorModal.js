@@ -1,16 +1,28 @@
-import React, { useState } from "react";
-import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Entypo, FontAwesome5 } from "@expo/vector-icons";
+import React from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Entypo } from "@expo/vector-icons";
+import Modal from "react-native-modal";
 
 export default function AuthErrorModal({
   error = "You have an error",
   closeErrorModal,
+  errorModalVisible,
 }) {
   if (!error) error = "Something went wrong.";
 
   return (
     <View style={styles.centeredView}>
-      <Modal animationType="fade" transparent={true} visible={true}>
+      <Modal
+        isVisible={errorModalVisible}
+        hasBackdrop={true}
+        animationIn="slideInUp"
+        animationInTiming={1000}
+        animationOut="fadeOut"
+        animationOutTiming={800}
+        backdropTransitionOutTiming={0}
+        backdropColor="black"
+        backdropOpacity={0.7}
+      >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <View style={styles.header}>

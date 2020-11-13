@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  Modal,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -9,8 +8,12 @@ import {
   Alert,
 } from "react-native";
 import firebase from "firebase";
+import Modal from "react-native-modal";
 
-export default function ForgotPasswordModal({ closePasswordModal }) {
+export default function ForgotPasswordModal({
+  closePasswordModal,
+  passwordModalVisible,
+}) {
   const [email, setEmail] = useState("");
 
   const forgotPassword = (email) => {
@@ -31,7 +34,17 @@ export default function ForgotPasswordModal({ closePasswordModal }) {
 
   return (
     <View style={styles.centeredView}>
-      <Modal animationType="fade" transparent={true} visible={true}>
+      <Modal
+        isVisible={passwordModalVisible}
+        hasBackdrop={true}
+        animationIn="slideInUp"
+        animationInTiming={1000}
+        animationOut="fadeOut"
+        animationOutTiming={800}
+        backdropTransitionOutTiming={0}
+        backdropColor="black"
+        backdropOpacity={0.7}
+      >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <View style={styles.header}>
@@ -63,7 +76,7 @@ export default function ForgotPasswordModal({ closePasswordModal }) {
                 style={{ ...styles.openButton, backgroundColor: "#26A637" }}
                 onPress={() => forgotPassword(email)}
               >
-                <Text style={styles.buttonTextStyle}>Send Email</Text>
+                <Text style={styles.buttonTextStyle}>Send</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -82,7 +95,7 @@ const styles = StyleSheet.create({
   modalView: {
     backgroundColor: "white",
     borderRadius: 20,
-    width: "80%",
+    width: "84%",
     alignItems: "center",
     shadowColor: "#000",
     shadowOffset: {

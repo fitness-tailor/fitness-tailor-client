@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import { AppLoading } from "expo";
 import firebase from "firebase";
 import moment from 'moment';
 import {
@@ -8,7 +7,6 @@ import {
   Text,
   View,
   SafeAreaView,
-  Button,
   Image,
   TouchableOpacity,
   Alert,
@@ -37,7 +35,10 @@ const HomeScreen = (props) => {
           status,
         } = await ImagePicker.requestCameraRollPermissionsAsync();
         if (status !== "granted") {
-          alert("Sorry, we need camera roll permissions to make this work!");
+          Alert.alert(
+            "Oops",
+            "We need camera roll permissions to make this work!"
+          );
         }
       }
     })();
@@ -168,11 +169,12 @@ const HomeScreen = (props) => {
       ? Alert.alert("Error getting your profile pics")
       : null;
 
-  const closeLogOutModal = () => setLogOutModalVisible(false);
-
-  let logOutModal = logOutModalVisible ? (
-    <LogOutModal closeLogOutModal={closeLogOutModal} />
-  ) : null;
+  let logOutModal = (
+    <LogOutModal
+      setLogOutModalVisible={setLogOutModalVisible}
+      logOutModalVisible={logOutModalVisible}
+    />
+  );
 
   return (
     <LinearGradient
