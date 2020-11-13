@@ -8,18 +8,22 @@ import {
   StyleSheet,
   Text,
   View,
-  ScrollView
+  ScrollView,
+  TouchableOpacity
 } from 'react-native';
 import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
 import moment, { now } from 'moment';
 import { render } from "react-dom";
-import NutritionCard from "./Nutrition_Comp/NutritionCard.js"
+import NutritionCard from "./Nutrition_Comp/NutritionCard.js";
+import AddModal from "./Modals/AddModal.js";
+import { AntDesign } from "@expo/vector-icons";
 
 const NutritionScreen = (props) => {
   const [date, setDate] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [recipes, setRecipes] = useState([]);
   const [totalCal, setTotalCal] = useState(null);
+  const [addModalVisible, setAddModalVisible] = useState(false);
 
   //run addCalories after every render
   useEffect(() => {
@@ -53,6 +57,13 @@ const NutritionScreen = (props) => {
       }
     })
   };
+  let addModal = (
+    <AddModal
+      addModalVisible={addModalVisible}
+      setAddModalVisible={setAddModalVisible}
+      date={selectedDate}
+    />
+  );
 
   return (
     <SafeAreaView style={styles.containerNutScreen}>
@@ -76,7 +87,16 @@ const NutritionScreen = (props) => {
                 </NutritionCard>
               )
             })}
+            {date &&
+            <TouchableOpacity
+            style={styles.buttonStyles}
+            onPress={() => setAddModalVisible(true)}
+            activeOpacity="0.5"
+            >
+              <AntDesign name="pluscircle" size={50} color="rgb(37, 93, 120)"/>
+          </TouchableOpacity>}
           </ScrollView>
+          {addModal}
     </SafeAreaView>
   );
 };
