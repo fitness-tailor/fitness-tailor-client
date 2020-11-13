@@ -11,118 +11,81 @@ import {
 import firebase from "firebase";
 import moment from "moment";
 import { connect } from "react-redux";
-
+import EditModal from "../Modals/EditModal.js";
+import DeleteModal from "../Modals/DeleteModal.js";
 
 const NutritionCard = (props) => {
-  const [editting, setEditting] = useState(false);
+  const [editModalVisible, setEditModalVisible] = useState(false);
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [calories, setCalories] = useState(props.calories);
   const [recipe, setRecipe] = useState(props.name);
   let yr = moment(props.date).format("YYYY");
   let mm = moment(props.date).format("MM");
   let dd = moment(props.date).format("D");
 
-  const sendEdit = () => {
-    setEditting(false);
-    firebase
-    .database()
-    .ref(`users/${props.displayName}/foodJournal/${yr}/${mm}/${dd}/${props.id}`)
-    .update({
-      name: recipe,
-      calories: calories,
-    })
-  };
+  let editModal = (
+    <EditModal
+      editModalVisible={editModalVisible}
+      setEditModalVisible={setEditModalVisible}
+      recipe={recipe}
+      setRecipe={setRecipe}
+      calories={calories}
+      setCalories={setCalories}
+      id={props.id}
+      yr={yr}
+      mm={mm}
+      dd={dd}
+    />
+  );
 
-  const deleteNutritionData = () => {
-
-    firebase
-    .database()
-    .ref(`users/${props.displayName}/foodJournal/${yr}/${mm}/${dd}/${props.id}`)
-    .remove()
-  };
+  let deleteModal = (
+    <DeleteModal
+      deleteModalVisible={deleteModalVisible}
+      setDeleteModalVisible={setDeleteModalVisible}
+      id={props.id}
+      yr={yr}
+      mm={mm}
+      dd={dd}
+    />
+  );
 
   return (
     <View style={styles.container}>
       <View style={styles.recipeContainer}>
-        {/* Recipe Name */}
         <View style={styles.nameContainer}>
-          {editting ? <><Text>Edit Name: </Text><TextInput onChangeText={text=> setRecipe(text)}>{recipe}</TextInput></>:
-            <Text style={[styles.font]}>
-              {recipe}
-            </Text>}
-          {editting ? <><Text>Edit Calories: </Text><TextInput onChangeText={text=> setCalories(text)}>{calories}</TextInput></>:
-            <Text style={[styles.font]}>
-              <Text style={styles.boldFont}>Calories: </Text>
-              {calories}
-            </Text>}
+          <Text style={[styles.font]}>{recipe}</Text>
+
+          <Text style={[styles.font]}>
+            <Text style={styles.boldFont}>Calories: </Text>
+            {calories}
+          </Text>
         </View>
-
-        {/* Recipe Serving Size */}
-        {/* <View style={styles.servingContainer}>
-          <View style={styles.servingTotal}>
-            <Text style={[styles.fontSize, styles.baseText]}>
-              <Text style={styles.boldFont}>Serving Size: </Text>
-              100 g
-            </Text>
-          </View>
-        </View> */}
-
-        {/* Recipe Calories */}
-        {/* <View style={styles.caloriesContainer}>
-          <View style={styles.calTotal}>
-            <Text style={[styles.fontSize, styles.baseText]}>
-              <Text style={styles.boldFont}>calories: </Text>
-              {props.calories}
-            </Text>
-          </View>
-        </View> */}
       </View>
 
-      {/* Buttons */}
       <View style={styles.buttonContainer}>
-      {editting ?
-          <TouchableOpacity
-          style={[styles.buttonStyles]}
-          activeOpacity="0.6"
-          onPress={() => sendEdit()}
-        >
-          <Text
-            style={[
-              styles.editButton,
-            ]}
-          >
-            Done
-          </Text>
-        </TouchableOpacity> :
         <TouchableOpacity
           style={[styles.buttonStyles]}
           activeOpacity="0.6"
-          onPress={() => setEditting(true)}
+          onPress={() => setEditModalVisible(true)}
         >
-          <Text
-            style={[
-              styles.editButton,
-            ]}
-          >
-            Edit
-          </Text>
-          </TouchableOpacity> }
+          <Text style={[styles.editButton]}>Edit</Text>
+        </TouchableOpacity>
 
         <TouchableOpacity
           style={[styles.buttonStyles]}
-          onPress={deleteNutritionData}
+          onPress={() => setDeleteModalVisible(true)}
         >
-          <Text
-            style={[
-              styles.editButton,
-            ]}
-          >
-            Delete
-          </Text>
+          <Text style={[styles.editButton]}>Delete</Text>
         </TouchableOpacity>
+      </View>
+
+      <View style={{ height: 0, width: 0 }}>
+        {editModal}
+        {deleteModal}
       </View>
     </View>
   );
-}
+};
 
 const mapStateToProps = (state) => ({
   displayName: state.auth.user.displayName,
@@ -135,7 +98,7 @@ const styles = StyleSheet.create({
   font: {
     fontSize: 18,
     color: "white",
- },
+  },
   container: {
     width: "80%",
     height: 80,
