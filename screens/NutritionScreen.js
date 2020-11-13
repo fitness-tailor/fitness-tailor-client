@@ -40,8 +40,8 @@ const NutritionScreen = (props) => {
 
   const displayRecipesOnDate = (date) => {
     setSelectedDate(date.dateString);
-    let formatted = moment(date.dateString).format("MMMM D, YYYY")
-    setDate(formatted)
+    let formatted = moment(date.dateString, "YYYY-MM-DD").format("MMMM D, YYYY");
+    setDate(formatted);
     let yr = date.year;
     let mm = date.month;
     let dd = date.day;

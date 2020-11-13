@@ -22,7 +22,7 @@ function AddModal({
   date
 }) {
   const [name, setName] = useState('Name')
-  const [calories, setCalories] = useState(100)
+  const [calories, setCalories] = useState("100")
 
 
   const addToJournal = () => {
