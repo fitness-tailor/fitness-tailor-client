@@ -68,23 +68,30 @@ function AddModal({
                   width: "80%",
                 }}
               >
-            <TextInput
-              value={name}
-              placeholder={`${name}`}
-              style={styles.input}
-              placeholderTextColor="black"
-              onChangeText={(val) => setName(val)}
-            />
-            <TextInput
-              // style={styles.servingInput}
-              value={calories}
-              placeholder={`${calories}`}
-              style={styles.input}
-              placeholderTextColor="black"
-              keyboardType={"numeric"}
-              maxLength={6}
-              onChangeText={(val) => setCalories(val)}
-            />
+              <View style={styles.inputArea}>
+                <Text>Name</Text>
+                <TextInput
+                  value={name}
+                  placeholder={`${name}`}
+                  style={styles.input}
+                  placeholderTextColor="black"
+                  onChangeText={(val) => setName(val)}
+                  />
+              </View>
+
+              <View style={styles.inputArea}>
+                <Text>Calories</Text>
+                <TextInput
+                  // style={styles.servingInput}
+                  value={calories}
+                  placeholder={`${calories}`}
+                  style={styles.input}
+                  placeholderTextColor="black"
+                  keyboardType={"numeric"}
+                  maxLength={6}
+                  onChangeText={(val) => setCalories(val)}
+                  />
+              </View>
             </View>
 
             <View style={styles.buttonsContainer}>
@@ -158,11 +165,16 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginHorizontal: 14,
     paddingVertical: 10,
-    fontSize: 22,
-    width: 70,
+    fontSize: 18,
+    width: 100,
     borderBottomWidth: 1,
     backgroundColor: "#EEC16D",
     fontFamily: "OpenSans_400Regular",
+  },
+  inputArea: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
   displayMsg: {
     textAlign: "center",
