@@ -39,7 +39,7 @@ const ProfileScreen = (props) => {
           setHeightInch(0);
           setWeight(0);
           setAge(0);
-          setGender("non-binary");
+          setGender("");
           setBMI(0);
           setBMR(0);
         } else {
@@ -141,8 +141,8 @@ const ProfileScreen = (props) => {
             });
         });
       // to refresh gender on update
-      // props.fetchUser(props.displayName);
-      // props.fetchRDA(props.gender);
+      props.fetchUser(props.displayName);
+      props.fetchRDA(props.gender);
     }
   };
 
@@ -184,9 +184,10 @@ const ProfileScreen = (props) => {
           <Text style={{"fontSize": 20, color: "white"}}>Gender</Text>
             <RNPickerSelect
               selectedValue={gender}
+              placeholder={{}}
               items={genderList}
               onValueChange={(itemValue) => setGender(itemValue)}
-              value={gender}
+              // value={gender}
               style={{
                 ...pickerSelectStyles,
               }}
@@ -197,9 +198,10 @@ const ProfileScreen = (props) => {
           <Text style={{"fontSize": 20, color: "white"}}>Activity Level</Text>
           <RNPickerSelect
             selectedValue={activityLevel}
+            placeholder={{}}
             items={activityLevelList}
             onValueChange={(itemValue) => setActivityLevel(itemValue)}
-            value={activityLevel}
+            // value={activityLevel}
             style={{
               ...pickerSelectStyles,
             }}
@@ -210,9 +212,10 @@ const ProfileScreen = (props) => {
           <Text style={{"fontSize": 20, color: "white"}}>Goal</Text>
           <RNPickerSelect
             selectedValue={goal}
+            placeholder={{}}
             items={goalList}
             onValueChange={(itemValue) => setGoal(itemValue)}
-            value={goal}
+            // value={goal}
             style={{
               ...pickerSelectStyles,
             }}
