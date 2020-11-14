@@ -7,12 +7,14 @@ import {
   TouchableOpacity,
   Image,
   Button,
+  Easing,
 } from "react-native";
 import firebase from "firebase";
 import moment from "moment";
 import { connect } from "react-redux";
 import EditModal from "../Modals/EditModal.js";
 import DeleteModal from "../Modals/DeleteModal.js";
+import FadeInView from "../Animation_View_Comps/AuthView.js";
 
 const NutritionCard = ({ calories, name, id, dateObject, displayName }) => {
   const [editModalVisible, setEditModalVisible] = useState(false);
@@ -47,7 +49,10 @@ const NutritionCard = ({ calories, name, id, dateObject, displayName }) => {
   );
 
   return (
-    <View style={styles.container}>
+    <FadeInView
+      style={styles.container}
+      easing={Easing.bezier(0.2, 0.2, 0.5, 1)}
+    >
       <View style={styles.nameContainer}>
         <Text style={styles.font}>{recipe}</Text>
 
@@ -75,7 +80,7 @@ const NutritionCard = ({ calories, name, id, dateObject, displayName }) => {
         {editModal}
         {deleteModal}
       </View>
-    </View>
+    </FadeInView>
   );
 };
 

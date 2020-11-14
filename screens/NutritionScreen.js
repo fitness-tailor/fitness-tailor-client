@@ -19,7 +19,6 @@ import { getUserJournal } from "../redux/actions/nutritionActions.js";
 import NutritionCard from "./Nutrition_Comp/NutritionCard.js";
 import AddModal from "./Modals/AddModal.js";
 import { AntDesign } from "@expo/vector-icons";
-import FadeInView from "./Animation_View_Comps/AuthView.js";
 
 const NutritionScreen = ({
   displayName,
@@ -52,7 +51,7 @@ const NutritionScreen = ({
         />
       </View>
 
-      <FadeInView>
+      <View>
         <ScrollView
           contentContainerStyle={{
             ...styles.journalNut,
@@ -87,7 +86,7 @@ const NutritionScreen = ({
             </TouchableOpacity>
           )}
         </ScrollView>
-      </FadeInView>
+      </View>
       {addModal}
     </SafeAreaView>
   ) : (

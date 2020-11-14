@@ -12,7 +12,6 @@ import RecipeCard from "./Recipe_Comp/RecipeCard";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { connect } from "react-redux";
 import styles from "./styles.js";
-import FadeInView from "./Animation_View_Comps/AuthView.js";
 
 // Recipe List Component
 const RecipeListScreen = (props) => {
@@ -24,7 +23,7 @@ const RecipeListScreen = (props) => {
             <RecipeFinder />
           </View>
 
-          <FadeInView style={styles.cardsContainerRecipeList}>
+          <View style={styles.cardsContainerRecipeList}>
             {props.isLoading ? (
               <View style={styles.messageContainerRecipeList}>
                 <ActivityIndicator size={"large"} />
@@ -44,7 +43,7 @@ const RecipeListScreen = (props) => {
                 );
               })
             )}
-          </FadeInView>
+          </View>
         </ScrollView>
       </SafeAreaView>
     </KeyboardAwareScrollView>
