@@ -106,6 +106,7 @@ export const storeDates = (date) => {
     payload: {
       selectedDate: date.dateString,
       date: moment(date.dateString, "YYYY-MM-DD").format("MMMM D, YYYY"),
+      dateObject: date,
     },
   };
 };

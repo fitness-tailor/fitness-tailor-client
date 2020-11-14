@@ -3,6 +3,7 @@ let nutritionState = {
   currentDayFoodList: [],
   date: null,
   selectedDate: null,
+  dateObject: {},
   totalCal: 0,
   errorFetchingJournal: false,
 };
@@ -14,7 +15,6 @@ const nutritionReducers = (state = nutritionState, action) => {
         ...state,
         isLoading: true,
         errorFetchingJournal: false,
-        currentDayFoodList: [],
       };
 
     case "FETCH_USER_JOURNAL_SUCCESS":
@@ -48,6 +48,7 @@ const nutritionReducers = (state = nutritionState, action) => {
       return {
         ...state,
         selectedDate: action.payload.selectedDate,
+        dateObject: action.payload.dateObject,
         date: action.payload.date,
       };
 

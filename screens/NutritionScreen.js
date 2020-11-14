@@ -14,15 +14,19 @@ import {
 import { Calendar, CalendarList, Agenda } from "react-native-calendars";
 import moment, { now } from "moment";
 import { render } from "react-dom";
-import {
-  storeDates,
-  getUserJournal,
-} from "../redux/actions/nutritionActions.js";
+import { getUserJournal } from "../redux/actions/nutritionActions.js";
 import NutritionCard from "./Nutrition_Comp/NutritionCard.js";
 import AddModal from "./Modals/AddModal.js";
 import { AntDesign } from "@expo/vector-icons";
 
-const NutritionScreen = (props) => {
+const NutritionScreen = ({
+  displayName,
+  date,
+  selectedDate,
+  currentDayFoodList,
+  totalCal,
+  getUserJournal,
+}) => {
   // const [date, setDate] = useState(null);
   // const [selectedDate, setSelectedDate] = useState(null);
   // const [recipes, setRecipes] = useState([]);
@@ -53,7 +57,7 @@ const NutritionScreen = (props) => {
   //   let dd = date.day;
   //   firebase
   //     .database()
-  //     .ref(`users/${props.displayName}/foodJournal/${yr}/${mm}/${dd}`)
+  //     .ref(`users/${displayName}/foodJournal/${yr}/${mm}/${dd}`)
   //     .on("value", (snapshot) => {
   //       if (snapshot.val() === null) {
   //         setRecipes([]);
@@ -68,19 +72,20 @@ const NutritionScreen = (props) => {
     <AddModal
       addModalVisible={addModalVisible}
       setAddModalVisible={setAddModalVisible}
-      date={props.selectedDate}
+      date={selectedDate}
     />
   );
-
-  console.log(props.currentDayFoodList);
 
   return (
     <SafeAreaView style={styles.containerNutScreen}>
       <View>
         <Calendar
-          onDayPress={(day) => props.getUserJournal(day, props.displayName)}
+          onDayPress={(day) => {
+            console.log(day);
+            getUserJournal(day, displayName);
+          }}
           markedDates={{
-            [props.selectedDate]: { selected: true, selectedColor: "#00adf5" },
+            [selectedDate]: { selected: true, selectedColor: "#00adf5" },
           }}
           theme={{
             arrowColor: "rgb(22, 66, 92)",
@@ -88,22 +93,22 @@ const NutritionScreen = (props) => {
         />
       </View>
       <ScrollView contentContainerStyle={styles.journalNut}>
-        <Text style={[styles.date]}>{props.date}</Text>
+        <Text style={[styles.date]}>{date}</Text>
         <Text style={styles.totalCal}>
-          {props.totalCal ? `Total Calories: ${props.totalCal}` : null}
+          {totalCal ? `Total Calories: ${totalCal}` : null}
         </Text>
-        {props.currentDayFoodList.map((recipe, key) => {
+        {currentDayFoodList.map((recipe, key) => {
           return (
             <NutritionCard
               key={key}
               id={recipe[0]}
               name={recipe[1].name}
               calories={recipe[1].calories}
-              date={props.date}
+              date={date}
             ></NutritionCard>
           );
         })}
-        {props.date && (
+        {date && (
           <TouchableOpacity
             style={styles.buttonStyles}
             onPress={() => setAddModalVisible(true)}
@@ -128,7 +133,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    storeDates: (date) => dispatch(storeDates(date)),
     getUserJournal: (date, username) =>
       dispatch(getUserJournal(date, username)),
   };

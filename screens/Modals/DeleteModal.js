@@ -8,17 +8,22 @@ import { connect } from "react-redux";
 function DeleteModal({
   deleteModalVisible,
   setDeleteModalVisible,
+  getUserJournal,
   displayName,
+  dateObject,
   yr,
   mm,
   dd,
   id,
 }) {
   const deleteNutritionData = async () => {
-    await firebase
-      .database()
-      .ref(`users/${displayName}/foodJournal/${yr}/${mm}/${dd}/${id}`)
-      .remove();
+    // UNCOMMENT THIS!
+    // await firebase
+    //   .database()
+    //   .ref(`users/${displayName}/foodJournal/${yr}/${mm}/${dd}/${id}`)
+    //   .remove();
+
+    await getUserJournal(dateObject, displayName);
 
     await Alert.alert("Success", "This entry has been deleted", [
       { text: "Ok", onPress: () => setDeleteModalVisible(false) },
@@ -72,7 +77,15 @@ function DeleteModal({
 
 const mapStateToProps = (state) => ({
   displayName: state.auth.user.displayName,
+  dateObject: state.nutrition.dateObject,
 });
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getUserJournal: (date, username) =>
+      dispatch(getUserJournal(date, username)),
+  };
+};
 
 export default connect(mapStateToProps, null)(DeleteModal);
 
