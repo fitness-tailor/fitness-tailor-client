@@ -201,14 +201,15 @@ module.exports = StyleSheet.create({
     // backgroundColor: "black",
   },
   messageContainerRecipeList: {
-    // padding: 5,
-    // margin: 5,
+    backgroundColor: "#cad3d9",
+    padding: 10,
+    borderRadius: 10,
   },
   errorMessageRecipeList: {
     fontSize: 20,
-    paddingHorizontal: 20,
     textAlign: "center",
-    color: "red",
+    color: "#E00000",
+    fontFamily: "OpenSans_700Bold",
   },
   oneCardContainerRecipeList: {
     // borderWidth: 1,
