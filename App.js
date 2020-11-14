@@ -29,6 +29,7 @@ import {
 } from "@expo-google-fonts/open-sans";
 import {
   Montserrat_400Regular,
+  Montserrat_500Medium,
   Montserrat_600SemiBold,
 } from "@expo-google-fonts/montserrat";
 import { Lato_300Light } from "@expo-google-fonts/lato";
@@ -70,6 +71,7 @@ const App = () => {
     OpenSans_600SemiBold,
     OpenSans_700Bold,
     Montserrat_400Regular,
+    Montserrat_500Medium,
     Montserrat_600SemiBold,
     Lato_300Light,
   });
