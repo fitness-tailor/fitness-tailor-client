@@ -26,6 +26,7 @@ const NutritionScreen = (props) => {
   const [addModalVisible, setAddModalVisible] = useState(false);
 
   //run addCalories after every render
+  //TODO: Ineffecient, update of certain states (NOT ALL OF THEM) should cause a re-render
   useEffect(() => {
     addCalories();
   });
@@ -40,7 +41,7 @@ const NutritionScreen = (props) => {
 
   const displayRecipesOnDate = (date) => {
     setSelectedDate(date.dateString);
-    let formatted = moment(date.dateString).format("MMMM D, YYYY");
+    let formatted = moment(date.dateString, "YYYY-MM-DD").format("MMMM D, YYYY");
     setDate(formatted);
     let yr = date.year;
     let mm = date.month;
