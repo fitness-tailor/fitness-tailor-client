@@ -66,8 +66,8 @@ const ProfileScreen = (props) => {
     }
   };
 
-  const convertToCM = (feet, inches)　=> {
-    let totalInches = (parseInt(feet) * 12) + parseInt(inches);
+  const convertToCM = (feet, inches) => {
+    let totalInches = parseInt(feet) * 12 + parseInt(inches);
     let totalCM = totalInches * 2.54;
     return totalCM;
   };
@@ -89,12 +89,12 @@ const ProfileScreen = (props) => {
   const calculateBMR = (gender, weight, heightFeet, heightInch, age) => {
     let heightCM = convertToCM(heightFeet, heightInch);
     let weightKG = convertToKg(weight);
-    if(gender === "male") {
-      return (10 * weightKG) + (6.25 * heightCM) - (5 * age) + 5;
+    if (gender === "male") {
+      return 10 * weightKG + 6.25 * heightCM - 5 * age + 5;
     } else if (gender === "female") {
-      return (10 * weightKG) + (6.25 * heightCM) - (5 * age) - 161;
+      return 10 * weightKG + 6.25 * heightCM - 5 * age - 161;
     }
-  }
+  };
 
   const updateUserInfo = () => {
     if (
@@ -168,34 +168,39 @@ const ProfileScreen = (props) => {
 
   return (
     <SafeAreaView style={styles.containerProfile}>
-
       <View style={styles.userSumsProfile}>
-        <Text style={{"fontSize": 27, color: "white"}}>
-          Hello <Text style={{"fontSize": 35, color: "white"}}>{props.displayName}</Text>, {"\n"}
+        <Text style={{ fontSize: 27, color: "white", textAlign: "center" }}>
+          Hello{" "}
+          <Text style={{ fontSize: 35, color: "white" }}>
+            {props.displayName}
+          </Text>
+          , {"\n"}
           please enter your information{"\n"}
-        </ Text>
-        <Text style={{"fontSize": 20, color: "white"}}>Your BMI is {bmi}</Text>
-        <Text style={{"fontSize": 20, color: "white"}}>Your BMR is {bmr}</Text>
-        <Text style={{"fontSize": 20, color: "white"}}>Your Daily Caloric Expenditure is {bmrPlusExcer}</Text>
+        </Text>
+        <Text style={{ fontSize: 20, color: "white" }}>Your BMI is {bmi}</Text>
+        <Text style={{ fontSize: 20, color: "white" }}>Your BMR is {bmr}</Text>
+        <Text style={{ fontSize: 20, color: "white" }}>
+          Your Daily Caloric Expenditure is {bmrPlusExcer}
+        </Text>
       </View>
 
       <View style={styles.userInputProfile}>
-        <View style={styles.userGenderProfile}>
-          <Text style={{"fontSize": 20, color: "white"}}>Gender</Text>
-            <RNPickerSelect
-              selectedValue={gender}
-              placeholder={{}}
-              items={genderList}
-              onValueChange={(itemValue) => setGender(itemValue)}
-              // value={gender}
-              style={{
-                ...pickerSelectStyles,
-              }}
-              />
+        <View style={styles.userProfileRow}>
+          <Text style={{ fontSize: 20, color: "white" }}>Gender</Text>
+          <RNPickerSelect
+            selectedValue={gender}
+            placeholder={{}}
+            items={genderList}
+            onValueChange={(itemValue) => setGender(itemValue)}
+            // value={gender}
+            style={{
+              ...pickerSelectStyles,
+            }}
+          />
         </View>
 
-        <View style={styles.userActivityLevelProfile}>
-          <Text style={{"fontSize": 20, color: "white"}}>Activity Level</Text>
+        <View style={styles.userProfileRow}>
+          <Text style={{ fontSize: 20, color: "white" }}>Activity Level</Text>
           <RNPickerSelect
             selectedValue={activityLevel}
             placeholder={{}}
@@ -208,8 +213,8 @@ const ProfileScreen = (props) => {
           />
         </View>
 
-        <View style={styles.userActivityLevelProfile}>
-          <Text style={{"fontSize": 20, color: "white"}}>Goal</Text>
+        <View style={styles.userProfileRow}>
+          <Text style={{ fontSize: 20, color: "white" }}>Goal</Text>
           <RNPickerSelect
             selectedValue={goal}
             placeholder={{}}
@@ -222,41 +227,64 @@ const ProfileScreen = (props) => {
           />
         </View>
 
-        <View style={styles.userHeightProfile}>
-          <Text style={{"fontSize": 20, color: "white"}} >Height</Text>
-          <View style={styles.userHeightNumbersProfile}>
-            <TextInput placeholder='Feet' style={{"fontSize": 20, color: "white"}} keyboardType={'numeric'} value={heightFeet} onChangeText={text => setHeightFeet(text)} />
-            <Text style={{"fontSize": 20, color: "white"}}> Feet </Text>
-            <TextInput placeholder='Inches' keyboardType={'numeric'} style={{"fontSize": 20, color: "white"}} value={heightInch} onChangeText={text => setHeightInch(text)} />
-            <Text style={{"fontSize": 20, color: "white"}}> Inches</Text>
+        <View style={styles.userProfileRow}>
+          <Text style={{ fontSize: 20, color: "white" }}>Height</Text>
+          <View style={styles.userProfileRow}>
+            <TextInput
+              placeholder="Feet"
+              style={{ fontSize: 20, color: "white" }}
+              keyboardType={"numeric"}
+              value={heightFeet}
+              onChangeText={(text) => setHeightFeet(text)}
+            />
+            <Text style={{ fontSize: 20, color: "white" }}> Feet </Text>
+            <TextInput
+              placeholder="Inches"
+              keyboardType={"numeric"}
+              style={{ fontSize: 20, color: "white" }}
+              value={heightInch}
+              onChangeText={(text) => setHeightInch(text)}
+            />
+            <Text style={{ fontSize: 20, color: "white" }}> Inches</Text>
           </View>
-
         </View>
 
-        <View style={styles.userWeightProfile}>
-          <Text style={{"fontSize": 20, color: "white"}}>
-            Weight
-          </Text>
-          <View style={styles.userWeightNumbersProfile}>
-            <TextInput placeholder='Weight' style={{"fontSize": 20, color: "white"}} keyboardType={'numeric'} value={weight} onChangeText={text => setWeight(text)} /><Text style={{"fontSize": 20, color: "white"}}> lbs</Text>
+        <View style={styles.userProfileRow}>
+          <Text style={{ fontSize: 20, color: "white" }}>Weight</Text>
+          <View style={styles.userProfileRow}>
+            <TextInput
+              placeholder="Weight"
+              style={{ fontSize: 20, color: "white" }}
+              keyboardType={"numeric"}
+              value={weight}
+              onChangeText={(text) => setWeight(text)}
+            />
+            <Text style={{ fontSize: 20, color: "white" }}> lbs</Text>
           </View>
         </View>
 
-        <View style={styles.userAgeProfile}>
-          <Text style={{"fontSize": 20, color: "white"}}>
-            Age
-          </Text>
-          <View style={styles.userAgeNumbersProfile}>
-            <TextInput placeholder='Age' style={{"fontSize": 20, color: "white"}} keyboardType={'numeric'} value={age} onChangeText={text => setAge(text)} /><Text style={{"fontSize": 20, color: "white"}}> years</Text>
+        <View style={styles.userProfileRow}>
+          <Text style={{ fontSize: 20, color: "white" }}>Age</Text>
+          <View style={styles.userProfileRow}>
+            <TextInput
+              placeholder="Age"
+              style={{ fontSize: 20, color: "white" }}
+              keyboardType={"numeric"}
+              value={age}
+              onChangeText={(text) => setAge(text)}
+            />
+            <Text style={{ fontSize: 20, color: "white" }}> years</Text>
           </View>
         </View>
 
         <TouchableOpacity
-              style={styles.signInButton}
-              onPress={() => updateUserInfo()}
-            >
-              <Text style={{ fontWeight: "500", fontSize: 20, color: "white" }}>Done</Text>
-            </TouchableOpacity>
+          style={styles.signInButton}
+          onPress={() => updateUserInfo()}
+        >
+          <Text style={{ fontWeight: "500", fontSize: 20, color: "white" }}>
+            Done
+          </Text>
+        </TouchableOpacity>
       </View>
     </SafeAreaView>
   );
@@ -265,12 +293,16 @@ const ProfileScreen = (props) => {
 const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
     fontSize: 20,
+    backgroundColor: "rgb(37, 93, 120)",
+    paddingVertical: 8,
+    paddingHorizontal: 20,
+    borderRadius: 20,
     // paddingVertical: 12,
     // paddingHorizontal: 10,
     // borderWidth: 1,
     // borderColor: 'gray',
     // borderRadius: 4,
-    color: 'white',
+    color: "white",
     // paddingRight: 30, // to ensure the text is never behind the icon
   },
   inputAndroid: {
@@ -280,7 +312,7 @@ const pickerSelectStyles = StyleSheet.create({
     // borderWidth: 0.5,
     // borderColor: 'purple',
     // borderRadius: 8,
-    color: 'white',
+    color: "white",
     // paddingRight: 30, // to ensure the text is never behind the icon
   },
 });

@@ -129,7 +129,6 @@ module.exports = StyleSheet.create({
   // ==================================
   containerProfile: {
     flex: 2,
-    // justifyContent: "space-evenly",
     alignItems: "center",
     backgroundColor: "rgb(22, 66, 92)",
   },
@@ -141,44 +140,14 @@ module.exports = StyleSheet.create({
     justifyContent: "space-evenly",
   },
   userInputProfile: {
-    // backgroundColor: 'blue',
     flex: 2,
     width: "90%",
     justifyContent: "space-evenly",
-    // flexDirection: 'row'
   },
-  userGenderProfile: {
+  userProfileRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-  },
-  userActivityLevelProfile: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  userHeightProfile: {
-    // backgroundColor: 'purple',
-    // height: "30%",
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  userHeightNumbersProfile: {
-    flexDirection: "row",
-  },
-  userWeightProfile: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    // backgroundColor: 'grey',
-    // height: "20%",
-  },
-  userWeightNumbersProfile: {
-    flexDirection: "row",
-  },
-  userAgeProfile: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  userAgeNumbersProfile: {
-    flexDirection: "row",
+    alignItems: "center",
   },
   // ==================================
   // Recipe List Screen
