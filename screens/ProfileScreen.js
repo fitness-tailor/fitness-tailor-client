@@ -9,11 +9,13 @@ import {
   TouchableOpacity,
   Image,
   Button,
+  Easing,
 } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import { connect } from "react-redux";
 import { getUserAuth } from "../redux/actions/authActions.js";
 import { storeRDA } from "../redux/actions/recipeListActions.js";
+import FadeInView from "./Animation_View_Comps/AuthView.js";
 import firebase from "firebase";
 import styles from "./styles.js";
 
@@ -168,25 +170,28 @@ const ProfileScreen = (props) => {
 
   return (
     <SafeAreaView style={styles.containerProfile}>
-      <View style={styles.userSumsProfile}>
-        <Text style={{ fontSize: 27, color: "white", textAlign: "center" }}>
-          Hello{" "}
-          <Text style={{ fontSize: 35, color: "white" }}>
-            {props.displayName}
-          </Text>
-          , {"\n"}
+      <FadeInView
+        style={styles.userSumsProfile}
+        easing={Easing.bezier(0.2, 0.2, 0.5, 1)}
+      >
+        <Text style={styles.profileTitle}>
+          Hello <Text style={styles.profileUsername}>{props.displayName}</Text>,{" "}
+          {"\n"}
           please enter your information{"\n"}
         </Text>
-        <Text style={{ fontSize: 20, color: "white" }}>Your BMI is {bmi}</Text>
-        <Text style={{ fontSize: 20, color: "white" }}>Your BMR is {bmr}</Text>
-        <Text style={{ fontSize: 20, color: "white" }}>
+        <Text style={styles.profileGeneralText}>Your BMI is {bmi}</Text>
+        <Text style={styles.profileGeneralText}>Your BMR is {bmr}</Text>
+        <Text style={styles.profileGeneralText}>
           Your Daily Caloric Expenditure is {bmrPlusExcer}
         </Text>
-      </View>
+      </FadeInView>
 
-      <View style={styles.userInputProfile}>
+      <FadeInView
+        style={styles.userInputProfile}
+        easing={Easing.bezier(0.2, 0.2, 0.5, 1)}
+      >
         <View style={styles.userProfileRow}>
-          <Text style={{ fontSize: 20, color: "white" }}>Gender</Text>
+          <Text style={styles.profileGeneralText}>Gender</Text>
           <RNPickerSelect
             selectedValue={gender}
             placeholder={{}}
@@ -200,7 +205,7 @@ const ProfileScreen = (props) => {
         </View>
 
         <View style={styles.userProfileRow}>
-          <Text style={{ fontSize: 20, color: "white" }}>Activity Level</Text>
+          <Text style={styles.profileGeneralText}>Activity Level</Text>
           <RNPickerSelect
             selectedValue={activityLevel}
             placeholder={{}}
@@ -214,7 +219,7 @@ const ProfileScreen = (props) => {
         </View>
 
         <View style={styles.userProfileRow}>
-          <Text style={{ fontSize: 20, color: "white" }}>Goal</Text>
+          <Text style={styles.profileGeneralText}>Goal</Text>
           <RNPickerSelect
             selectedValue={goal}
             placeholder={{}}
@@ -228,64 +233,69 @@ const ProfileScreen = (props) => {
         </View>
 
         <View style={styles.userProfileRow}>
-          <Text style={{ fontSize: 20, color: "white" }}>Height</Text>
+          <Text style={styles.profileGeneralText}>Height</Text>
           <View style={styles.userProfileRow}>
             <TextInput
               placeholder="Feet"
-              style={{ fontSize: 20, color: "white" }}
+              placeholderTextColor="#DBDBDB"
               keyboardType={"numeric"}
+              maxLength={1}
+              style={styles.profileInputBoxes}
               value={heightFeet}
               onChangeText={(text) => setHeightFeet(text)}
             />
-            <Text style={{ fontSize: 20, color: "white" }}> Feet </Text>
+            <Text style={styles.profileGeneralText}> Feet </Text>
             <TextInput
-              placeholder="Inches"
+              placeholder="Inch"
+              placeholderTextColor="#DBDBDB"
               keyboardType={"numeric"}
-              style={{ fontSize: 20, color: "white" }}
+              maxLength={2}
+              style={styles.profileInputBoxes}
               value={heightInch}
               onChangeText={(text) => setHeightInch(text)}
             />
-            <Text style={{ fontSize: 20, color: "white" }}> Inches</Text>
+            <Text style={styles.profileGeneralText}> Inches</Text>
           </View>
         </View>
 
         <View style={styles.userProfileRow}>
-          <Text style={{ fontSize: 20, color: "white" }}>Weight</Text>
+          <Text style={styles.profileGeneralText}>Weight</Text>
           <View style={styles.userProfileRow}>
             <TextInput
               placeholder="Weight"
-              style={{ fontSize: 20, color: "white" }}
+              placeholderTextColor="#DBDBDB"
+              style={styles.profileInputBoxes}
+              maxLength={3}
               keyboardType={"numeric"}
               value={weight}
               onChangeText={(text) => setWeight(text)}
             />
-            <Text style={{ fontSize: 20, color: "white" }}> lbs</Text>
+            <Text style={styles.profileGeneralText}> lbs</Text>
           </View>
         </View>
 
         <View style={styles.userProfileRow}>
-          <Text style={{ fontSize: 20, color: "white" }}>Age</Text>
+          <Text style={styles.profileGeneralText}>Age</Text>
           <View style={styles.userProfileRow}>
             <TextInput
               placeholder="Age"
-              style={{ fontSize: 20, color: "white" }}
+              maxLength={3}
+              style={styles.profileInputBoxes}
               keyboardType={"numeric"}
               value={age}
               onChangeText={(text) => setAge(text)}
             />
-            <Text style={{ fontSize: 20, color: "white" }}> years</Text>
+            <Text style={styles.profileGeneralText}> years</Text>
           </View>
         </View>
 
         <TouchableOpacity
-          style={styles.signInButton}
+          style={styles.profileButton}
           onPress={() => updateUserInfo()}
         >
-          <Text style={{ fontWeight: "500", fontSize: 20, color: "white" }}>
-            Done
-          </Text>
+          <Text style={styles.profileButtonText}>Done</Text>
         </TouchableOpacity>
-      </View>
+      </FadeInView>
     </SafeAreaView>
   );
 };
@@ -295,8 +305,9 @@ const pickerSelectStyles = StyleSheet.create({
     fontSize: 20,
     backgroundColor: "rgb(37, 93, 120)",
     paddingVertical: 8,
-    paddingHorizontal: 20,
+    paddingHorizontal: 14,
     borderRadius: 20,
+    fontFamily: "OpenSans_400Regular",
     // paddingVertical: 12,
     // paddingHorizontal: 10,
     // borderWidth: 1,

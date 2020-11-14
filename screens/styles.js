@@ -139,6 +139,22 @@ module.exports = StyleSheet.create({
     width: "100%",
     justifyContent: "space-evenly",
   },
+  profileTitle: {
+    fontSize: 24,
+    color: "white",
+    textAlign: "center",
+    fontFamily: "OpenSans_400Regular",
+  },
+  profileUsername: {
+    fontSize: 30,
+    color: "white",
+    fontFamily: "OpenSans_600SemiBold",
+  },
+  profileGeneralText: {
+    fontFamily: "OpenSans_400Regular",
+    fontSize: 20,
+    color: "white",
+  },
   userInputProfile: {
     flex: 2,
     width: "90%",
@@ -148,6 +164,26 @@ module.exports = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+  },
+  profileInputBoxes: {
+    fontSize: 20,
+    color: "white",
+    backgroundColor: "rgb(37, 93, 120)",
+    paddingVertical: 8,
+    paddingHorizontal: 18,
+    borderRadius: 20,
+  },
+  profileButtonText: {
+    fontFamily: "OpenSans_600SemiBold",
+    fontSize: 22,
+    color: "white",
+  },
+  profileButton: {
+    alignItems: "center",
+    backgroundColor: "rgb(37, 93, 120)",
+    padding: 20,
+    borderRadius: 50,
+    marginTop: 5,
   },
   // ==================================
   // Recipe List Screen
