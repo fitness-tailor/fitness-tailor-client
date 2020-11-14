@@ -12,36 +12,29 @@ import Modal from "react-native-modal";
 // import styles from "../styles.js";
 import { connect } from "react-redux";
 import firebase from "firebase";
-import moment from 'moment';
+import moment from "moment";
 
-
-function AddModal({
-  addModalVisible,
-  setAddModalVisible,
-  displayName,
-  date
-}) {
-  const [name, setName] = useState('Name')
-  const [calories, setCalories] = useState("100")
-
+function AddModal({ addModalVisible, setAddModalVisible, displayName, date }) {
+  const [name, setName] = useState("Name");
+  const [calories, setCalories] = useState("100");
 
   const addToJournal = () => {
-    let year = moment(date).format('YYYY');
-    let month = moment(date).format('MM');
-    let day = moment(date).format('D');
+    let year = moment(date).format("YYYY");
+    let month = moment(date).format("MM");
+    let day = moment(date).format("D");
 
     firebase
-    .database()
-    .ref(`users/${displayName}/foodJournal/${year}/${month}/${day}`)
-    .push()
-    .set({
-      // referenceID: fdcId,
-      name: name,
-      calories: calories,
-      // servingSize: SERVING_SIZE.value,
-      // servingUnit: SERVING_SIZE.unit,
-    });
-  }
+      .database()
+      .ref(`users/${displayName}/foodJournal/${year}/${month}/${day}`)
+      .push()
+      .set({
+        // referenceID: fdcId,
+        name: name,
+        calories: Number(calories),
+        // servingSize: SERVING_SIZE.value,
+        // servingUnit: SERVING_SIZE.unit,
+      });
+  };
 
   return (
     <View style={styles.centeredView}>
@@ -54,7 +47,8 @@ function AddModal({
         animationOutTiming={1000}
         backdropTransitionOutTiming={0}
         backdropColor="black"
-        backdropOpacity={0.8}>
+        backdropOpacity={0.8}
+      >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <View style={styles.header}>
@@ -62,12 +56,12 @@ function AddModal({
             </View>
 
             <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-around",
-                  width: "80%",
-                }}
-              >
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-around",
+                width: "80%",
+              }}
+            >
               <View style={styles.inputArea}>
                 <Text>Name</Text>
                 <TextInput
@@ -76,7 +70,7 @@ function AddModal({
                   style={styles.input}
                   placeholderTextColor="black"
                   onChangeText={(val) => setName(val)}
-                  />
+                />
               </View>
 
               <View style={styles.inputArea}>
@@ -90,7 +84,7 @@ function AddModal({
                   keyboardType={"numeric"}
                   maxLength={6}
                   onChangeText={(val) => setCalories(val)}
-                  />
+                />
               </View>
             </View>
 
@@ -113,7 +107,7 @@ function AddModal({
         </View>
       </Modal>
     </View>
-  )
+  );
 }
 
 const mapStateToProps = (state) => ({
@@ -121,7 +115,6 @@ const mapStateToProps = (state) => ({
 });
 
 export default connect(mapStateToProps, null)(AddModal);
-
 
 const styles = StyleSheet.create({
   centeredView: {
