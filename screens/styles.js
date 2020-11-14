@@ -1,7 +1,6 @@
 import { StyleSheet } from "react-native";
 
 module.exports = StyleSheet.create({
-
   containerHome: {
     flex: 1,
     alignItems: "center",
@@ -97,7 +96,7 @@ module.exports = StyleSheet.create({
     // fontSize: 12,/
     // bottom: 215,
     height: 100,
-    width: '100%',
+    width: "100%",
     borderRadius: 20,
     justifyContent: "space-around",
     alignItems: "center",
@@ -187,7 +186,7 @@ module.exports = StyleSheet.create({
   containerRecipeList: {
     // alignItems: "center",
     width: "100%",
-    backgroundColor: 'rgb(37, 93, 120)',
+    backgroundColor: "rgb(37, 93, 120)",
   },
   scrollViewRecipeList: {
     paddingHorizontal: "5%",
@@ -224,7 +223,7 @@ module.exports = StyleSheet.create({
     flex: 2,
     flexGrow: 1,
     flexDirection: "column",
-    backgroundColor: "white",
+    backgroundColor: "#d9d5c7",
   },
   calendar: {
     flex: 1,
@@ -235,11 +234,14 @@ module.exports = StyleSheet.create({
   date: {
     fontSize: 20,
     margin: 5,
+    fontFamily: "OpenSans_600SemiBold",
   },
   totalCal: {
     fontSize: 18,
+    fontFamily: "OpenSans_400Regular",
   },
   journalNut: {
     alignItems: "center",
+    minHeight: "100%",
   },
 });
