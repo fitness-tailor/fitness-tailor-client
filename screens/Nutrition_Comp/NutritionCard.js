@@ -14,14 +14,11 @@ import { connect } from "react-redux";
 import EditModal from "../Modals/EditModal.js";
 import DeleteModal from "../Modals/DeleteModal.js";
 
-const NutritionCard = (props) => {
+const NutritionCard = ({ calories, name, id, dateObject, displayName }) => {
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
-  const [calories, setCalories] = useState(props.calories);
-  const [recipe, setRecipe] = useState(props.name);
-  let yr = moment(props.date).format("YYYY");
-  let mm = moment(props.date).format("MM");
-  let dd = moment(props.date).format("D");
+  const [calorie, setCalorie] = useState(calories);
+  const [recipe, setRecipe] = useState(name);
 
   let editModal = (
     <EditModal
@@ -30,11 +27,11 @@ const NutritionCard = (props) => {
       recipe={recipe}
       setRecipe={setRecipe}
       calories={calories}
-      setCalories={setCalories}
-      id={props.id}
-      yr={yr}
-      mm={mm}
-      dd={dd}
+      setCalorie={setCalorie}
+      id={id}
+      yr={dateObject.year}
+      mm={dateObject.month}
+      dd={dateObject.day}
     />
   );
 
@@ -42,10 +39,10 @@ const NutritionCard = (props) => {
     <DeleteModal
       deleteModalVisible={deleteModalVisible}
       setDeleteModalVisible={setDeleteModalVisible}
-      id={props.id}
-      yr={yr}
-      mm={mm}
-      dd={dd}
+      id={id}
+      yr={dateObject.year}
+      mm={dateObject.month}
+      dd={dateObject.day}
     />
   );
 
@@ -89,7 +86,7 @@ const NutritionCard = (props) => {
 
 const mapStateToProps = (state) => ({
   displayName: state.auth.user.displayName,
-  RDA: state.recipeList.RDA,
+  dateObject: state.nutrition.dateObject,
 });
 
 export default connect(mapStateToProps)(NutritionCard);

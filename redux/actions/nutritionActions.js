@@ -48,7 +48,7 @@ const calculateCalories = (recipeList) => {
 };
 
 // Invoke function in payload without recipes if none exist
-const storeCalories = (recipeList = []) => {
+export const storeCalories = (recipeList = []) => {
   return {
     type: STORE_CALORIES,
     payload: calculateCalories(recipeList),

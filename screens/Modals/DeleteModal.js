@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, TouchableOpacity, View, Alert } from "react-native";
 import Modal from "react-native-modal";
 import firebase from "firebase";
+import { getUserJournal } from "../../redux/actions/nutritionActions.js";
 import RNPickerSelect from "react-native-picker-select";
 import { connect } from "react-redux";
 
@@ -11,6 +12,8 @@ function DeleteModal({
   getUserJournal,
   displayName,
   dateObject,
+  currentDayFoodList,
+  totalCal,
   yr,
   mm,
   dd,
@@ -18,16 +21,16 @@ function DeleteModal({
 }) {
   const deleteNutritionData = async () => {
     // UNCOMMENT THIS!
-    // await firebase
-    //   .database()
-    //   .ref(`users/${displayName}/foodJournal/${yr}/${mm}/${dd}/${id}`)
-    //   .remove();
-
-    await getUserJournal(dateObject, displayName);
+    await firebase
+      .database()
+      .ref(`users/${displayName}/foodJournal/${yr}/${mm}/${dd}/${id}`)
+      .remove();
 
     await Alert.alert("Success", "This entry has been deleted", [
       { text: "Ok", onPress: () => setDeleteModalVisible(false) },
     ]);
+
+    await getUserJournal(dateObject, displayName);
   };
 
   return (
@@ -78,6 +81,8 @@ function DeleteModal({
 const mapStateToProps = (state) => ({
   displayName: state.auth.user.displayName,
   dateObject: state.nutrition.dateObject,
+  currentDayFoodList: state.nutrition.currentDayFoodList,
+  totalCal: state.nutrition.totalCal,
 });
 
 const mapDispatchToProps = (dispatch) => {
@@ -87,7 +92,7 @@ const mapDispatchToProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, null)(DeleteModal);
+export default connect(mapStateToProps, mapDispatchToProps)(DeleteModal);
 
 const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
