@@ -16,11 +16,20 @@ import EditModal from "../Modals/EditModal.js";
 import DeleteModal from "../Modals/DeleteModal.js";
 import FadeInView from "../Animation_View_Comps/AuthView.js";
 
-const NutritionCard = ({ calories, name, id, dateObject, displayName }) => {
+const NutritionCard = ({
+  recipeObj,
+  calories,
+  name,
+  id,
+  dateObject,
+  displayName,
+}) => {
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
   const [calorie, setCalorie] = useState(calories);
   const [recipe, setRecipe] = useState(name);
+
+  // console.log(recipeObj);
 
   let editModal = (
     <EditModal

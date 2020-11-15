@@ -67,11 +67,13 @@ export const getUserJournal = (date, userDisplayName) => {
       .ref(`users/${userDisplayName}/foodJournal/${yr}/${mm}/${dd}`)
       .once("value")
       .then((snapshot) => {
-        if (snapshot.val() === null) {
+        return snapshot.val() === null ? null : Object.entries(snapshot.val());
+      })
+      .then((result) => {
+        if (result === null) {
           dispatch(fetchUserJournalSuccessButEmpty());
           dispatch(storeCalories());
         } else {
-          let result = Object.entries(snapshot.val());
           dispatch(fetchUserJournalSuccess(result));
           dispatch(storeCalories(result));
         }

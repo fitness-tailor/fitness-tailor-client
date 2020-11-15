@@ -64,17 +64,19 @@ const NutritionScreen = ({
             {totalCal ? `Total Calories: ${totalCal}` : null}
           </Text>
 
-          {currentDayFoodList.map((recipe, key) => {
-            return (
-              <NutritionCard
-                key={key}
-                id={recipe[0]}
-                name={recipe[1].name}
-                calories={recipe[1].calories}
-                date={date}
-              ></NutritionCard>
-            );
-          })}
+          {currentDayFoodList &&
+            currentDayFoodList.map((recipe, key) => {
+              return (
+                <NutritionCard
+                  recipeObj={recipe}
+                  key={key}
+                  id={recipe[0]}
+                  name={recipe[1].name}
+                  calories={recipe[1].calories}
+                  date={date}
+                ></NutritionCard>
+              );
+            })}
 
           {date && (
             <TouchableOpacity
