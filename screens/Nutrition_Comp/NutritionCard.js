@@ -23,6 +23,12 @@ const NutritionCard = (props) => {
   let mm = moment(props.date).format("MM");
   let dd = moment(props.date).format("D");
 
+  let { recipeData, id, name, date } = props;
+  // calories should be in destructured props obj as well!
+  let { servingSize, servingUnit } = recipeData;
+
+  // console.log(props.recipe);
+
   let editModal = (
     <EditModal
       editModalVisible={editModalVisible}
@@ -31,6 +37,8 @@ const NutritionCard = (props) => {
       setRecipe={setRecipe}
       calories={calories}
       setCalories={setCalories}
+      servingSize={servingSize}
+      servingUnit={servingUnit}
       id={props.id}
       yr={yr}
       mm={mm}
@@ -57,7 +65,7 @@ const NutritionCard = (props) => {
 
           <Text style={[styles.font]}>
             <Text style={styles.boldFont}>Calories: </Text>
-            {calories}
+            {Math.round(calories)}
           </Text>
         </View>
       </View>

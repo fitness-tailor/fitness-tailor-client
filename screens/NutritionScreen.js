@@ -1,7 +1,7 @@
 import styles from "./styles.js";
 import firebase from "firebase";
 import { connect } from "react-redux";
-import React, { useState, useEffect, Component } from 'react';
+import React, { useState, useEffect, Component } from "react";
 import {
   SafeAreaView,
   AppRegistry,
@@ -9,10 +9,10 @@ import {
   Text,
   View,
   ScrollView,
-  TouchableOpacity
-} from 'react-native';
-import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
-import moment, { now } from 'moment';
+  TouchableOpacity,
+} from "react-native";
+import { Calendar, CalendarList, Agenda } from "react-native-calendars";
+import moment, { now } from "moment";
 import { render } from "react-dom";
 import NutritionCard from "./Nutrition_Comp/NutritionCard.js";
 import AddModal from "./Modals/AddModal.js";
@@ -26,17 +26,18 @@ const NutritionScreen = (props) => {
   const [addModalVisible, setAddModalVisible] = useState(false);
 
   //run addCalories after every render
+  //TODO: Ineffecient, update of certain states (NOT ALL OF THEM) should cause a re-render
   useEffect(() => {
     addCalories();
-  })
+  });
 
   const addCalories = () => {
     let calories = 0;
     recipes.map((recipe) => {
-      calories += parseInt(recipe[1].calories);
-    })
+      calories += Math.round(recipe[1].calories);
+    });
     setTotalCal(calories);
-  }
+  };
 
   const displayRecipesOnDate = (date) => {
     setSelectedDate(date.dateString);
@@ -46,16 +47,16 @@ const NutritionScreen = (props) => {
     let mm = date.month;
     let dd = date.day;
     firebase
-    .database()
-    .ref(`users/${props.displayName}/foodJournal/${yr}/${mm}/${dd}`)
-    .on('value', (snapshot) => {
-      if(snapshot.val() === null) {
-        setRecipes([]);
-        setTotalCal(0);
-      } else {
-        setRecipes(Object.entries(snapshot.val()))
-      }
-    })
+      .database()
+      .ref(`users/${props.displayName}/foodJournal/${yr}/${mm}/${dd}`)
+      .on("value", (snapshot) => {
+        if (snapshot.val() === null) {
+          setRecipes([]);
+          setTotalCal(0);
+        } else {
+          setRecipes(Object.entries(snapshot.val()));
+        }
+      });
   };
   let addModal = (
     <AddModal
@@ -67,36 +68,45 @@ const NutritionScreen = (props) => {
 
   return (
     <SafeAreaView style={styles.containerNutScreen}>
-      <View >
+      <View>
         <Calendar
           onDayPress={(day) => displayRecipesOnDate(day)}
           markedDates={{
-            [selectedDate] : {selected: true, selectedColor: '#00adf5'},
+            [selectedDate]: { selected: true, selectedColor: "#00adf5" },
           }}
           theme={{
             arrowColor: "rgb(22, 66, 92)",
           }}
         />
-        </View>
-        <ScrollView contentContainerStyle={styles.journalNut}>
-            <Text style={[styles.date]}>{date}</Text>
-            <Text style={styles.totalCal}>{totalCal ? `${totalCal} Total Calories` : null}</Text>
-            {recipes.map((recipe, key) => {
-              return (
-                <NutritionCard key={key} id={recipe[0]} name={recipe[1].name} calories={recipe[1].calories} date={date}>
-                </NutritionCard>
-              )
-            })}
-            {date &&
-            <TouchableOpacity
+      </View>
+      <ScrollView contentContainerStyle={styles.journalNut}>
+        <Text style={[styles.date]}>{date}</Text>
+        <Text style={styles.totalCal}>
+          {totalCal ? `${totalCal} Total Calories` : null}
+        </Text>
+        {recipes.map((recipe, key) => {
+          return (
+            <NutritionCard
+              key={key}
+              recipeData={recipe[1]}
+              id={recipe[0]}
+              name={recipe[1].name}
+              calories={recipe[1].calories}
+              date={date}
+            ></NutritionCard>
+          );
+        })}
+        {date && (
+          <TouchableOpacity
             style={styles.buttonStyles}
             onPress={() => setAddModalVisible(true)}
             activeOpacity="0.5"
-            >
-              <AntDesign name="pluscircle" size={50} color="rgb(37, 93, 120)"/>
-          </TouchableOpacity>}
-          </ScrollView>
-          {addModal}
+          >
+            <AntDesign name="pluscircle" size={50} color="rgb(37, 93, 120)" />
+          </TouchableOpacity>
+        )}
+      </ScrollView>
+      {addModal}
     </SafeAreaView>
   );
 };

@@ -126,7 +126,7 @@ export default function ServingModal({
                 placeholder={`${inputSize}`}
                 placeholderTextColor="black"
                 keyboardType={"numeric"}
-                maxLength={6}
+                maxLength={4}
                 onChangeText={(val) => setInputSize(val)}
               />
               <RNPickerSelect
