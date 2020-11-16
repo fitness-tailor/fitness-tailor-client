@@ -22,9 +22,9 @@ const NutritionCard = ({ calories, name, id, dateObject, displayName }) => {
   const [calorie, setCalorie] = useState(calories);
   const [recipe, setRecipe] = useState(name);
 
-  let { recipeData, id, name, date } = props;
-  // calories should be in destructured props obj as well!
-  let { servingSize, servingUnit } = recipeData;
+  // let { recipeData, id, date } = props;
+  // // calories should be in destructured props obj as well!
+  // let { servingSize, servingUnit } = recipeData;
 
   // console.log(props.recipe);
 
