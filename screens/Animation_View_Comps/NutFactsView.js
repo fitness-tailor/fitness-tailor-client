@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
   StyleSheet,
+  Easing,
 } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 
@@ -14,45 +15,27 @@ export default function NutFactsView({ style, children, easing = null }) {
   const [fadeAnim] = useState(new Animated.Value(0));
   const [scaleAnimY] = useState(new Animated.Value(0));
   const [viewVisible, setViewVisible] = useState(false);
-  const [height, setHeight] = useState("10%");
+  const [viewHeight, setViewHeight] = useState("0%");
 
   // let actualHeight = viewVisible ? "0%" : "100%";
 
   useEffect(() => {
     if (viewVisible) {
-      setHeight("100%");
-      Animated.parallel([
-        Animated.timing(fadeAnim, {
-          toValue: 1,
-          duration: 1500,
-          easing: easing,
-          useNativeDriver: true,
-        }),
-
-        Animated.timing(scaleAnimY, {
-          toValue: 1,
-          duration: 1500,
-          easing: easing,
-          useNativeDriver: true,
-        }),
-      ]).start();
+      setViewHeight(null);
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 1000,
+        easing: Easing.In,
+        useNativeDriver: true,
+      }).start();
     } else {
-      setHeight("10%");
-      Animated.parallel([
-        Animated.timing(fadeAnim, {
-          toValue: 0,
-          duration: 1500,
-          easing: easing,
-          useNativeDriver: true,
-        }),
-
-        Animated.timing(scaleAnimY, {
-          toValue: 0,
-          duration: 1500,
-          easing: easing,
-          useNativeDriver: true,
-        }),
-      ]).start();
+      setViewHeight("0%");
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 200,
+        easing: Easing.In,
+        useNativeDriver: true,
+      }).start();
     }
   }, [viewVisible]);
 
@@ -68,16 +51,24 @@ export default function NutFactsView({ style, children, easing = null }) {
 
   return (
     <View>
-      <Animated.View
-        style={{
-          ...style,
-          opacity: fadeAnim,
-          transform: [{ scaleY: scaleAnimY }],
-          height: height,
-        }}
-      >
-        {children}
-      </Animated.View>
+      <View style={{ height: viewHeight }}>
+        <Animated.View
+          style={{
+            ...style,
+            opacity: fadeAnim,
+            transform: [
+              {
+                scaleY: fadeAnim.interpolate({
+                  inputRange: [0, 0.1, 1],
+                  outputRange: [0, 0.7, 1],
+                }),
+              },
+            ],
+          }}
+        >
+          {children}
+        </Animated.View>
+      </View>
 
       <TouchableOpacity style={styles.chevron} onPress={changeFactsVisibility}>
         {displayArrow}
@@ -92,8 +83,8 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
-    marginBottom: 5,
-    backgroundColor: "blue",
+    marginVertical: 5,
+    backgroundColor: "#FAFAFF",
     width: "100%",
   },
 });
