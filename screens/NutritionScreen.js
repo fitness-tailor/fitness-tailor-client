@@ -40,8 +40,8 @@ const NutritionScreen = ({
   );
 
   return !isLoading ? (
+
     <SafeAreaView style={styles.containerNutScreen}>
-      <View>
         <Calendar
           onDayPress={(day) => getUserJournal(day, displayName)}
           markedDates={{
@@ -49,9 +49,7 @@ const NutritionScreen = ({
           }}
           theme={{ arrowColor: "rgb(22, 66, 92)" }}
         />
-      </View>
 
-      <View>
         <ScrollView
           contentContainerStyle={{
             ...styles.journalNut,
@@ -86,7 +84,6 @@ const NutritionScreen = ({
             </TouchableOpacity>
           )}
         </ScrollView>
-      </View>
       {addModal}
     </SafeAreaView>
   ) : (
