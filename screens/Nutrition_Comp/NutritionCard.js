@@ -16,6 +16,7 @@ import convert from "convert-units";
 import EditModal from "../Modals/EditModal.js";
 import DeleteModal from "../Modals/DeleteModal.js";
 import MainRowData from "../Recipe_Comp/MainRowData.js";
+import FoodRowData from "./FoodRowData.js";
 import NutritionRowData from "../Recipe_Comp/NutritionRowData.js";
 import FadeInView from "../Animation_View_Comps/AuthView.js";
 import Dividers from "../Recipe_Comp/Dividers.js";
@@ -136,27 +137,34 @@ const NutritionCard = ({
       {Object.keys(relativeData).length > 0 && (
         <View style={styles.nutritionFactsContainer}>
           <Text style={styles.nutritionFactsTitle}>Nutrition Facts</Text>
+
           <Dividers borderWidth={1} />
+
           <MainRowData
             id="Serving Size"
             nutValue={journalData.servingSize}
             nutUnit={journalData.servingUnit}
             fontSize={20}
           />
+
           <Dividers borderWidth={5} />
+
           <Text style={styles.amountPerServingTitle}>Amount per serving</Text>
           <MainRowData
             id="Calories"
             nutValue={journalData.calories}
             fontSize={26}
           />
+
           <Dividers borderWidth={3} />
+
           <Text style={styles.dailyValPercentageTitle}>% Daily Value</Text>
           <Dividers borderWidth={1.5} />
 
           {relativeData.hasOwnProperty("TOTAL_FAT") && (
             <>
-              <NutritionRowData
+              <FoodRowData
+                RDAkey="TOTAL_FAT"
                 id="Total Fat"
                 nutValue={relativeData.TOTAL_FAT.value}
                 nutUnit={relativeData.TOTAL_FAT.unit}
@@ -169,7 +177,8 @@ const NutritionCard = ({
 
           {relativeData.hasOwnProperty("SAT_FAT") && (
             <>
-              <NutritionRowData
+              <FoodRowData
+                RDAkey="SAT_FAT"
                 id="Sat. Fat"
                 nutValue={relativeData.SAT_FAT.value}
                 nutUnit={relativeData.SAT_FAT.unit}
@@ -183,7 +192,7 @@ const NutritionCard = ({
 
           {relativeData.hasOwnProperty("TRANS_FAT") && (
             <>
-              <NutritionRowData
+              <FoodRowData
                 id="Trans. Fat"
                 nutValue={relativeData.TRANS_FAT.value}
                 nutUnit={relativeData.TRANS_FAT.unit}
@@ -197,7 +206,8 @@ const NutritionCard = ({
 
           {relativeData.hasOwnProperty("CHOLESTEROL") && (
             <>
-              <NutritionRowData
+              <FoodRowData
+                RDAkey="CHOLESTEROL"
                 id="Cholesterol"
                 nutValue={relativeData.CHOLESTEROL.value}
                 nutUnit={relativeData.CHOLESTEROL.unit}
@@ -210,7 +220,8 @@ const NutritionCard = ({
 
           {relativeData.hasOwnProperty("SODIUM") && (
             <>
-              <NutritionRowData
+              <FoodRowData
+                RDAkey="SODIUM"
                 id="Sodium"
                 nutValue={relativeData.SODIUM.value}
                 nutUnit={relativeData.SODIUM.unit}
@@ -223,7 +234,8 @@ const NutritionCard = ({
 
           {relativeData.hasOwnProperty("CARBS") && (
             <>
-              <NutritionRowData
+              <FoodRowData
+                RDAkey="CARBS"
                 id="Total Carbohydrate"
                 nutValue={relativeData.CARBS.value}
                 nutUnit={relativeData.CARBS.unit}
@@ -236,7 +248,8 @@ const NutritionCard = ({
 
           {relativeData.hasOwnProperty("FIBER") && (
             <>
-              <NutritionRowData
+              <FoodRowData
+                RDAkey="FIBER"
                 id="Dietary Fiber"
                 nutValue={relativeData.FIBER.value}
                 nutUnit={relativeData.FIBER.unit}
@@ -250,11 +263,10 @@ const NutritionCard = ({
 
           {relativeData.hasOwnProperty("TOTAL_SUGAR") && (
             <>
-              <NutritionRowData
+              <FoodRowData
                 id="Total Sugar"
                 nutValue={relativeData.TOTAL_SUGAR.value}
                 nutUnit={relativeData.TOTAL_SUGAR.unit}
-                percentage={null}
                 paddingLeft={20}
                 titleFontFamily={"OpenSans_400Regular"}
               />
@@ -264,7 +276,8 @@ const NutritionCard = ({
           )}
 
           {relativeData.hasOwnProperty("PROTEIN") && (
-            <NutritionRowData
+            <FoodRowData
+              RDAkey="PROTEIN"
               id="Protein"
               nutValue={relativeData.PROTEIN.value}
               nutUnit={relativeData.PROTEIN.unit}
@@ -335,6 +348,42 @@ const styles = StyleSheet.create({
     fontFamily: "Montserrat_500Medium",
     fontSize: 20,
     marginBottom: 5,
+  },
+  // ============================
+  // Nutrition Facts Styles
+  // ============================
+  nutritionFactsContainer: {
+    width: "100%",
+    backgroundColor: "#F0EFEB",
+    borderWidth: 0.3,
+    alignItems: "center",
+  },
+  nutritionFactsTitle: {
+    fontSize: 28,
+    fontWeight: "bold",
+    textAlign: "center",
+    marginVertical: 3,
+    fontFamily: "OpenSans_700Bold",
+  },
+  // ============================
+  // Miscellaneous Nutrition Title Styles
+  // ============================
+  amountPerServingTitle: {
+    fontSize: 16,
+    textAlign: "left",
+    width: "97%",
+    marginTop: 4,
+    marginBottom: -2,
+    paddingHorizontal: 4,
+    fontFamily: "OpenSans_700Bold",
+  },
+  dailyValPercentageTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    textAlign: "right",
+    width: "97%",
+    marginVertical: 4,
+    paddingHorizontal: 4,
   },
   // ==================================
   // Button Styles
