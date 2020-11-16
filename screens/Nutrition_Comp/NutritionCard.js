@@ -20,6 +20,12 @@ const NutritionCard = ({ calories, name, id, dateObject, displayName }) => {
   const [calorie, setCalorie] = useState(calories);
   const [recipe, setRecipe] = useState(name);
 
+  let { recipeData, id, name, date } = props;
+  // calories should be in destructured props obj as well!
+  let { servingSize, servingUnit } = recipeData;
+
+  // console.log(props.recipe);
+
   let editModal = (
     <EditModal
       editModalVisible={editModalVisible}
@@ -54,7 +60,7 @@ const NutritionCard = ({ calories, name, id, dateObject, displayName }) => {
 
           <Text style={[styles.font]}>
             <Text style={styles.boldFont}>Calories: </Text>
-            {calories}
+            {Math.round(calories)}
           </Text>
         </View>
       </View>

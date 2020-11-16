@@ -11,6 +11,7 @@ import Modal from "react-native-modal";
 import firebase from "firebase";
 import RNPickerSelect from "react-native-picker-select";
 import { connect } from "react-redux";
+import convert from "convert-units";
 
 // First argument of component is just props. But Destructured
 // const {recipe, setRecipe...} = props <= Basically this
@@ -23,6 +24,8 @@ function EditModal({
   calories,
   setCalories,
   displayName,
+  servingSize,
+  servingUnit,
   id,
   yr,
   mm,
@@ -30,11 +33,23 @@ function EditModal({
 }) {
   // Allows recipe to be immutable
   // such that food name is not lost on the card
-  let [inputName, setInputName] = useState(recipe);
+  const [inputName, setInputName] = useState(recipe);
+  const [inputSize, setInputSize] = useState(servingSize);
+  const [inputUnit, setInputUnit] = useState(servingUnit);
+
+  const convertCalorie = (newSize, newUnits) => {
+    let newValues = convert(newSize).from(newUnits).to("g");
+    let previousValues = convert(servingSize).from(servingUnit).to("g");
+    let factor = newValues / previousValues;
+    calories *= factor;
+    return setCalories(calories);
+  };
 
   const sendEdit = () => {
-    // Set Recipe in card to what was put in the input
+    // Change Food Name in Nut. Card to what was placed in input
+
     setRecipe(inputName);
+    convertCalorie(inputSize, inputUnit);
 
     firebase
       .database()
@@ -42,6 +57,8 @@ function EditModal({
       .update({
         name: inputName,
         calories: calories,
+        // servingSize: inputSize,
+        // servingUnit: inputUnit,
       })
       .then(() => {
         Alert.alert("Success", "Your edits have been saved to our database!", [
@@ -52,6 +69,11 @@ function EditModal({
         Alert.alert("Error", "An error occured! We could not save your edits");
       });
   };
+
+  const unitList = [
+    { label: "g", value: "g" },
+    { label: "oz", value: "oz" },
+  ];
 
   return (
     <View style={styles.centeredView}>
@@ -75,6 +97,8 @@ function EditModal({
             <Text style={styles.displayMsg}>What will you edit?</Text>
 
             <View style={styles.inputContainer}>
+              <Text style={styles.inputTitle}>Name</Text>
+
               <TextInput
                 style={styles.nameInput}
                 value={inputName}
@@ -84,6 +108,30 @@ function EditModal({
                 placeholderTextColor="gray"
                 onChangeText={(text) => setInputName(text)}
               />
+            </View>
+
+            <View styles={{ flexDirection: "column", alignItems: "center" }}>
+              <Text style={styles.inputTitle}>Serving Size</Text>
+
+              <View style={styles.servingInputContainer}>
+                <TextInput
+                  style={styles.servingInput}
+                  value={inputSize}
+                  placeholder={`${inputSize}`}
+                  placeholderTextColor="black"
+                  keyboardType={"numeric"}
+                  maxLength={4}
+                  onChangeText={(val) => setInputSize(val)}
+                />
+                <RNPickerSelect
+                  selectedValue={inputUnit}
+                  value={inputUnit}
+                  placeholder={{}}
+                  style={{ ...pickerSelectStyles }}
+                  onValueChange={(unit) => setInputUnit(unit)}
+                  items={unitList}
+                />
+              </View>
             </View>
 
             <View style={styles.buttonsContainer}>
@@ -123,7 +171,6 @@ const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
     color: "black",
     textAlign: "center",
-    marginHorizontal: 14,
     paddingVertical: 10,
     fontSize: 22,
     width: 70,
@@ -145,6 +192,9 @@ const pickerSelectStyles = StyleSheet.create({
 });
 
 const styles = StyleSheet.create({
+  // ==============================
+  // Main Container Styles
+  // ==============================
   centeredView: {
     flex: 1,
     justifyContent: "center",
@@ -164,6 +214,9 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 5,
   },
+  // ==============================
+  // Header + Display Msg Styles
+  // ==============================
   header: {
     width: "100%",
     backgroundColor: "#F2D092",
@@ -182,49 +235,66 @@ const styles = StyleSheet.create({
   displayMsg: {
     textAlign: "center",
     fontSize: 20,
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    paddingBottom: 20,
     fontFamily: "OpenSans_400Regular",
   },
+  // ==============================
+  // Name Input Styles
+  // ==============================
   inputContainer: {
-    flexDirection: "row",
     justifyContent: "space-around",
     width: "80%",
+    marginBottom: 20,
   },
-  mainPickerContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    width: "90%",
-    marginBottom: 30,
-  },
-  subPickerContainer: { alignItems: "center" },
-  dateTitle: {
+  inputTitle: {
     fontFamily: "OpenSans_400Regular",
-    marginBottom: 4,
+    marginBottom: 6,
     fontSize: 18,
+    textAlign: "center",
   },
   nameInput: {
     fontSize: 22,
-    marginBottom: "8%",
     width: "100%",
     maxHeight: 130,
-    textAlign: "center",
     borderBottomWidth: 1,
     padding: 10,
     backgroundColor: "#EEC16D",
     fontFamily: "OpenSans_400Regular",
+    textAlign: "center",
   },
+  // ==============================
+  // Serving Input Styles
+  // ==============================
+  servingInputContainer: {
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  servingInput: {
+    fontSize: 22,
+    width: "50%",
+    textAlign: "center",
+    borderBottomWidth: 1,
+    paddingVertical: 10,
+    backgroundColor: "#EEC16D",
+    fontFamily: "OpenSans_400Regular",
+  },
+  // ==============================
+  // Buttons Styles
+  // ==============================
   buttonsContainer: {
     flexDirection: "row",
     paddingHorizontal: 10,
+    marginBottom: 25,
   },
   buttonStyles: {
     flex: 1,
     paddingHorizontal: 20,
     paddingVertical: 10,
-    borderRadius: 100,
     borderRadius: 20,
-    marginBottom: 25,
     marginHorizontal: 5,
     elevation: 2,
   },
