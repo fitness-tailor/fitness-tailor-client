@@ -51,35 +51,42 @@ const NutritionScreen = ({
         />
       </View>
 
-      <ScrollView contentContainerStyle={styles.journalNut}>
-        <Text style={[styles.date]}>{date}</Text>
+      <View>
+        <ScrollView
+          contentContainerStyle={{
+            ...styles.journalNut,
+            backgroundColor: "#d9d5c7",
+          }}
+        >
+          <Text style={[styles.date]}>{date}</Text>
 
-        <Text style={styles.totalCal}>
-          {totalCal ? `Total Calories: ${totalCal}` : null}
-        </Text>
+          <Text style={styles.totalCal}>
+            {totalCal ? `Total Calories: ${totalCal}` : null}
+          </Text>
 
-        {currentDayFoodList.map((recipe, key) => {
-          return (
-            <NutritionCard
-              key={key}
-              id={recipe[0]}
-              name={recipe[1].name}
-              calories={recipe[1].calories}
-              date={date}
-            ></NutritionCard>
-          );
-        })}
+          {currentDayFoodList.map((recipe, key) => {
+            return (
+              <NutritionCard
+                key={key}
+                id={recipe[0]}
+                name={recipe[1].name}
+                calories={recipe[1].calories}
+                date={date}
+              ></NutritionCard>
+            );
+          })}
 
-        {date && (
-          <TouchableOpacity
-            style={styles.buttonStyles}
-            onPress={() => setAddModalVisible(true)}
-            activeOpacity="0.5"
-          >
-            <AntDesign name="pluscircle" size={50} color="rgb(37, 93, 120)" />
-          </TouchableOpacity>
-        )}
-      </ScrollView>
+          {date && (
+            <TouchableOpacity
+              style={styles.buttonStyles}
+              onPress={() => setAddModalVisible(true)}
+              activeOpacity="0.5"
+            >
+              <AntDesign name="pluscircle" size={50} color="rgb(37, 93, 120)" />
+            </TouchableOpacity>
+          )}
+        </ScrollView>
+      </View>
       {addModal}
     </SafeAreaView>
   ) : (

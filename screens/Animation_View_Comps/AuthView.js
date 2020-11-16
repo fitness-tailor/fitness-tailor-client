@@ -3,13 +3,14 @@ import { Animated, Text, View } from "react-native";
 
 // This Component is exactly like a View element
 // With Fading in capabilities
-export default function FadeInView(props) {
+export default function FadeInView({ style, children, easing = null }) {
   const [fadeAnim] = useState(new Animated.Value(0));
 
   useEffect(() => {
     Animated.timing(fadeAnim, {
       toValue: 1,
       duration: 1500,
+      easing: easing,
       useNativeDriver: true,
     }).start();
   }, []);
@@ -17,11 +18,11 @@ export default function FadeInView(props) {
   return (
     <Animated.View
       style={{
-        ...props.style,
+        ...style,
         opacity: fadeAnim,
       }}
     >
-      {props.children}
+      {children}
     </Animated.View>
   );
 }

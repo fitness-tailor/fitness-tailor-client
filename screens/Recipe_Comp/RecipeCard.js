@@ -5,6 +5,7 @@ import {
   SafeAreaView,
   View,
   TouchableOpacity,
+  Easing,
 } from "react-native";
 import firebase from "firebase";
 import { connect } from "react-redux";
@@ -13,6 +14,7 @@ import Dividers from "./Dividers.js";
 import NutritionRowData from "./NutritionRowData.js";
 import ServingModal from "../Modals/ServingModal.js";
 import DateModal from "../Modals/DateModal.js";
+import FadeInView from "../Animation_View_Comps/AuthView.js";
 
 const RecipeCard = ({ recipe, RDA, displayName }) => {
   const { description, foodNutrients, fdcId } = recipe;
@@ -154,7 +156,10 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
   // only render if nutrients is not an empty object
   return JSON.stringify(totalNutrients) === "{}" ? null : (
     <SafeAreaView style={styles.container}>
-      <View style={styles.recipeContainer}>
+      <FadeInView
+        style={styles.recipeContainer}
+        easing={Easing.bezier(0.2, 0.2, 0.5, 1)}
+      >
         <Text style={styles.foodTitleText}>{description}</Text>
 
         <View style={styles.nutritionFactsContainer}>
@@ -297,7 +302,7 @@ const RecipeCard = ({ recipe, RDA, displayName }) => {
             <Text style={styles.buttonText}>Add To Journal</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </FadeInView>
       {servingModal}
       {dateModal}
     </SafeAreaView>
