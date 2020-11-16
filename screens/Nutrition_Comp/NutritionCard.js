@@ -54,31 +54,26 @@ const NutritionCard = ({ calories, name, id, dateObject, displayName }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.recipeContainer}>
-        <View style={styles.nameContainer}>
-          <Text style={[styles.font]}>{recipe}</Text>
+      <View style={styles.nameContainer}>
+        <Text style={styles.font}>{recipe}</Text>
 
-          <Text style={[styles.font]}>
-            <Text style={styles.boldFont}>Calories: </Text>
-            {Math.round(calories)}
-          </Text>
-        </View>
+        <Text style={styles.font}>Calories: {calories}</Text>
       </View>
 
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          style={[styles.buttonStyles]}
+          style={{ ...styles.buttonStyles, backgroundColor: "#07989D" }}
           activeOpacity="0.6"
           onPress={() => setEditModalVisible(true)}
         >
-          <Text style={[styles.editButton]}>Edit</Text>
+          <Text style={[styles.buttonText]}>Edit</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={[styles.buttonStyles]}
+          style={{ ...styles.buttonStyles, backgroundColor: "#DB1916" }}
           onPress={() => setDeleteModalVisible(true)}
         >
-          <Text style={[styles.editButton]}>Delete</Text>
+          <Text style={styles.buttonText}>Delete</Text>
         </TouchableOpacity>
       </View>
 
@@ -98,75 +93,57 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps)(NutritionCard);
 
 const styles = StyleSheet.create({
-  font: {
-    fontSize: 18,
-    color: "white",
-  },
+  // ==================================
+  // Main Container + Title Styles
+  // ==================================
   container: {
     width: "80%",
-    height: 80,
-    flex: 1,
+    padding: 15,
     borderRadius: 20,
-    margin: 5,
-    backgroundColor: "rgb(37, 93, 120)",
+    marginVertical: 10,
+    backgroundColor: "#E1DFD7",
+    borderColor: "#615C49",
+    borderWidth: 0.2,
+    shadowOffset: {
+      width: 0,
+      height: 15,
+    },
+    shadowOpacity: 0.15,
+    shadowRadius: 30,
   },
-  recipeContainer: {
-    flex: 1,
-    justifyContent: "center",
-  },
-  // ==================================
-  // Name Styles
-  // ==================================
   nameContainer: {
     justifyContent: "space-around",
-    flexDirection: "row",
+    alignItems: "center",
+    flexDirection: "column",
     width: "100%",
   },
-  // ==================================
-  // Serving Styles
-  // ==================================
-  // servingContainer: {
-  //   alignItems: "center",
-  //   justifyContent: "center",
-  //   flex: 1,
-  //   borderBottomWidth: 0.25,
-  //   width: "100%",
-  // },
-  // ==================================
-  // Calories Styles
-  // ==================================
-  // caloriesContainer: {
-  //   flex: 1,
-  //   alignItems: "center",
-  //   flexDirection: "row",
-  //   justifyContent: "space-around",
-  //   borderBottomWidth: 0.25,
-  //   width: "100%",
-  // },
-  // calTotal: {
-  //   alignItems: "center",
-  //   justifyContent: "center",
-  // },
+  font: {
+    textAlign: "center",
+    color: "black",
+    fontFamily: "Montserrat_500Medium",
+    fontSize: 20,
+    marginBottom: 5,
+  },
   // ==================================
   // Button Styles
   // ==================================
   buttonContainer: {
-    flex: 1,
     alignItems: "center",
     justifyContent: "space-around",
     flexDirection: "row",
-    height: "100%",
   },
   buttonStyles: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: "rgb(22, 66, 92)",
-    marginHorizontal: 20,
-    borderRadius: 20,
+    marginHorizontal: 15,
+    marginTop: 10,
+    borderRadius: 30,
   },
-  editButton: {
+  buttonText: {
     textAlign: "center",
-    fontSize: 16,
+    fontSize: 20,
     color: "white",
+    fontFamily: "OpenSans_600SemiBold",
+    paddingVertical: 10,
   },
 });
