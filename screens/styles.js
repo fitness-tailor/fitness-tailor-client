@@ -129,7 +129,6 @@ module.exports = StyleSheet.create({
   // ==================================
   containerProfile: {
     flex: 2,
-    // justifyContent: "space-evenly",
     alignItems: "center",
     backgroundColor: "rgb(22, 66, 92)",
   },
@@ -140,45 +139,51 @@ module.exports = StyleSheet.create({
     width: "100%",
     justifyContent: "space-evenly",
   },
+  profileTitle: {
+    fontSize: 24,
+    color: "white",
+    textAlign: "center",
+    fontFamily: "OpenSans_400Regular",
+  },
+  profileUsername: {
+    fontSize: 30,
+    color: "white",
+    fontFamily: "OpenSans_600SemiBold",
+  },
+  profileGeneralText: {
+    fontFamily: "OpenSans_400Regular",
+    fontSize: 20,
+    color: "white",
+  },
   userInputProfile: {
-    // backgroundColor: 'blue',
     flex: 2,
     width: "90%",
     justifyContent: "space-evenly",
-    // flexDirection: 'row'
   },
-  userGenderProfile: {
+  userProfileRow: {
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
   },
-  userActivityLevelProfile: {
-    flexDirection: "row",
-    justifyContent: "space-between",
+  profileInputBoxes: {
+    fontSize: 20,
+    color: "white",
+    backgroundColor: "rgb(37, 93, 120)",
+    paddingVertical: 8,
+    paddingHorizontal: 18,
+    borderRadius: 20,
   },
-  userHeightProfile: {
-    // backgroundColor: 'purple',
-    // height: "30%",
-    flexDirection: "row",
-    justifyContent: "space-between",
+  profileButtonText: {
+    fontFamily: "OpenSans_600SemiBold",
+    fontSize: 22,
+    color: "white",
   },
-  userHeightNumbersProfile: {
-    flexDirection: "row",
-  },
-  userWeightProfile: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    // backgroundColor: 'grey',
-    // height: "20%",
-  },
-  userWeightNumbersProfile: {
-    flexDirection: "row",
-  },
-  userAgeProfile: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  userAgeNumbersProfile: {
-    flexDirection: "row",
+  profileButton: {
+    alignItems: "center",
+    backgroundColor: "rgb(37, 93, 120)",
+    padding: 20,
+    borderRadius: 50,
+    marginTop: 5,
   },
   // ==================================
   // Recipe List Screen
@@ -201,14 +206,15 @@ module.exports = StyleSheet.create({
     // backgroundColor: "black",
   },
   messageContainerRecipeList: {
-    // padding: 5,
-    // margin: 5,
+    backgroundColor: "#cad3d9",
+    padding: 10,
+    borderRadius: 10,
   },
   errorMessageRecipeList: {
     fontSize: 20,
-    paddingHorizontal: 20,
     textAlign: "center",
-    color: "red",
+    color: "#E00000",
+    fontFamily: "OpenSans_700Bold",
   },
   oneCardContainerRecipeList: {
     // borderWidth: 1,

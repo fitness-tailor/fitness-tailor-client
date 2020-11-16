@@ -25,9 +25,7 @@ const RecipeListScreen = (props) => {
 
           <View style={styles.cardsContainerRecipeList}>
             {props.isLoading ? (
-              <View style={styles.messageContainerRecipeList}>
-                <ActivityIndicator size={"large"} />
-              </View>
+              <ActivityIndicator size={"large"} />
             ) : props.error.length ? (
               <View style={styles.messageContainerRecipeList}>
                 <Text style={styles.errorMessageRecipeList}>

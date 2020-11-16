@@ -48,9 +48,9 @@ export default connect(null, mapDispatchToProps)(RecipeSearch);
 const styles = StyleSheet.create({
   container: {
     borderWidth: 2,
+    borderColor: "#b3b2ab",
     borderRadius: 10,
-    borderColor: "white",
-    backgroundColor: "#fff",
+    backgroundColor: "#d9d8d0",
     flexDirection: "row",
     justifyContent: "center",
     marginTop: "5%",
