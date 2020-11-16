@@ -67,7 +67,11 @@ export const getUserJournal = (date, userDisplayName) => {
       .ref(`users/${userDisplayName}/foodJournal/${yr}/${mm}/${dd}`)
       .once("value")
       .then((snapshot) => {
-        return snapshot.val() === null ? null : Object.entries(snapshot.val());
+        if (snapshot.val() === null) {
+          return null;
+        } else {
+          return Object.entries(snapshot.val());
+        }
       })
       .then((result) => {
         if (result === null) {
@@ -83,23 +87,6 @@ export const getUserJournal = (date, userDisplayName) => {
       });
   };
 };
-
-// const displayRecipesOnDate = (date) => {
-//   let yr = date.year;
-//   let mm = date.month;
-//   let dd = date.day;
-//   firebase
-//     .database()
-//     .ref(`users/${props.displayName}/foodJournal/${yr}/${mm}/${dd}`)
-//     .on("value", (snapshot) => {
-//       if (snapshot.val() === null) {
-//         setRecipes([]);
-//         setTotalCal(0);
-//       } else {
-//         setRecipes(Object.entries(snapshot.val()));
-//       }
-//     });
-// };
 
 export const storeDates = (date) => {
   // date.dateString <= used by calendar package

@@ -64,15 +64,18 @@ const NutritionScreen = ({
             {totalCal ? `Total Calories: ${totalCal}` : null}
           </Text>
 
-          {currentDayFoodList &&
+          {currentDayFoodList.length !== 0 &&
             currentDayFoodList.map((recipe, key) => {
               return (
                 <NutritionCard
                   recipeObj={recipe}
                   key={key}
                   id={recipe[0]}
+                  journalData={recipe[1]}
+                  referenceData={recipe[2]}
                   name={recipe[1].name}
                   calories={recipe[1].calories}
+                  referenceID={recipe[1].referenceID}
                   date={date}
                 ></NutritionCard>
               );
