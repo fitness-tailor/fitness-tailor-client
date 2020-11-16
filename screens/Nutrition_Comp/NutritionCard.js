@@ -19,6 +19,7 @@ import MainRowData from "../Recipe_Comp/MainRowData.js";
 import FoodRowData from "./FoodRowData.js";
 import NutritionRowData from "../Recipe_Comp/NutritionRowData.js";
 import FadeInView from "../Animation_View_Comps/AuthView.js";
+import NutFactsView from "../Animation_View_Comps/NutFactsView.js";
 import Dividers from "../Recipe_Comp/Dividers.js";
 
 const NutritionCard = ({
@@ -134,158 +135,165 @@ const NutritionCard = ({
         <Text style={styles.font}>Calories: {journalData.calories}</Text>
       </View>
 
-      {Object.keys(relativeData).length > 0 && (
-        <View style={styles.nutritionFactsContainer}>
-          <Text style={styles.nutritionFactsTitle}>Nutrition Facts</Text>
-
-          <Dividers borderWidth={1} />
-
-          <MainRowData
-            id="Serving Size"
-            nutValue={journalData.servingSize}
-            nutUnit={journalData.servingUnit}
-            fontSize={20}
-          />
-
-          <Dividers borderWidth={5} />
-
-          <Text style={styles.amountPerServingTitle}>Amount per serving</Text>
-          <MainRowData
-            id="Calories"
-            nutValue={journalData.calories}
-            fontSize={26}
-          />
-
-          <Dividers borderWidth={3} />
-
-          <Text style={styles.dailyValPercentageTitle}>% Daily Value</Text>
-          <Dividers borderWidth={1.5} />
-
-          {relativeData.hasOwnProperty("TOTAL_FAT") && (
-            <>
-              <FoodRowData
-                RDAkey="TOTAL_FAT"
-                id="Total Fat"
-                nutValue={relativeData.TOTAL_FAT.value}
-                nutUnit={relativeData.TOTAL_FAT.unit}
-                fontWeight={"700"}
-              />
+      <NutFactsView style={{ alignItems: "center" }}>
+        <>
+          {Object.keys(relativeData).length > 0 && (
+            <View style={styles.nutritionFactsContainer}>
+              <Text style={styles.nutritionFactsTitle}>Nutrition Facts</Text>
 
               <Dividers borderWidth={1} />
-            </>
-          )}
 
-          {relativeData.hasOwnProperty("SAT_FAT") && (
-            <>
-              <FoodRowData
-                RDAkey="SAT_FAT"
-                id="Sat. Fat"
-                nutValue={relativeData.SAT_FAT.value}
-                nutUnit={relativeData.SAT_FAT.unit}
-                paddingLeft={20}
-                titleFontFamily={"OpenSans_400Regular"}
+              <MainRowData
+                id="Serving Size"
+                nutValue={journalData.servingSize}
+                nutUnit={journalData.servingUnit}
+                fontSize={20}
               />
 
-              <Dividers borderWidth={1} />
-            </>
-          )}
+              <Dividers borderWidth={5} />
 
-          {relativeData.hasOwnProperty("TRANS_FAT") && (
-            <>
-              <FoodRowData
-                id="Trans. Fat"
-                nutValue={relativeData.TRANS_FAT.value}
-                nutUnit={relativeData.TRANS_FAT.unit}
-                paddingLeft={20}
-                titleFontFamily={"OpenSans_400Regular"}
+              <Text style={styles.amountPerServingTitle}>
+                Amount per serving
+              </Text>
+              <MainRowData
+                id="Calories"
+                nutValue={journalData.calories}
+                fontSize={26}
               />
 
-              <Dividers borderWidth={1} />
-            </>
+              <Dividers borderWidth={3} />
+
+              <Text style={styles.dailyValPercentageTitle}>% Daily Value</Text>
+              <Dividers borderWidth={1.5} />
+
+              {relativeData.hasOwnProperty("TOTAL_FAT") && (
+                <>
+                  <FoodRowData
+                    RDAkey="TOTAL_FAT"
+                    id="Total Fat"
+                    nutValue={relativeData.TOTAL_FAT.value}
+                    nutUnit={relativeData.TOTAL_FAT.unit}
+                    fontWeight={"700"}
+                  />
+
+                  <Dividers borderWidth={1} />
+                </>
+              )}
+
+              {relativeData.hasOwnProperty("SAT_FAT") && (
+                <>
+                  <FoodRowData
+                    RDAkey="SAT_FAT"
+                    id="Sat. Fat"
+                    nutValue={relativeData.SAT_FAT.value}
+                    nutUnit={relativeData.SAT_FAT.unit}
+                    paddingLeft={20}
+                    titleFontFamily={"OpenSans_400Regular"}
+                  />
+
+                  <Dividers borderWidth={1} />
+                </>
+              )}
+
+              {relativeData.hasOwnProperty("TRANS_FAT") && (
+                <>
+                  <FoodRowData
+                    id="Trans. Fat"
+                    nutValue={relativeData.TRANS_FAT.value}
+                    nutUnit={relativeData.TRANS_FAT.unit}
+                    paddingLeft={20}
+                    titleFontFamily={"OpenSans_400Regular"}
+                  />
+
+                  <Dividers borderWidth={1} />
+                </>
+              )}
+
+              {relativeData.hasOwnProperty("CHOLESTEROL") && (
+                <>
+                  <FoodRowData
+                    RDAkey="CHOLESTEROL"
+                    id="Cholesterol"
+                    nutValue={relativeData.CHOLESTEROL.value}
+                    nutUnit={relativeData.CHOLESTEROL.unit}
+                    fontWeight={"700"}
+                  />
+
+                  <Dividers borderWidth={1} />
+                </>
+              )}
+
+              {relativeData.hasOwnProperty("SODIUM") && (
+                <>
+                  <FoodRowData
+                    RDAkey="SODIUM"
+                    id="Sodium"
+                    nutValue={relativeData.SODIUM.value}
+                    nutUnit={relativeData.SODIUM.unit}
+                    fontWeight={"700"}
+                  />
+
+                  <Dividers borderWidth={1} />
+                </>
+              )}
+
+              {relativeData.hasOwnProperty("CARBS") && (
+                <>
+                  <FoodRowData
+                    RDAkey="CARBS"
+                    id="Total Carbohydrate"
+                    nutValue={relativeData.CARBS.value}
+                    nutUnit={relativeData.CARBS.unit}
+                    fontWeight={"700"}
+                  />
+
+                  <Dividers borderWidth={1} />
+                </>
+              )}
+
+              {relativeData.hasOwnProperty("FIBER") && (
+                <>
+                  <FoodRowData
+                    RDAkey="FIBER"
+                    id="Dietary Fiber"
+                    nutValue={relativeData.FIBER.value}
+                    nutUnit={relativeData.FIBER.unit}
+                    paddingLeft={20}
+                    titleFontFamily={"OpenSans_400Regular"}
+                  />
+
+                  <Dividers borderWidth={1} />
+                </>
+              )}
+
+              {relativeData.hasOwnProperty("TOTAL_SUGAR") && (
+                <>
+                  <FoodRowData
+                    id="Total Sugar"
+                    nutValue={relativeData.TOTAL_SUGAR.value}
+                    nutUnit={relativeData.TOTAL_SUGAR.unit}
+                    paddingLeft={20}
+                    titleFontFamily={"OpenSans_400Regular"}
+                  />
+
+                  <Dividers borderWidth={1} />
+                </>
+              )}
+
+              {relativeData.hasOwnProperty("PROTEIN") && (
+                <FoodRowData
+                  RDAkey="PROTEIN"
+                  id="Protein"
+                  nutValue={relativeData.PROTEIN.value}
+                  nutUnit={relativeData.PROTEIN.unit}
+                  fontWeight={"700"}
+                />
+              )}
+            </View>
           )}
+        </>
+      </NutFactsView>
 
-          {relativeData.hasOwnProperty("CHOLESTEROL") && (
-            <>
-              <FoodRowData
-                RDAkey="CHOLESTEROL"
-                id="Cholesterol"
-                nutValue={relativeData.CHOLESTEROL.value}
-                nutUnit={relativeData.CHOLESTEROL.unit}
-                fontWeight={"700"}
-              />
-
-              <Dividers borderWidth={1} />
-            </>
-          )}
-
-          {relativeData.hasOwnProperty("SODIUM") && (
-            <>
-              <FoodRowData
-                RDAkey="SODIUM"
-                id="Sodium"
-                nutValue={relativeData.SODIUM.value}
-                nutUnit={relativeData.SODIUM.unit}
-                fontWeight={"700"}
-              />
-
-              <Dividers borderWidth={1} />
-            </>
-          )}
-
-          {relativeData.hasOwnProperty("CARBS") && (
-            <>
-              <FoodRowData
-                RDAkey="CARBS"
-                id="Total Carbohydrate"
-                nutValue={relativeData.CARBS.value}
-                nutUnit={relativeData.CARBS.unit}
-                fontWeight={"700"}
-              />
-
-              <Dividers borderWidth={1} />
-            </>
-          )}
-
-          {relativeData.hasOwnProperty("FIBER") && (
-            <>
-              <FoodRowData
-                RDAkey="FIBER"
-                id="Dietary Fiber"
-                nutValue={relativeData.FIBER.value}
-                nutUnit={relativeData.FIBER.unit}
-                paddingLeft={20}
-                titleFontFamily={"OpenSans_400Regular"}
-              />
-
-              <Dividers borderWidth={1} />
-            </>
-          )}
-
-          {relativeData.hasOwnProperty("TOTAL_SUGAR") && (
-            <>
-              <FoodRowData
-                id="Total Sugar"
-                nutValue={relativeData.TOTAL_SUGAR.value}
-                nutUnit={relativeData.TOTAL_SUGAR.unit}
-                paddingLeft={20}
-                titleFontFamily={"OpenSans_400Regular"}
-              />
-
-              <Dividers borderWidth={1} />
-            </>
-          )}
-
-          {relativeData.hasOwnProperty("PROTEIN") && (
-            <FoodRowData
-              RDAkey="PROTEIN"
-              id="Protein"
-              nutValue={relativeData.PROTEIN.value}
-              nutUnit={relativeData.PROTEIN.unit}
-              fontWeight={"700"}
-            />
-          )}
-        </View>
-      )}
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={{ ...styles.buttonStyles, backgroundColor: "#07989D" }}
