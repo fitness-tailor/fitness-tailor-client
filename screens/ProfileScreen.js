@@ -114,6 +114,7 @@ const ProfileScreen = (props) => {
     ) {
       Alert.alert("Please enter only numbers");
     } else {
+      console.log(goal);
       firebase
         .database()
         .ref("users/" + props.displayName)
@@ -155,9 +156,13 @@ const ProfileScreen = (props) => {
   ];
 
   const goalList = [
-    { label: "Lose Weight", value: "lose" },
-    { label: "Maintain Weight", value: "maintain" },
-    { label: "Gain Weight", value: "gain" },
+    { label: "Heavy Weight Loss", value: -600 },
+    { label: "Moderate Weight Loss", value: -400 },
+    { label: "Light Weight Loss", value: -200 },
+    { label: "Maintain Weight", value: 0 },
+    { label: "Light Weight Gain", value: 200 },
+    { label: "Moderate Weight Gain", value: 400 },
+    { label: "Heavy Weight Gain", value: 600 },
   ];
 
   const activityLevelList = [
