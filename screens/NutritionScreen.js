@@ -10,54 +10,27 @@ import {
   View,
   ScrollView,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import { Calendar, CalendarList, Agenda } from "react-native-calendars";
 import moment, { now } from "moment";
 import { render } from "react-dom";
+import { getUserJournal } from "../redux/actions/nutritionActions.js";
 import NutritionCard from "./Nutrition_Comp/NutritionCard.js";
 import AddModal from "./Modals/AddModal.js";
 import { AntDesign } from "@expo/vector-icons";
 
-const NutritionScreen = (props) => {
-  const [date, setDate] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [recipes, setRecipes] = useState([]);
-  const [totalCal, setTotalCal] = useState(null);
+const NutritionScreen = ({
+  displayName,
+  date,
+  selectedDate,
+  currentDayFoodList,
+  totalCal,
+  isLoading,
+  getUserJournal,
+}) => {
   const [addModalVisible, setAddModalVisible] = useState(false);
 
-  //run addCalories after every render
-  //TODO: Ineffecient, update of certain states (NOT ALL OF THEM) should cause a re-render
-  useEffect(() => {
-    addCalories();
-  });
-
-  const addCalories = () => {
-    let calories = 0;
-    recipes.map((recipe) => {
-      calories += Math.round(recipe[1].calories);
-    });
-    setTotalCal(calories);
-  };
-
-  const displayRecipesOnDate = (date) => {
-    setSelectedDate(date.dateString);
-    let formatted = moment(date.dateString, "YYYY-MM-DD").format("MMMM D, YYYY");
-    setDate(formatted);
-    let yr = date.year;
-    let mm = date.month;
-    let dd = date.day;
-    firebase
-      .database()
-      .ref(`users/${props.displayName}/foodJournal/${yr}/${mm}/${dd}`)
-      .on("value", (snapshot) => {
-        if (snapshot.val() === null) {
-          setRecipes([]);
-          setTotalCal(0);
-        } else {
-          setRecipes(Object.entries(snapshot.val()));
-        }
-      });
-  };
   let addModal = (
     <AddModal
       addModalVisible={addModalVisible}
@@ -66,29 +39,29 @@ const NutritionScreen = (props) => {
     />
   );
 
-  return (
+  return !isLoading ? (
     <SafeAreaView style={styles.containerNutScreen}>
       <View>
         <Calendar
-          onDayPress={(day) => displayRecipesOnDate(day)}
+          onDayPress={(day) => getUserJournal(day, displayName)}
           markedDates={{
             [selectedDate]: { selected: true, selectedColor: "#00adf5" },
           }}
-          theme={{
-            arrowColor: "rgb(22, 66, 92)",
-          }}
+          theme={{ arrowColor: "rgb(22, 66, 92)" }}
         />
       </View>
+
       <ScrollView contentContainerStyle={styles.journalNut}>
         <Text style={[styles.date]}>{date}</Text>
+
         <Text style={styles.totalCal}>
-          {totalCal ? `${totalCal} Total Calories` : null}
+          {totalCal ? `Total Calories: ${totalCal}` : null}
         </Text>
-        {recipes.map((recipe, key) => {
+
+        {currentDayFoodList.map((recipe, key) => {
           return (
             <NutritionCard
               key={key}
-              recipeData={recipe[1]}
               id={recipe[0]}
               name={recipe[1].name}
               calories={recipe[1].calories}
@@ -96,6 +69,7 @@ const NutritionScreen = (props) => {
             ></NutritionCard>
           );
         })}
+
         {date && (
           <TouchableOpacity
             style={styles.buttonStyles}
@@ -108,11 +82,27 @@ const NutritionScreen = (props) => {
       </ScrollView>
       {addModal}
     </SafeAreaView>
+  ) : (
+    <View style={styles.containerLoading}>
+      <ActivityIndicator size="large" />
+    </View>
   );
 };
 
 const mapStateToProps = (state) => ({
   displayName: state.auth.user.displayName,
+  isLoading: state.nutrition.isLoading,
+  date: state.nutrition.date,
+  selectedDate: state.nutrition.selectedDate,
+  currentDayFoodList: state.nutrition.currentDayFoodList,
+  totalCal: state.nutrition.totalCal,
 });
 
-export default connect(mapStateToProps)(NutritionScreen);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getUserJournal: (date, username) =>
+      dispatch(getUserJournal(date, username)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(NutritionScreen);

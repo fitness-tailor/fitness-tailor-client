@@ -1,6 +1,7 @@
 import { combineReducers } from "redux";
 import recipeListReducers from "./recipeListReducers.js";
 import authReducers from "./authReducers.js";
+import nutritionReducers from "./nutritionReducers.js";
 
 let initialState = {
   counter: 0,
@@ -22,6 +23,7 @@ const rootReducer = combineReducers({
   auth: authReducers,
   playground: playgroundReducers,
   recipeList: recipeListReducers,
+  nutrition: nutritionReducers,
 });
 
 export default rootReducer;
