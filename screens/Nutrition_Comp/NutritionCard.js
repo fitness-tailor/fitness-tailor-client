@@ -39,7 +39,6 @@ const NutritionCard = ({
   const [recipe, setRecipe] = useState(journalData.name);
   const [archiveData, setArchiveData] = useState({});
   const [relativeData, setRelativeData] = useState({});
-  const [userGenFood, setUserGenFood] = useState(false);
 
   useEffect(() => {
       fetchArchiveData(referenceID);
