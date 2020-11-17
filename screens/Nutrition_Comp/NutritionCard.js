@@ -14,16 +14,18 @@ import moment from "moment";
 import { connect } from "react-redux";
 import EditModal from "../Modals/EditModal.js";
 import DeleteModal from "../Modals/DeleteModal.js";
+import CopyModal from "../Modals/CopyModal.js";
 import FadeInView from "../Animation_View_Comps/AuthView.js";
 
 const NutritionCard = ({ calories, name, id, dateObject, displayName }) => {
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [copyModalVisible, setCopyModalVisible] = useState(false);
   const [calorie, setCalorie] = useState(calories);
   const [recipe, setRecipe] = useState(name);
 
   // let { recipeData, id, date } = props;
-  // // calories should be in destructured props obj as well!
+  // calories should be in destructured props obj as well!
   // let { servingSize, servingUnit } = recipeData;
 
   // console.log(props.recipe);
@@ -53,6 +55,15 @@ const NutritionCard = ({ calories, name, id, dateObject, displayName }) => {
       dd={dateObject.day}
     />
   );
+  let copyModal = (
+    <CopyModal
+      copyModalVisible={copyModalVisible}
+      setCopyModalVisible={setCopyModalVisible}
+      id={id}
+      name={recipe}
+      calories={calorie}
+    />
+  );
 
   return (
     <FadeInView
@@ -80,11 +91,19 @@ const NutritionCard = ({ calories, name, id, dateObject, displayName }) => {
         >
           <Text style={styles.buttonText}>Delete</Text>
         </TouchableOpacity>
+
+        <TouchableOpacity
+          style={{ ...styles.buttonStyles, backgroundColor: "orange" }}
+          onPress={() => setCopyModalVisible(true)}
+        >
+          <Text style={styles.buttonText}>Copy</Text>
+        </TouchableOpacity>
       </View>
 
       <View style={{ height: 0, width: 0 }}>
         {editModal}
         {deleteModal}
+        {copyModal}
       </View>
     </FadeInView>
   );
@@ -140,13 +159,13 @@ const styles = StyleSheet.create({
   buttonStyles: {
     flex: 1,
     justifyContent: "center",
-    marginHorizontal: 15,
+    marginHorizontal: 12,
     marginTop: 10,
     borderRadius: 30,
   },
   buttonText: {
     textAlign: "center",
-    fontSize: 20,
+    fontSize: 18,
     color: "white",
     fontFamily: "OpenSans_600SemiBold",
     paddingVertical: 10,
