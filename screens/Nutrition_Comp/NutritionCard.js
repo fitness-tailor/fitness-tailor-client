@@ -64,15 +64,21 @@ const NutritionCard = ({
   }, [nutFactor]);
 
   const fetchArchiveData = async (foodID) => {
-    let foodArchivesData = await firebase
-      .database()
-      .ref(`foodArchives/${foodID}`)
-      .once("value")
-      .then((snapshot) => snapshot.val())
-      .catch((err) => {
-        console.log("You had an error fetching food archives", err);
-      });
-    await setArchiveData(foodArchivesData);
+    if(foodID === "user generated") {
+      setArchiveData(null);
+      console.log(archiveData)
+    } else {
+      let foodArchivesData = await firebase
+        .database()
+        .ref(`foodArchives/${foodID}`)
+        .once("value")
+        .then((snapshot) => snapshot.val())
+        .catch((err) => {
+          console.log("You had an error fetching food archives", err);
+        });
+        console.log(foodArchivesData)
+      await setArchiveData(foodArchivesData);
+    }
   };
 
   const createActualObj = (data) => {
