@@ -22,6 +22,7 @@ import NutritionRowData from "../Recipe_Comp/NutritionRowData.js";
 import FadeInView from "../Animation_View_Comps/AuthView.js";
 import NutFactsView from "../Animation_View_Comps/NutFactsView.js";
 import Dividers from "../Recipe_Comp/Dividers.js";
+import { set } from "react-native-reanimated";
 
 const NutritionCard = ({
   id,
@@ -38,26 +39,26 @@ const NutritionCard = ({
   const [recipe, setRecipe] = useState(journalData.name);
   const [archiveData, setArchiveData] = useState({});
   const [relativeData, setRelativeData] = useState({});
+  const [userGenFood, setUserGenFood] = useState(false);
 
   useEffect(() => {
-    fetchArchiveData(referenceID);
+      fetchArchiveData(referenceID);
   }, []);
 
   useEffect(() => {
-    if (Object.keys(archiveData).length) {
+    if (archiveData !== null && Object.keys(archiveData).length) {
       let factoredValue = calculateFactor(
         archiveData.SERVING_SIZE.value,
         archiveData.SERVING_SIZE.unit,
         journalData.servingSize,
         journalData.servingUnit
       );
-
       setNutFactor(factoredValue);
     }
   }, [archiveData]);
 
   useEffect(() => {
-    if (Object.keys(archiveData).length) {
+    if (archiveData !== null && Object.keys(archiveData).length) {
       createActualObj(archiveData);
     }
   }, [nutFactor]);
@@ -71,7 +72,6 @@ const NutritionCard = ({
       .catch((err) => {
         console.log("You had an error fetching food archives", err);
       });
-
     await setArchiveData(foodArchivesData);
   };
 
@@ -141,13 +141,13 @@ const NutritionCard = ({
       easing={Easing.bezier(0.2, 0.2, 0.5, 1)}
     >
       <View style={styles.nameContainer}>
-        <Text style={styles.font}>{recipe}</Text>
+        <Text style={archiveData !== null ? styles.font : styles.userGenFont }>{recipe}</Text>
 
         <Text style={styles.font}>
           Calories: {Math.round(journalData.calories)}
         </Text>
       </View>
-
+      {archiveData !== null &&
       <NutFactsView style={{ alignItems: "center" }}>
         <>
           {Object.keys(relativeData).length > 0 && (
@@ -306,7 +306,7 @@ const NutritionCard = ({
           )}
         </>
       </NutFactsView>
-
+      }
       <View style={styles.buttonContainer}>
         <TouchableOpacity
           style={{ ...styles.buttonStyles, backgroundColor: "#07989D" }}
@@ -374,6 +374,13 @@ const styles = StyleSheet.create({
   font: {
     textAlign: "center",
     color: "black",
+    fontFamily: "Montserrat_500Medium",
+    fontSize: 20,
+    marginBottom: 5,
+  },
+  userGenFont: {
+    textAlign: "center",
+    color: "purple",
     fontFamily: "Montserrat_500Medium",
     fontSize: 20,
     marginBottom: 5,
