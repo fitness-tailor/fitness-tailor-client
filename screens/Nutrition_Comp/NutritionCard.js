@@ -24,22 +24,18 @@ import NutFactsView from "../Animation_View_Comps/NutFactsView.js";
 import Dividers from "../Recipe_Comp/Dividers.js";
 
 const NutritionCard = ({
-  recipeObj,
-  calories,
-  name,
   id,
   dateObject,
   displayName,
-  referenceData,
   journalData,
   referenceID,
 }) => {
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [calories, setCalories] = useState(journalData.calories);
   const [copyModalVisible, setCopyModalVisible] = useState(false);
-  const [calorie, setCalorie] = useState(calories);
   const [nutFactor, setNutFactor] = useState(0);
-  const [recipe, setRecipe] = useState(name);
+  const [recipe, setRecipe] = useState(journalData.name);
   const [archiveData, setArchiveData] = useState({});
   const [relativeData, setRelativeData] = useState({});
 
@@ -100,20 +96,16 @@ const NutritionCard = ({
     return factor;
   };
 
-  // let { recipeData, id, date } = props;
-  // calories should be in destructured props obj as well!
-  // let { servingSize, servingUnit } = recipeData;
-
-  // console.log(props.recipe);
-
   let editModal = (
     <EditModal
       editModalVisible={editModalVisible}
       setEditModalVisible={setEditModalVisible}
+      servingSize={journalData.servingSize}
+      servingUnit={journalData.servingUnit}
       recipe={recipe}
       setRecipe={setRecipe}
       calories={calories}
-      setCalorie={setCalorie}
+      setCalories={setCalories}
       id={id}
       yr={dateObject.year}
       mm={dateObject.month}
@@ -149,7 +141,9 @@ const NutritionCard = ({
       <View style={styles.nameContainer}>
         <Text style={styles.font}>{recipe}</Text>
 
-        <Text style={styles.font}>Calories: {journalData.calories}</Text>
+        <Text style={styles.font}>
+          Calories: {Math.round(journalData.calories)}
+        </Text>
       </View>
 
       <NutFactsView style={{ alignItems: "center" }}>
@@ -174,7 +168,7 @@ const NutritionCard = ({
               </Text>
               <MainRowData
                 id="Calories"
-                nutValue={journalData.calories}
+                nutValue={Math.round(journalData.calories)}
                 fontSize={26}
               />
 

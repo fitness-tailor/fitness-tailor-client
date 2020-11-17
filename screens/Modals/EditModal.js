@@ -7,6 +7,7 @@ import {
   View,
   Alert,
 } from "react-native";
+import { getUserJournal } from "../../redux/actions/nutritionActions.js";
 import Modal from "react-native-modal";
 import firebase from "firebase";
 import RNPickerSelect from "react-native-picker-select";
@@ -23,9 +24,11 @@ function EditModal({
   editModalVisible,
   calories,
   setCalories,
-  displayName,
+  user,
   servingSize,
   servingUnit,
+  dateObject,
+  getUserJournal,
   id,
   yr,
   mm,
@@ -34,7 +37,7 @@ function EditModal({
   // Allows recipe to be immutable
   // such that food name is not lost on the card
   const [inputName, setInputName] = useState(recipe);
-  const [inputSize, setInputSize] = useState(servingSize);
+  const [inputSize, setInputSize] = useState(`${servingSize}`);
   const [inputUnit, setInputUnit] = useState(servingUnit);
 
   const convertCalorie = (newSize, newUnits) => {
@@ -46,23 +49,29 @@ function EditModal({
   };
 
   const sendEdit = () => {
-    // Change Food Name in Nut. Card to what was placed in input
-
     setRecipe(inputName);
     convertCalorie(inputSize, inputUnit);
 
     firebase
       .database()
-      .ref(`users/${displayName}/foodJournal/${yr}/${mm}/${dd}/${id}`)
+      .ref(`users/${user.displayName}/foodJournal/${yr}/${mm}/${dd}/${id}`)
       .update({
         name: inputName,
         calories: calories,
-        // servingSize: inputSize,
-        // servingUnit: inputUnit,
+        servingSize: inputSize,
+        servingUnit: inputUnit,
+      })
+      .then(() => {
+        setTimeout(() => {
+          getUserJournal(dateObject, user.displayName);
+        }, 1000);
       })
       .then(() => {
         Alert.alert("Success", "Your edits have been saved to our database!", [
-          { text: "Ok", onPress: () => setEditModalVisible(false) },
+          {
+            text: "Ok",
+            onPress: () => setEditModalVisible(false),
+          },
         ]);
       })
       .catch((err) => {
@@ -162,10 +171,18 @@ function EditModal({
 }
 
 const mapStateToProps = (state) => ({
-  displayName: state.auth.user.displayName,
+  user: state.auth.user,
+  dateObject: state.nutrition.dateObject,
 });
 
-export default connect(mapStateToProps, null)(EditModal);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getUserJournal: (date, username) =>
+      dispatch(getUserJournal(date, username)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(EditModal);
 
 const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
