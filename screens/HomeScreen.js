@@ -61,6 +61,13 @@ const HomeScreen = (props) => {
     }
   }, [props.profilePic]);
 
+  useEffect(() => {
+    if (props.user.displayName) {
+      getCalExpendAndGoal(props.user.displayName);
+      getCalIntake();
+    }
+  }, [props.user]);
+
   const uploadProfilePic = async (imageURI, { uid, displayName }) => {
     const response = await fetch(imageURI);
     const blob = await response.blob();
@@ -90,18 +97,20 @@ const HomeScreen = (props) => {
     }
   };
 
-  useEffect(() => {
-    getCalIntake();
-    getCalExpend();
-    getCalGoal();
-  }, [props.user]);
-
-  const getCalExpend = () => {
+  const getCalExpendAndGoal = (displayName) => {
     firebase
       .database()
-      .ref(`users/${props.displayName}/bmrPlusExcer`)
-      .on("value", function (snapshot) {
-        setCalExpenditure(snapshot.val());
+      .ref(`users/${displayName}`)
+      .on("value", (snapshot) => {
+        const bmrPlusExcer = snapshot.val().bmrPlusExcer;
+        const goal = snapshot.val().goal;
+
+        if (bmrPlusExcer) {
+          setCalExpenditure(parseInt(bmrPlusExcer));
+        }
+        if (typeof goal === "number") {
+          setCalGoal(parseInt(bmrPlusExcer) + parseInt(goal));
+        }
       });
   };
 
@@ -121,21 +130,6 @@ const HomeScreen = (props) => {
             calories += recipe.calories;
           });
           setCalIntake(calories);
-        }
-      });
-  };
-
-  const getCalGoal = () => {
-    firebase
-      .database()
-      .ref(`users/${props.displayName}`)
-      .on("value", function (snapshot) {
-        if (snapshot.val() === null) {
-          setCalGoal(null);
-        } else {
-          const goal = parseInt(snapshot.val().goal);
-          const bmrPlusExcer = parseInt(snapshot.val().bmrPlusExcer);
-          setCalGoal(bmrPlusExcer + goal);
         }
       });
   };

@@ -114,7 +114,6 @@ const ProfileScreen = (props) => {
     ) {
       Alert.alert("Please enter only numbers");
     } else {
-      console.log(goal);
       firebase
         .database()
         .ref("users/" + props.displayName)
