@@ -127,9 +127,11 @@ const NutritionCard = ({
     <CopyModal
       copyModalVisible={copyModalVisible}
       setCopyModalVisible={setCopyModalVisible}
-      id={id}
+      referenceID={referenceID}
       name={recipe}
       calories={calories}
+      servingSize={journalData.servingSize}
+      servingUnit={journalData.servingUnit}
     />
   );
 
