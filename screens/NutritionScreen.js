@@ -40,55 +40,49 @@ const NutritionScreen = ({
   );
 
   return !isLoading ? (
-
     <SafeAreaView style={styles.containerNutScreen}>
-        <Calendar
-          onDayPress={(day) => getUserJournal(day, displayName)}
-          markedDates={{
-            [selectedDate]: { selected: true, selectedColor: "#00adf5" },
-          }}
-          theme={{ arrowColor: "rgb(22, 66, 92)" }}
-        />
+      <Calendar
+        onDayPress={(day) => getUserJournal(day, displayName)}
+        markedDates={{
+          [selectedDate]: { selected: true, selectedColor: "#00adf5" },
+        }}
+        theme={{ arrowColor: "rgb(22, 66, 92)" }}
+      />
 
-        <ScrollView
-          contentContainerStyle={{
-            ...styles.journalNut,
-            backgroundColor: "#d9d5c7",
-          }}
-        >
-          <Text style={[styles.date]}>{date}</Text>
+      <ScrollView
+        contentContainerStyle={{
+          ...styles.journalNut,
+          backgroundColor: "#d9d5c7",
+        }}
+      >
+        <Text style={[styles.date]}>{date}</Text>
 
-          <Text style={styles.totalCal}>
-            {totalCal ? `Total Calories: ${totalCal}` : null}
-          </Text>
+        <Text style={styles.totalCal}>
+          {totalCal ? `Total Calories: ${totalCal}` : null}
+        </Text>
 
-          {currentDayFoodList.length !== 0 &&
-            currentDayFoodList.map((recipe, key) => {
-              return (
-                <NutritionCard
-                  recipeObj={recipe}
-                  key={key}
-                  id={recipe[0]}
-                  journalData={recipe[1]}
-                  referenceData={recipe[2]}
-                  name={recipe[1].name}
-                  calories={recipe[1].calories}
-                  referenceID={recipe[1].referenceID}
-                  date={date}
-                ></NutritionCard>
-              );
-            })}
+        {currentDayFoodList.length !== 0 &&
+          currentDayFoodList.map((recipe, key) => {
+            return (
+              <NutritionCard
+                key={key}
+                id={recipe[0]}
+                journalData={recipe[1]}
+                referenceID={recipe[1].referenceID}
+              ></NutritionCard>
+            );
+          })}
 
-          {date && (
-            <TouchableOpacity
-              style={styles.buttonStyles}
-              onPress={() => setAddModalVisible(true)}
-              activeOpacity="0.5"
-            >
-              <AntDesign name="pluscircle" size={50} color="rgb(37, 93, 120)" />
-            </TouchableOpacity>
-          )}
-        </ScrollView>
+        {date && (
+          <TouchableOpacity
+            style={styles.buttonStyles}
+            onPress={() => setAddModalVisible(true)}
+            activeOpacity="0.5"
+          >
+            <AntDesign name="pluscircle" size={50} color="rgb(37, 93, 120)" />
+          </TouchableOpacity>
+        )}
+      </ScrollView>
       {addModal}
     </SafeAreaView>
   ) : (
