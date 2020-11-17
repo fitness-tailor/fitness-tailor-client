@@ -15,6 +15,7 @@ import { connect } from "react-redux";
 import convert from "convert-units";
 import EditModal from "../Modals/EditModal.js";
 import DeleteModal from "../Modals/DeleteModal.js";
+import CopyModal from "../Modals/CopyModal.js";
 import MainRowData from "../Recipe_Comp/MainRowData.js";
 import FoodRowData from "./FoodRowData.js";
 import NutritionRowData from "../Recipe_Comp/NutritionRowData.js";
@@ -35,6 +36,7 @@ const NutritionCard = ({
 }) => {
   const [editModalVisible, setEditModalVisible] = useState(false);
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [copyModalVisible, setCopyModalVisible] = useState(false);
   const [calorie, setCalorie] = useState(calories);
   const [nutFactor, setNutFactor] = useState(0);
   const [recipe, setRecipe] = useState(name);
@@ -99,7 +101,7 @@ const NutritionCard = ({
   };
 
   // let { recipeData, id, date } = props;
-  // // calories should be in destructured props obj as well!
+  // calories should be in destructured props obj as well!
   // let { servingSize, servingUnit } = recipeData;
 
   // console.log(props.recipe);
@@ -127,6 +129,15 @@ const NutritionCard = ({
       yr={dateObject.year}
       mm={dateObject.month}
       dd={dateObject.day}
+    />
+  );
+  let copyModal = (
+    <CopyModal
+      copyModalVisible={copyModalVisible}
+      setCopyModalVisible={setCopyModalVisible}
+      id={id}
+      name={recipe}
+      calories={calorie}
     />
   );
 
@@ -315,10 +326,18 @@ const NutritionCard = ({
         >
           <Text style={styles.buttonText}>Delete</Text>
         </TouchableOpacity>
+
+        <TouchableOpacity
+          style={{ ...styles.buttonStyles, backgroundColor: "orange" }}
+          onPress={() => setCopyModalVisible(true)}
+        >
+          <Text style={styles.buttonText}>Copy</Text>
+        </TouchableOpacity>
       </View>
       <View style={{ height: 0, width: 0 }}>
         {editModal}
         {deleteModal}
+        {copyModal}
       </View>
     </FadeInView>
   );
@@ -410,13 +429,13 @@ const styles = StyleSheet.create({
   buttonStyles: {
     flex: 1,
     justifyContent: "center",
-    marginHorizontal: 15,
+    marginHorizontal: 12,
     marginTop: 10,
     borderRadius: 30,
   },
   buttonText: {
     textAlign: "center",
-    fontSize: 20,
+    fontSize: 18,
     color: "white",
     fontFamily: "OpenSans_600SemiBold",
     paddingVertical: 10,
