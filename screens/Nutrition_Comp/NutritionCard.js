@@ -66,7 +66,6 @@ const NutritionCard = ({
   const fetchArchiveData = async (foodID) => {
     if(foodID === "user generated") {
       setArchiveData(null);
-      console.log(archiveData)
     } else {
       let foodArchivesData = await firebase
         .database()
@@ -76,7 +75,6 @@ const NutritionCard = ({
         .catch((err) => {
           console.log("You had an error fetching food archives", err);
         });
-        console.log(foodArchivesData)
       await setArchiveData(foodArchivesData);
     }
   };
