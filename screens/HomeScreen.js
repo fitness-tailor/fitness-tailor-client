@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import firebase from "firebase";
-import moment from 'moment';
+import moment from "moment";
 import {
   StyleSheet,
   Text,
@@ -61,7 +61,12 @@ const HomeScreen = (props) => {
     }
   }, [props.profilePic]);
 
-
+  useEffect(() => {
+    if (props.user.displayName) {
+      getCalExpendAndGoal(props.user.displayName);
+      getCalIntake();
+    }
+  }, [props.user]);
 
   const uploadProfilePic = async (imageURI, { uid, displayName }) => {
     const response = await fetch(imageURI);
@@ -92,20 +97,21 @@ const HomeScreen = (props) => {
     }
   };
 
-  useEffect(() => {
-    getCalIntake();
-    getCalExpend();
-    getCalGoal();
-  }, [props.user])
-
-
-  const getCalExpend = () => {
+  const getCalExpendAndGoal = (displayName) => {
     firebase
-    .database()
-    .ref(`users/${props.displayName}/bmrPlusExcer`)
-    .on("value", function (snapshot) {
-      setCalExpenditure(snapshot.val());
-    })
+      .database()
+      .ref(`users/${displayName}`)
+      .on("value", (snapshot) => {
+        const bmrPlusExcer = snapshot.val().bmrPlusExcer;
+        const goal = snapshot.val().goal;
+
+        if (bmrPlusExcer) {
+          setCalExpenditure(parseInt(bmrPlusExcer));
+        }
+        if (typeof goal === "number") {
+          setCalGoal(parseInt(bmrPlusExcer) + parseInt(goal));
+        }
+      });
   };
 
   const getCalIntake = () => {
@@ -113,42 +119,21 @@ const HomeScreen = (props) => {
     let mm = moment().format("MM");
     let dd = moment().format("D");
     firebase
-    .database()
-    .ref(`users/${props.displayName}/foodJournal/${yr}/${mm}/${dd}`)
-    .on("value", function(snapshot) {
-      if(snapshot.val() === null) {
-        setCalIntake(null);
-      } else {
-        let calories = 0;
-        Object.values(snapshot.val()).map((recipe) => {
-          calories += recipe.calories;
-        })
-        setCalIntake(calories)
-      }
-    })
-  }
-
-  const getCalGoal = () => {
-    firebase
-    .database()
-    .ref(`users/${props.displayName}`)
-    .on("value", function(snapshot) {
-      if(snapshot.val() === null) {
-        setCalGoal(null);
-      } else {
-        const goal = snapshot.val().goal;
-        const bmrPlusExcer = snapshot.val().bmrPlusExcer
-        if(goal === "maintain") {
-          setCalGoal(bmrPlusExcer)
-        } else if(goal === "lose") {
-          setCalGoal(parseInt(bmrPlusExcer) - 500)
-        } else if(goal === "gain") {
-          setCalGoal(parseInt(bmrPlusExcer) + 500)
+      .database()
+      .ref(`users/${props.displayName}/foodJournal/${yr}/${mm}/${dd}`)
+      .on("value", function (snapshot) {
+        if (snapshot.val() === null) {
+          setCalIntake(null);
+        } else {
+          let calories = 0;
+          Object.values(snapshot.val()).map((recipe) => {
+            calories += recipe.calories;
+          });
+          setCalIntake(calories);
         }
-      }
-    })
-  }
-  
+      });
+  };
+
   let profilePic = !image ? (
     <View>
       <AntDesign name="pluscircle" size={230} color="#dcdcdc" />
@@ -219,11 +204,11 @@ const HomeScreen = (props) => {
               {props.user.displayName}
             </Text>
 
-            <View style={styles.calGoals} >
-                <Text style={{ color: "white", fontSize: 18 }}>
-                  Daily Caloric Expenditure: {calExpenditure}
-                </Text>
-    
+            <View style={styles.calGoals}>
+              <Text style={{ color: "white", fontSize: 18 }}>
+                Daily Caloric Expenditure: {calExpenditure}
+              </Text>
+
               <Text style={{ color: "white", fontSize: 18 }}>
                 Daily Caloric Goal: {calGoal}
               </Text>
@@ -231,7 +216,6 @@ const HomeScreen = (props) => {
               <Text style={{ color: "white", fontSize: 18 }}>
                 Caloric Intake Today: {calIntake}
               </Text>
-
             </View>
 
             <TouchableOpacity
