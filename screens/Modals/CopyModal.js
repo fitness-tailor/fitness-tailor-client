@@ -12,10 +12,12 @@ function copyModal({
   // baseNutCopy,
   // description,
   // fdcId,
-  id,
+  referenceID,
   name,
   calories,
   displayName,
+  servingSize,
+  servingUnit,
 }) {
   const [currentDate, setCurrentDate] = useState({
     month: new Date().getMonth() + 1,
@@ -43,9 +45,11 @@ function copyModal({
       .ref(`users/${displayName}/foodJournal/${year}/${month}/${date}`)
       .push()
       .set({
-      referenceID: id,
+      referenceID: referenceID,
       name: name,
       calories: calories,
+      servingSize: servingSize,
+      servingUnit: servingUnit,
       })
       .then(() => {
         Alert.alert("Success", `${name} have been saved to ${month}/${date}/${year}!`, [

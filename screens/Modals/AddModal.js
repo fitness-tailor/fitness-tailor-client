@@ -15,7 +15,7 @@ import firebase from "firebase";
 import moment from "moment";
 
 function AddModal({ addModalVisible, setAddModalVisible, displayName, date }) {
-  const [name, setName] = useState("Name");
+  const [name, setName] = useState("Food");
   const [calories, setCalories] = useState("100");
 
   const addToJournal = () => {
@@ -28,7 +28,7 @@ function AddModal({ addModalVisible, setAddModalVisible, displayName, date }) {
       .ref(`users/${displayName}/foodJournal/${year}/${month}/${day}`)
       .push()
       .set({
-        // referenceID: fdcId,
+        referenceID: "user generated",
         name: name,
         calories: Number(calories),
         // servingSize: SERVING_SIZE.value,
