@@ -129,7 +129,7 @@ const NutritionCard = ({
       setCopyModalVisible={setCopyModalVisible}
       id={id}
       name={recipe}
-      calories={calorie}
+      calories={calories}
     />
   );
 
