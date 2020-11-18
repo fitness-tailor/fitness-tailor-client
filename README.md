@@ -26,7 +26,7 @@
 ## Table of Contents
 
 - [About the Project](#about-the-project)
-  - [Built With](#built-with)
+- [Built With](#built-with)
 - [Usage](#usage)
 - [Roadmap](#roadmap)
 - [Contributing](#contributing)
@@ -65,6 +65,6 @@ Here's why:
 
 Rizwan Choudhury - [Portfolio](https://rizwanchoudhury.com/) - [LinkedIn](https://www.linkedin.com/in/rizwan-choudhury/) - choudhuryrizwan97@gmail.com
 
-Koboh Kosaka - [Portfolio](<!-- PORTFOLIO LINK (optional) -->) - [LinkedIn](<!-- LINKEDIN LINK (optional) -->) - <!-- EMAIL LINK (optional) -->
+Koboh Kosaka - [Portfolio](https://www.kokosaka.com/) - [LinkedIn](https://www.linkedin.com/in/kokosaka/) - kobohkosaka@gmail.com
 
 Project Link: [Repo Link](https://github.com/nutrific/nutrific-client)
