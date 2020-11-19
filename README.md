@@ -1,17 +1,23 @@
 # Nutrific
 
 <br>
+<!--
 <p align="center">
   <a href="https://github.com/othneildrew/Best-README-Template">
     <img src="images/logo.png" alt="click me to go to a demo vid on youtube" width="80" height="80">
   </a>
+  -->
 
-  <h3 align="center">Nutrific</h3>
+  <h3 align="center">
+    <strong>Nutrific</strong>
+  </h3>
 
   <p align="center">
     Eat terrific with Nutrific!
     <br />
+<!--
     <a href="https://github.com/othneildrew/Best-README-Template">View Demo (click me to go to a demo vid on youtube)</a>
+    -->
   </p>
 </p>
 
@@ -26,10 +32,8 @@
 ## Table of Contents
 
 - [About the Project](#about-the-project)
-- [Built With](#built-with)
+  - [Built With](#built-with)
 - [Usage](#usage)
-- [Roadmap](#roadmap)
-- [Contributing](#contributing)
 - [License](#license)
 - [Contact](#contact)
 - [Acknowledgements](#acknowledgements)
@@ -59,6 +63,18 @@ Here's why:
 - [Firebase](https://firebase.google.com/)
 - [Redux](https://redux.js.org/)
 
+<!-- USAGE -->
+
+## Usage
+
+In Progress
+
+<!-- LICENSE -->
+
+## License
+
+In Progress
+
 <!-- CONTACT -->
 
 ## Contact
@@ -68,3 +84,9 @@ Rizwan Choudhury - [Portfolio](https://rizwanchoudhury.com/) - [LinkedIn](https:
 Koboh Kosaka - [Portfolio](https://www.kokosaka.com/) - [LinkedIn](https://www.linkedin.com/in/kokosaka/) - kobohkosaka@gmail.com
 
 Project Link: [Repo Link](https://github.com/nutrific/nutrific-client)
+
+<!-- ACKNOWLEDGEMENT -->
+
+## Acknowledgement
+
+In Progress
