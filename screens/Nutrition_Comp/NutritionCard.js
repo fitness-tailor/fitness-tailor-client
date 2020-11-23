@@ -150,16 +150,7 @@ const NutritionCard = ({
 
         {archiveData === null && (
           <View>
-            <TouchableOpacity
-              style={{
-                backgroundColor: "#A487D4",
-                paddingVertical: 4,
-                paddingHorizontal: 14,
-                marginVertical: 4,
-                borderRadius: 20,
-              }}
-              activeOpacity={0.6}
-            >
+            <TouchableOpacity style={styles.userGenTag} activeOpacity={0.6}>
               <Text style={styles.font}>User Generated</Text>
             </TouchableOpacity>
           </View>
@@ -402,12 +393,22 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 5,
   },
+  // ==================================
+  // User Gen specific Styles
+  // ==================================
   userGenFont: {
     textAlign: "center",
     color: "purple",
     fontFamily: "Montserrat_500Medium",
     fontSize: 20,
     marginBottom: 5,
+  },
+  userGenTag: {
+    backgroundColor: "#A487D4",
+    paddingVertical: 4,
+    paddingHorizontal: 14,
+    marginVertical: 4,
+    borderRadius: 20,
   },
   // ============================
   // Nutrition Facts Styles
@@ -426,7 +427,7 @@ const styles = StyleSheet.create({
     fontFamily: "OpenSans_700Bold",
   },
   // ============================
-  // Miscellaneous Nutrition Title Styles
+  // Miscellaneous Nutrition Facts Styles
   // ============================
   amountPerServingTitle: {
     fontSize: 16,

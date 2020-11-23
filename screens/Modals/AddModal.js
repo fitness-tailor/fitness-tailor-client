@@ -93,7 +93,6 @@ function AddModal({
                 justifyContent: "space-around",
                 alignItems: "center",
                 width: "80%",
-
                 marginBottom: 20,
                 marginTop: 20,
               }}
@@ -117,7 +116,7 @@ function AddModal({
                   style={styles.calorieInput}
                   placeholderTextColor="black"
                   keyboardType={"numeric"}
-                  maxLength={4}
+                  maxLength={5}
                   onChangeText={(val) => setCalories(val)}
                 />
               </View>
