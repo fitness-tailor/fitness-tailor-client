@@ -10,12 +10,20 @@ import {
 // import RNPickerSelect from "react-native-picker-select";
 import Modal from "react-native-modal";
 import RNPickerSelect from "react-native-picker-select";
+import { getUserJournal } from "../../redux/actions/nutritionActions.js";
 // import styles from "../styles.js";
 import { connect } from "react-redux";
 import firebase from "firebase";
 import moment from "moment";
 
-function AddModal({ addModalVisible, setAddModalVisible, displayName, date }) {
+function AddModal({
+  addModalVisible,
+  setAddModalVisible,
+  displayName,
+  date,
+  getUserJournal,
+  dateObject,
+}) {
   const [name, setName] = useState("Food");
   const [calories, setCalories] = useState("100");
   const [inputSize, setInputSize] = useState("100");
@@ -34,8 +42,24 @@ function AddModal({ addModalVisible, setAddModalVisible, displayName, date }) {
         referenceID: "user generated",
         name: name,
         calories: Number(calories),
-        servingSize: inputSize,
+        servingSize: Number(inputSize),
         servingUnit: inputUnit,
+      })
+      .then(() => {
+        setTimeout(() => {
+          getUserJournal(dateObject, displayName);
+        }, 1000);
+      })
+      .then(() => {
+        Alert.alert("Success", "Your food entry has been saved!", [
+          {
+            text: "Ok",
+            onPress: () => setAddModalVisible(false),
+          },
+        ]);
+      })
+      .catch((err) => {
+        Alert.alert("Error", "An error occured! We could not save your edits");
       });
   };
 
@@ -146,7 +170,17 @@ function AddModal({ addModalVisible, setAddModalVisible, displayName, date }) {
 
               <TouchableOpacity
                 style={{ ...styles.buttonStyles, backgroundColor: "#26A637" }}
-                onPress={() => addToJournal()}
+                onPress={() => {
+                  if (
+                    name.length === 0 ||
+                    calories.length === 0 ||
+                    inputSize.length === 0
+                  ) {
+                    Alert.alert("Please fill in the remaining input");
+                  } else {
+                    addToJournal();
+                  }
+                }}
               >
                 <Text style={styles.buttonTextStyle}>Save</Text>
               </TouchableOpacity>
@@ -160,9 +194,17 @@ function AddModal({ addModalVisible, setAddModalVisible, displayName, date }) {
 
 const mapStateToProps = (state) => ({
   displayName: state.auth.user.displayName,
+  dateObject: state.nutrition.dateObject,
 });
 
-export default connect(mapStateToProps, null)(AddModal);
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getUserJournal: (date, username) =>
+      dispatch(getUserJournal(date, username)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(AddModal);
 
 const pickerSelectStyles = StyleSheet.create({
   inputIOS: {
