@@ -8,10 +8,6 @@ import { connect } from "react-redux";
 function copyModal({
   copyModalVisible,
   setCopyModalVisible,
-  // totalNutrients,
-  // baseNutCopy,
-  // description,
-  // fdcId,
   referenceID,
   name,
   calories,
@@ -45,16 +41,18 @@ function copyModal({
       .ref(`users/${displayName}/foodJournal/${year}/${month}/${date}`)
       .push()
       .set({
-      referenceID: referenceID,
-      name: name,
-      calories: calories,
-      servingSize: servingSize,
-      servingUnit: servingUnit,
+        referenceID: referenceID,
+        name: name,
+        calories: calories,
+        servingSize: servingSize,
+        servingUnit: servingUnit,
       })
       .then(() => {
-        Alert.alert("Success", `${name} have been saved to ${month}/${date}/${year}!`, [
-          { text: "Ok", onPress: () => setCopyModalVisible(false) },
-        ]);
+        Alert.alert(
+          "Success",
+          `${name} have been saved to ${month}/${date}/${year}!`,
+          [{ text: "Ok", onPress: () => setCopyModalVisible(false) }]
+        );
       })
       .catch((err) => {
         Alert.alert("Error", "An error occured! We could not save your edits");
@@ -93,10 +91,12 @@ function copyModal({
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <View style={styles.header}>
-              <Text style={styles.headerTextStyle}>Copy {name} To Another Date</Text>
+              <Text style={styles.headerTextStyle}>
+                Copy{" "}
+                <Text style={{ fontFamily: "OpenSans_700Bold" }}>{name}</Text>{" "}
+                To Another Date
+              </Text>
             </View>
-
-  {/* <Text style={styles.displayMsg}>Co {name} Date</Text> */}
 
             <View style={styles.mainPickerContainer}>
               <View style={styles.subPickerContainer}>
@@ -223,15 +223,16 @@ const styles = StyleSheet.create({
     backgroundColor: "#F2D092",
     alignItems: "center",
     paddingVertical: 20,
+    paddingHorizontal: 10,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
+    marginBottom: 20,
   },
   headerTextStyle: {
     color: "black",
-    fontWeight: "bold",
     textAlign: "center",
     fontFamily: "OpenSans_600SemiBold",
-    fontSize: 26,
+    fontSize: 22,
   },
   displayMsg: {
     textAlign: "center",
