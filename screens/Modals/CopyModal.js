@@ -50,7 +50,7 @@ function copyModal({
       .then(() => {
         Alert.alert(
           "Success",
-          `${name} have been saved to ${month}/${date}/${year}!`,
+          `${name} have been saved to ${month}/${date}/${year}! Click on date again to see the changes.`,
           [{ text: "Ok", onPress: () => setCopyModalVisible(false) }]
         );
       })
