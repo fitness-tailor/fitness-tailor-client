@@ -1,5 +1,6 @@
 import React from "react";
 
+import { RECIPE_API_KEYS } from "./assets/API_KEYS.json";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { NavigationContainer } from "@react-navigation/native";
 
@@ -34,21 +35,9 @@ import {
 } from "@expo-google-fonts/montserrat";
 import { Lato_300Light } from "@expo-google-fonts/lato";
 
-// TODO: Replace the following with your app's Firebase project configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyDqW-IHyiK__ePv6T9JJDky6D1Vgj42iTM",
-  authDomain: "fitness-tailor.firebaseapp.com",
-  databaseURL: "https://fitness-tailor.firebaseio.com",
-  projectId: "fitness-tailor",
-  storageBucket: "gs://fitness-tailor.appspot.com/",
-  messagingSenderId: "822343603827",
-  appId: "1:822343603827:web:76a6256a0fa23496913c06",
-  measurementId: "G-48BDZ94KZ2",
-};
-
 // Initialize Firebase
 if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
+  firebase.initializeApp(RECIPE_API_KEYS.FIREBASE_CONFIG);
 }
 
 const AppContainer = createAppContainer(
