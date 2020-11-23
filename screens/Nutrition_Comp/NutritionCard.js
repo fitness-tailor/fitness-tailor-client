@@ -148,6 +148,23 @@ const NutritionCard = ({
           {recipe}
         </Text>
 
+        {archiveData === null && (
+          <View>
+            <TouchableOpacity
+              style={{
+                backgroundColor: "#A487D4",
+                paddingVertical: 4,
+                paddingHorizontal: 14,
+                marginVertical: 4,
+                borderRadius: 20,
+              }}
+              activeOpacity={0.6}
+            >
+              <Text style={styles.font}>User Generated</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+
         <Text style={styles.font}>
           Calories: {Math.round(journalData.calories)}
         </Text>
