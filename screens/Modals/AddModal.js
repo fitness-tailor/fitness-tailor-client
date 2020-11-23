@@ -9,6 +9,7 @@ import {
 } from "react-native";
 // import RNPickerSelect from "react-native-picker-select";
 import Modal from "react-native-modal";
+import RNPickerSelect from "react-native-picker-select";
 // import styles from "../styles.js";
 import { connect } from "react-redux";
 import firebase from "firebase";
@@ -17,6 +18,8 @@ import moment from "moment";
 function AddModal({ addModalVisible, setAddModalVisible, displayName, date }) {
   const [name, setName] = useState("Food");
   const [calories, setCalories] = useState("100");
+  const [inputSize, setInputSize] = useState("100");
+  const [inputUnit, setInputUnit] = useState("g");
 
   const addToJournal = () => {
     let year = moment(date).format("YYYY");
@@ -31,10 +34,15 @@ function AddModal({ addModalVisible, setAddModalVisible, displayName, date }) {
         referenceID: "user generated",
         name: name,
         calories: Number(calories),
-        // servingSize: SERVING_SIZE.value,
-        // servingUnit: SERVING_SIZE.unit,
+        servingSize: inputSize,
+        servingUnit: inputUnit,
       });
   };
+
+  const unitList = [
+    { label: "g", value: "g" },
+    { label: "oz", value: "oz" },
+  ];
 
   return (
     <View style={styles.centeredView}>
@@ -57,34 +65,74 @@ function AddModal({ addModalVisible, setAddModalVisible, displayName, date }) {
 
             <View
               style={{
-                flexDirection: "row",
+                flexDirection: "column",
                 justifyContent: "space-around",
+                alignItems: "center",
                 width: "80%",
+
+                marginBottom: 20,
+                marginTop: 20,
               }}
             >
               <View style={styles.inputArea}>
-                <Text>Name</Text>
+                <Text style={styles.inputTitle}>Name</Text>
                 <TextInput
                   value={name}
                   placeholder={`${name}`}
-                  style={styles.input}
+                  style={styles.nameInput}
                   placeholderTextColor="black"
                   onChangeText={(val) => setName(val)}
                 />
               </View>
 
-              <View style={styles.inputArea}>
-                <Text>Calories</Text>
+              <View style={{ ...styles.inputArea, marginTop: 15 }}>
+                <Text style={styles.inputTitle}>Calories</Text>
                 <TextInput
-                  // style={styles.servingInput}
                   value={calories}
                   placeholder={`${calories}`}
-                  style={styles.input}
+                  style={styles.calorieInput}
                   placeholderTextColor="black"
                   keyboardType={"numeric"}
-                  maxLength={6}
+                  maxLength={4}
                   onChangeText={(val) => setCalories(val)}
                 />
+              </View>
+            </View>
+
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-around",
+                alignItems: "center",
+                width: "80%",
+                marginBottom: 25,
+              }}
+            >
+              <View style={styles.inputArea}>
+                <Text style={styles.inputTitle}>Serving Size</Text>
+                <TextInput
+                  style={styles.input}
+                  value={inputSize}
+                  placeholder={`${inputSize}`}
+                  placeholderTextColor="black"
+                  keyboardType={"numeric"}
+                  maxLength={4}
+                  onChangeText={(val) => setInputSize(val)}
+                />
+              </View>
+
+              <View style={styles.inputArea}>
+                <Text style={styles.inputTitle}>Serving Unit</Text>
+                <View>
+                  <RNPickerSelect
+                    selectedValue={inputUnit}
+                    value={inputUnit}
+                    placeholder={{}}
+                    style={{ ...pickerSelectStyles }}
+                    onValueChange={(unit) => setInputUnit(unit)}
+                    items={unitList}
+                  />
+                </View>
               </View>
             </View>
 
@@ -116,6 +164,31 @@ const mapStateToProps = (state) => ({
 
 export default connect(mapStateToProps, null)(AddModal);
 
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    color: "black",
+    textAlign: "center",
+    marginHorizontal: 4,
+    padding: 10,
+    fontSize: 18,
+    width: 100,
+    borderBottomWidth: 1,
+    backgroundColor: "#EEC16D",
+    fontFamily: "OpenSans_400Regular",
+  },
+  inputAndroid: {
+    borderWidth: 1,
+    borderColor: "white",
+    color: "white",
+    textAlign: "center",
+    marginHorizontal: 4,
+    width: 50,
+    padding: 10,
+    fontSize: 20,
+    width: 40,
+  },
+});
+
 const styles = StyleSheet.create({
   centeredView: {
     flex: 1,
@@ -126,7 +199,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderRadius: 20,
     width: "84%",
-    height: "30%",
     justifyContent: "space-between",
     alignItems: "center",
     shadowColor: "#000",
@@ -153,6 +225,34 @@ const styles = StyleSheet.create({
     fontFamily: "OpenSans_600SemiBold",
     fontSize: 26,
   },
+  inputTitle: {
+    fontFamily: "OpenSans_400Regular",
+    marginBottom: 6,
+    fontSize: 18,
+    textAlign: "center",
+  },
+  nameInput: {
+    color: "black",
+    textAlign: "center",
+    marginHorizontal: 14,
+    padding: 10,
+    fontSize: 18,
+    width: "100%",
+    borderBottomWidth: 1,
+    backgroundColor: "#EEC16D",
+    fontFamily: "OpenSans_400Regular",
+  },
+  calorieInput: {
+    color: "black",
+    textAlign: "center",
+    marginHorizontal: 14,
+    paddingVertical: 10,
+    fontSize: 18,
+    width: 100,
+    borderBottomWidth: 1,
+    backgroundColor: "#EEC16D",
+    fontFamily: "OpenSans_400Regular",
+  },
   input: {
     color: "black",
     textAlign: "center",
@@ -165,9 +265,9 @@ const styles = StyleSheet.create({
     fontFamily: "OpenSans_400Regular",
   },
   inputArea: {
-    flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    width: "100%",
   },
   displayMsg: {
     textAlign: "center",
@@ -188,16 +288,16 @@ const styles = StyleSheet.create({
     marginBottom: 4,
     fontSize: 18,
   },
-  servingInput: {
-    fontSize: 22,
-    marginBottom: "8%",
-    width: "50%",
-    textAlign: "center",
-    borderBottomWidth: 1,
-    padding: 10,
-    backgroundColor: "#EEC16D",
-    fontFamily: "OpenSans_400Regular",
-  },
+  // servingInput: {
+  //   fontSize: 22,
+  //   marginBottom: "8%",
+  //   width: "50%",
+  //   textAlign: "center",
+  //   borderBottomWidth: 1,
+  //   padding: 20,
+  //   backgroundColor: "#EEC16D",
+  //   fontFamily: "OpenSans_400Regular",
+  // },
   buttonsContainer: {
     flexDirection: "row",
     paddingHorizontal: 10,
