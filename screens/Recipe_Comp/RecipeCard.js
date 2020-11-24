@@ -388,7 +388,8 @@ const styles = StyleSheet.create({
     marginHorizontal: "3%",
   },
   buttonStyles: {
-    padding: 12,
+    paddingVertical: 14,
+    paddingHorizontal: 18,
     marginTop: 10,
     marginBottom: 5,
     backgroundColor: "rgb(37, 93, 120)",
@@ -396,7 +397,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     textAlign: "center",
-    fontSize: 18,
+    fontSize: 16,
     color: "white",
     fontFamily: "Montserrat_400Regular",
   },
