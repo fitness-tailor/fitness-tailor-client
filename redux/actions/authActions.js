@@ -84,7 +84,11 @@ const fetchGender = (name) => {
         .ref(`users/${name}`)
         .once("value")
         .then((snapshot) => {
-          dispatch(storeGender(snapshot.val().gender));
+          if (snapshot.val()) {
+            dispatch(storeGender(snapshot.val().gender));
+          } else {
+            dispatch(storeGender(null));
+          }
         });
     }
   };

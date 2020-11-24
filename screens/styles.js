@@ -124,6 +124,12 @@ module.exports = StyleSheet.create({
   // ==================================
   // Profile Screen
   // ==================================
+  centeredIndicator: {
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "rgb(22, 66, 92)",
+    flex: 1,
+  },
   containerProfile: {
     flex: 2,
     alignItems: "center",

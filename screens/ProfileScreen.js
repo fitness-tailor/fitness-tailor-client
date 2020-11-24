@@ -7,6 +7,7 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  ActivityIndicator,
   Image,
   Button,
   Easing,
@@ -20,6 +21,7 @@ import firebase from "firebase";
 import styles from "./styles.js";
 
 const ProfileScreen = (props) => {
+  const [isLoading, setIsLoading] = useState(true);
   const [heightFeet, setHeightFeet] = useState("");
   const [heightInch, setHeightInch] = useState("");
   const [weight, setWeight] = useState("");
@@ -27,15 +29,16 @@ const ProfileScreen = (props) => {
   const [bmi, setBMI] = useState("");
   const [bmr, setBMR] = useState("");
   const [bmrPlusExcer, setbmrPlusExcer] = useState("");
-  const [activityLevel, setActivityLevel] = useState("");
-  const [goal, setGoal] = useState("");
+  const [activityLevel, setActivityLevel] = useState(Number(null));
+  const [goal, setGoal] = useState(Number(null));
   const [gender, setGender] = useState("");
 
   useEffect(() => {
     firebase
       .database()
       .ref("users/" + props.displayName)
-      .on("value", function (snapshot) {
+      .once("value")
+      .then((snapshot) => {
         if (snapshot.val() !== null) {
           setHeightFeet(snapshot.val().heightFeet);
           setHeightInch(snapshot.val().heightInch);
@@ -48,6 +51,12 @@ const ProfileScreen = (props) => {
           setGoal(snapshot.val().goal);
           setbmrPlusExcer(snapshot.val().bmrPlusExcer);
         }
+      })
+      .then(() => {
+        setIsLoading(false);
+      })
+      .catch(() => {
+        Alert.alert("Oops", "Something when wrong");
       });
   }, []);
 
@@ -77,7 +86,7 @@ const ProfileScreen = (props) => {
     );
     let userLbs = parseInt(weight);
     let BMI = (userLbs / userInchSquared) * 703;
-    return BMI.toFixed(2);
+    return BMI;
   };
 
   const calculateBMR = (gender, weight, heightFeet, heightInch, age) => {
@@ -86,11 +95,9 @@ const ProfileScreen = (props) => {
     let BMRWithoutGender = 10 * weightKG + 6.25 * heightCM - 5 * age;
 
     if (gender === "male") {
-      let maleBMR = BMRWithoutGender + 5;
-      return maleBMR.toFixed(0);
+      return BMRWithoutGender + 5;
     } else if (gender === "female") {
-      let femaleBMR = BMRWithoutGender - 161;
-      return femaleBMR.toFixed(0);
+      return BMRWithoutGender - 161;
     }
   };
 
@@ -110,15 +117,6 @@ const ProfileScreen = (props) => {
     ) {
       Alert.alert("Please enter only numbers");
     } else {
-      let BMI = calculateBMI(heightFeet, heightInch, weight);
-      setBMI(BMI);
-
-      let BMR = calculateBMR(gender, weight, heightFeet, heightInch, age);
-      setBMR(BMR);
-
-      let bmrPlusExcer = (BMR * activityLevel).toFixed(0);
-      setbmrPlusExcer(bmrPlusExcer);
-
       firebase
         .database()
         .ref("users/" + props.displayName)
@@ -130,9 +128,25 @@ const ProfileScreen = (props) => {
           gender: gender,
           activityLevel: activityLevel,
           goal: goal,
-          BMI: BMI,
-          BMR: BMR,
-          bmrPlusExcer: bmrPlusExcer,
+        })
+        .then(() => {
+          let BMI = calculateBMI(heightFeet, heightInch, weight);
+          setBMI(BMI.toFixed(1));
+
+          let BMR = calculateBMR(gender, weight, heightFeet, heightInch, age);
+          setBMR(BMR.toFixed(0));
+
+          let bmrPlusExcer = (BMR * activityLevel).toFixed(0);
+          setbmrPlusExcer(bmrPlusExcer);
+
+          firebase
+            .database()
+            .ref("users/" + props.displayName)
+            .update({
+              BMI: BMI.toFixed(1),
+              BMR: BMR.toFixed(0),
+              bmrPlusExcer: bmrPlusExcer,
+            });
         })
         .then(() => {
           Alert.alert("Success", "Your submission has been saved!");
@@ -152,7 +166,6 @@ const ProfileScreen = (props) => {
   const genderList = [
     { label: "Male", value: "male" },
     { label: "Female", value: "female" },
-    // { label: "Non-Binary", value: "non-binary" },
   ];
 
   const goalList = [
@@ -173,7 +186,11 @@ const ProfileScreen = (props) => {
     { label: "Professional Athlete", value: 1.9 },
   ];
 
-  return (
+  return isLoading ? (
+    <SafeAreaView style={styles.centeredIndicator}>
+      <ActivityIndicator size={"large"} />
+    </SafeAreaView>
+  ) : (
     <SafeAreaView style={styles.containerProfile}>
       <FadeInView
         style={styles.userSumsProfile}
@@ -198,42 +215,32 @@ const ProfileScreen = (props) => {
         <View style={styles.userProfileRow}>
           <Text style={styles.profileGeneralText}>Gender</Text>
           <RNPickerSelect
-            selectedValue={gender}
-            placeholder={{}}
+            value={gender}
             items={genderList}
             onValueChange={(itemValue) => setGender(itemValue)}
-            // value={gender}
-            style={{
-              ...pickerSelectStyles,
-            }}
+            style={{ ...pickerSelectStyles }}
           />
         </View>
 
         <View style={styles.userProfileRow}>
           <Text style={styles.profileGeneralText}>Activity Level</Text>
           <RNPickerSelect
-            selectedValue={activityLevel}
+            value={activityLevel}
             placeholder={{}}
             items={activityLevelList}
             onValueChange={(itemValue) => setActivityLevel(itemValue)}
-            // value={activityLevel}
-            style={{
-              ...pickerSelectStyles,
-            }}
+            style={{ ...pickerSelectStyles }}
           />
         </View>
 
         <View style={styles.userProfileRow}>
           <Text style={styles.profileGeneralText}>Goal</Text>
           <RNPickerSelect
-            selectedValue={goal}
+            value={goal}
             placeholder={{}}
             items={goalList}
             onValueChange={(itemValue) => setGoal(itemValue)}
-            // value={goal}
-            style={{
-              ...pickerSelectStyles,
-            }}
+            style={{ ...pickerSelectStyles }}
           />
         </View>
 
@@ -284,6 +291,7 @@ const ProfileScreen = (props) => {
           <View style={styles.userProfileRow}>
             <TextInput
               placeholder="Age"
+              placeholderTextColor="#DBDBDB"
               maxLength={3}
               style={styles.profileInputBoxes}
               keyboardType={"numeric"}

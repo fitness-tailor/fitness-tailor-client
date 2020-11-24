@@ -108,11 +108,10 @@ const HomeScreen = (props) => {
         let bmrPlusExcer = null;
         let goal = null;
 
-        if (snapshot.val().bmrPlusExcer) {
+        if (snapshot.val() && snapshot.val().bmrPlusExcer) {
           bmrPlusExcer = snapshot.val().bmrPlusExcer;
         }
-
-        if (snapshot.val().goal) {
+        if (snapshot.val() && snapshot.val().goal) {
           goal = snapshot.val().goal;
         }
 
