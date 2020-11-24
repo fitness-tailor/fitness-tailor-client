@@ -77,10 +77,8 @@ module.exports = StyleSheet.create({
   // ==================================
   containerHome: {
     flex: 1,
-    // flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    // backgroundColor: "grey"
   },
   userInfoHome: {
     position: "absolute",
@@ -88,19 +86,18 @@ module.exports = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     height: "40%",
-    width: "80%",
+    paddingHorizontal: 20,
   },
   calGoals: {
     borderColor: "white",
     borderWidth: 1,
-    // fontSize: 12,/
-    // bottom: 215,
-    height: 100,
-    width: "100%",
+    height: 120,
+    maxWidth: "110%",
+    paddingHorizontal: 25,
     borderRadius: 20,
     justifyContent: "space-around",
     alignItems: "center",
-    // position: "absolute",
+    paddingVertical: 10,
   },
   // ==================================
   // Nutrition Card Styles
@@ -189,7 +186,6 @@ module.exports = StyleSheet.create({
   // Recipe List Screen
   // ==================================
   containerRecipeList: {
-    // alignItems: "center",
     width: "100%",
     backgroundColor: "rgb(37, 93, 120)",
   },
@@ -217,10 +213,7 @@ module.exports = StyleSheet.create({
     fontFamily: "OpenSans_700Bold",
   },
   oneCardContainerRecipeList: {
-    // borderWidth: 1,
     marginBottom: "5%",
-    // width: "100%",
-    // borderRadius: 10,
   },
   // ==================================
   // NutritionScreen

@@ -36,15 +36,7 @@ const ProfileScreen = (props) => {
       .database()
       .ref("users/" + props.displayName)
       .on("value", function (snapshot) {
-        if (snapshot.val() === null) {
-          setHeightFeet(0);
-          setHeightInch(0);
-          setWeight(0);
-          setAge(0);
-          setGender("");
-          setBMI(0);
-          setBMR(0);
-        } else {
+        if (snapshot.val() !== null) {
           setHeightFeet(snapshot.val().heightFeet);
           setHeightInch(snapshot.val().heightInch);
           setWeight(snapshot.val().weight);
@@ -85,16 +77,20 @@ const ProfileScreen = (props) => {
     );
     let userLbs = parseInt(weight);
     let BMI = (userLbs / userInchSquared) * 703;
-    return BMI;
+    return BMI.toFixed(2);
   };
 
   const calculateBMR = (gender, weight, heightFeet, heightInch, age) => {
     let heightCM = convertToCM(heightFeet, heightInch);
     let weightKG = convertToKg(weight);
+    let BMRWithoutGender = 10 * weightKG + 6.25 * heightCM - 5 * age;
+
     if (gender === "male") {
-      return 10 * weightKG + 6.25 * heightCM - 5 * age + 5;
+      let maleBMR = BMRWithoutGender + 5;
+      return maleBMR.toFixed(0);
     } else if (gender === "female") {
-      return 10 * weightKG + 6.25 * heightCM - 5 * age - 161;
+      let femaleBMR = BMRWithoutGender - 161;
+      return femaleBMR.toFixed(0);
     }
   };
 
@@ -114,6 +110,15 @@ const ProfileScreen = (props) => {
     ) {
       Alert.alert("Please enter only numbers");
     } else {
+      let BMI = calculateBMI(heightFeet, heightInch, weight);
+      setBMI(BMI);
+
+      let BMR = calculateBMR(gender, weight, heightFeet, heightInch, age);
+      setBMR(BMR);
+
+      let bmrPlusExcer = (BMR * activityLevel).toFixed(0);
+      setbmrPlusExcer(bmrPlusExcer);
+
       firebase
         .database()
         .ref("users/" + props.displayName)
@@ -125,22 +130,18 @@ const ProfileScreen = (props) => {
           gender: gender,
           activityLevel: activityLevel,
           goal: goal,
+          BMI: BMI,
+          BMR: BMR,
+          bmrPlusExcer: bmrPlusExcer,
         })
         .then(() => {
-          let BMI = calculateBMI(heightFeet, heightInch, weight);
-          setBMI(BMI.toFixed(2));
-          let BMR = calculateBMR(gender, weight, heightFeet, heightInch, age);
-          setBMR(BMR.toFixed(0));
-          let bmrPlusExcer = (BMR * activityLevel).toFixed(0);
-          setbmrPlusExcer(bmrPlusExcer);
-          firebase
-            .database()
-            .ref("users/" + props.displayName)
-            .update({
-              BMI: bmi,
-              BMR: bmr,
-              bmrPlusExcer: bmrPlusExcer,
-            });
+          Alert.alert("Success", "Your submission has been saved!");
+        })
+        .catch(() => {
+          Alert.alert(
+            "Error",
+            "Something went wrong. Please make sure everything is filled and try again"
+          );
         });
       // to refresh gender on update
       props.fetchUser(props.displayName);
