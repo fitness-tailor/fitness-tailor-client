@@ -14,7 +14,11 @@ import {
 } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import { connect } from "react-redux";
-import { getUserAuth } from "../redux/actions/authActions.js";
+import {
+  getUserAuth,
+  storeCalExpend,
+  storeCalGoal,
+} from "../redux/actions/authActions.js";
 import { storeRDA } from "../redux/actions/recipeListActions.js";
 import FadeInView from "./Animation_View_Comps/AuthView.js";
 import firebase from "firebase";
@@ -143,19 +147,19 @@ const ProfileScreen = (props) => {
             .database()
             .ref("users/" + props.displayName)
             .update({
-              BMI: BMI.toFixed(1),
-              BMR: BMR.toFixed(0),
+              BMI: bmi,
+              BMR: bmr,
               bmrPlusExcer: bmrPlusExcer,
             });
+
+          props.storeCalExpend(Number(bmrPlusExcer));
+          props.storeCalGoal(Number(bmrPlusExcer), goal);
         })
         .then(() => {
           Alert.alert("Success", "Your submission has been saved!");
         })
-        .catch(() => {
-          Alert.alert(
-            "Error",
-            "Something went wrong. Please make sure everything is filled and try again"
-          );
+        .catch((err) => {
+          Alert.alert("Error", `${err}`);
         });
       // to refresh gender on update
       props.fetchUser(props.displayName);
@@ -349,6 +353,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     fetchUser: (name) => dispatch(getUserAuth(name)),
     fetchRDA: (gender) => dispatch(storeRDA(gender)),
+    storeCalExpend: (expenditure) => dispatch(storeCalExpend(expenditure)),
+    storeCalGoal: (expenditure, goal) =>
+      dispatch(storeCalGoal(expenditure, goal)),
   };
 };
 

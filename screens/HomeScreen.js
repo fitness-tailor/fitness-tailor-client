@@ -70,6 +70,13 @@ const HomeScreen = (props) => {
     }
   }, [props.user]);
 
+  useEffect(() => {
+    if (props.calGoalRedux && props.calExpenditureRedux) {
+      setCalGoal(props.calGoalRedux);
+      setCalExpenditure(props.calExpenditureRedux);
+    }
+  }, [props.calGoalRedux, props.calExpenditureRedux]);
+
   const uploadProfilePic = async (imageURI, { uid, displayName }) => {
     const response = await fetch(imageURI);
     const blob = await response.blob();
@@ -265,6 +272,8 @@ const mapStateToProps = (state) => ({
   RDA: state.recipeList.RDA,
   profilePic: state.auth.profilePic,
   errFetchingProfPic: state.auth.errFetchingProfPic,
+  calExpenditureRedux: state.auth.calExpenditureRedux,
+  calGoalRedux: state.auth.calGoalRedux,
 });
 
 const mapDispatchToProps = (dispatch) => {

@@ -6,28 +6,10 @@ import {
   FETCH_PROFILE_PIC_SUCCESS,
   FETCH_PROFILE_PIC_ERROR,
   STORE_GENDER,
+  STORE_CAL_EXPEND,
+  STORE_CAL_GOAL,
 } from "./actionTypes.js";
 import firebase from "firebase";
-
-const fetchUserAuth = () => {
-  return {
-    type: FETCH_USER_AUTH,
-  };
-};
-
-const fetchUserAuthSuccess = (user) => {
-  return {
-    type: FETCH_USER_AUTH_SUCCESS,
-    payload: user,
-  };
-};
-
-const fetchUserAuthError = () => {
-  return {
-    type: FETCH_USER_AUTH_ERROR,
-    payload: "Sign In!",
-  };
-};
 
 const fetchProfilePic = () => {
   return {
@@ -94,6 +76,26 @@ const fetchGender = (name) => {
   };
 };
 
+const fetchUserAuth = () => {
+  return {
+    type: FETCH_USER_AUTH,
+  };
+};
+
+const fetchUserAuthSuccess = (user) => {
+  return {
+    type: FETCH_USER_AUTH_SUCCESS,
+    payload: user,
+  };
+};
+
+const fetchUserAuthError = () => {
+  return {
+    type: FETCH_USER_AUTH_ERROR,
+    payload: "Sign In!",
+  };
+};
+
 export const getUserAuth = (name) => {
   return (dispatch) => {
     dispatch(fetchUserAuth());
@@ -106,5 +108,19 @@ export const getUserAuth = (name) => {
         dispatch(fetchUserAuthError());
       }
     });
+  };
+};
+
+export const storeCalExpend = (caloricExpenditure) => {
+  return {
+    type: STORE_CAL_EXPEND,
+    payload: caloricExpenditure,
+  };
+};
+
+export const storeCalGoal = (caloricExpenditure, caloricGoal) => {
+  return {
+    type: STORE_CAL_GOAL,
+    payload: caloricExpenditure + caloricGoal,
   };
 };

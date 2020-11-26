@@ -6,6 +6,8 @@ let initialState = {
   gender: "",
   profilePic: null,
   errFetchingProfPic: false,
+  calExpenditureRedux: null,
+  calGoalRedux: null,
 };
 
 const authReducers = (state = initialState, action) => {
@@ -54,11 +56,17 @@ const authReducers = (state = initialState, action) => {
         gender: action.payload,
       };
 
-    // case "STORE_PROFILE_PIC":
-    //   return {
-    //     ...state,
-    //     profilePic: action.payload,
-    //   };
+    case "STORE_CAL_EXPEND":
+      return {
+        ...state,
+        calExpenditureRedux: action.payload,
+      };
+
+    case "STORE_CAL_GOAL":
+      return {
+        ...state,
+        calGoalRedux: action.payload,
+      };
 
     default:
       return state;
