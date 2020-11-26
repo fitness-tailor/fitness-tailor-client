@@ -39,7 +39,7 @@ const NutritionScreen = ({
     />
   );
 
-  return !isLoading ? (
+  return (
     <SafeAreaView style={styles.containerNutScreen}>
       <Calendar
         onDayPress={(day) => getUserJournal(day, displayName)}
@@ -56,39 +56,46 @@ const NutritionScreen = ({
         }}
       >
         <Text style={[styles.date]}>{date}</Text>
-
         <Text style={styles.totalCal}>
           {totalCal ? `Total Calories: ${totalCal}` : null}
         </Text>
 
-        {currentDayFoodList.length !== 0 &&
-          currentDayFoodList.map((recipe, key) => {
-            return (
-              <NutritionCard
-                key={key}
-                id={recipe[0]}
-                journalData={recipe[1]}
-                referenceID={recipe[1].referenceID}
-              ></NutritionCard>
-            );
-          })}
+        {isLoading ? (
+          <View style={styles.containerLoading}>
+            <ActivityIndicator size="large" />
+          </View>
+        ) : (
+          <>
+            {currentDayFoodList.length !== 0 &&
+              currentDayFoodList.map((recipe, key) => {
+                return (
+                  <NutritionCard
+                    key={key}
+                    id={recipe[0]}
+                    journalData={recipe[1]}
+                    referenceID={recipe[1].referenceID}
+                  ></NutritionCard>
+                );
+              })}
 
-        {date && (
-          <TouchableOpacity
-            style={styles.buttonStyles}
-            onPress={() => setAddModalVisible(true)}
-            activeOpacity="0.5"
-          >
-            <AntDesign name="pluscircle" size={50} color="rgb(37, 93, 120)" />
-          </TouchableOpacity>
+            {date && (
+              <TouchableOpacity
+                style={styles.buttonStyles}
+                onPress={() => setAddModalVisible(true)}
+                activeOpacity="0.5"
+              >
+                <AntDesign
+                  name="pluscircle"
+                  size={50}
+                  color="rgb(37, 93, 120)"
+                />
+              </TouchableOpacity>
+            )}
+          </>
         )}
       </ScrollView>
       {addModal}
     </SafeAreaView>
-  ) : (
-    <View style={styles.containerLoading}>
-      <ActivityIndicator size="large" />
-    </View>
   );
 };
 

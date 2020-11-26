@@ -70,7 +70,7 @@ module.exports = StyleSheet.create({
   containerLoading: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    top: 50,
   },
   // ==================================
   // Home Style
