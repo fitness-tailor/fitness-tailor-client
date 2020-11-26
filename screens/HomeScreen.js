@@ -137,7 +137,7 @@ const HomeScreen = (props) => {
         } else {
           let calories = 0;
           Object.values(snapshot.val()).map((recipe) => {
-            calories += recipe.calories;
+            calories += Math.round(recipe.calories);
           });
           setCalIntake(calories);
         }
