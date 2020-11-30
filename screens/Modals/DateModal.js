@@ -122,7 +122,7 @@ function DateModal({
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <View style={styles.header}>
-              <Text style={styles.headerTextStyle}>Save Your Nutrition</Text>
+              <Text style={styles.headerTextStyle}>Save Entry</Text>
             </View>
 
             <Text style={styles.displayMsg}>Input date of consumption</Text>

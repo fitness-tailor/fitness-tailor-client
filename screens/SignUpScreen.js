@@ -65,11 +65,11 @@ class SignUpScreen extends React.Component {
           this.onLoginFailure.bind(this)(errorMessage);
         }
       });
-    Segment.identify(this.state.email);
-    Segment.trackWithProperties("User SignIn", {
-      accountType: "CustomEmailAuth",
-      email: this.state.email,
-    });
+    // Segment.identify(this.state.email);
+    // Segment.trackWithProperties("User SignIn", {
+    //   accountType: "CustomEmailAuth",
+    //   email: this.state.email,
+    // });
   }
 
   render() {

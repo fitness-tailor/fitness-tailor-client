@@ -13,3 +13,5 @@ web-build/
 .DS_Store
 
 assets/API_KEYS.json
+
+screens/ReduxPlayground.js

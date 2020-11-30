@@ -7,19 +7,25 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  ActivityIndicator,
   Image,
   Button,
   Easing,
 } from "react-native";
 import RNPickerSelect from "react-native-picker-select";
 import { connect } from "react-redux";
-import { getUserAuth } from "../redux/actions/authActions.js";
+import {
+  getUserAuth,
+  storeCalExpend,
+  storeCalGoal,
+} from "../redux/actions/authActions.js";
 import { storeRDA } from "../redux/actions/recipeListActions.js";
 import FadeInView from "./Animation_View_Comps/AuthView.js";
 import firebase from "firebase";
 import styles from "./styles.js";
 
 const ProfileScreen = (props) => {
+  const [isLoading, setIsLoading] = useState(true);
   const [heightFeet, setHeightFeet] = useState("");
   const [heightInch, setHeightInch] = useState("");
   const [weight, setWeight] = useState("");
@@ -27,24 +33,17 @@ const ProfileScreen = (props) => {
   const [bmi, setBMI] = useState("");
   const [bmr, setBMR] = useState("");
   const [bmrPlusExcer, setbmrPlusExcer] = useState("");
-  const [activityLevel, setActivityLevel] = useState("");
-  const [goal, setGoal] = useState("");
+  const [activityLevel, setActivityLevel] = useState(Number(null));
+  const [goal, setGoal] = useState(Number(null));
   const [gender, setGender] = useState("");
 
   useEffect(() => {
     firebase
       .database()
       .ref("users/" + props.displayName)
-      .on("value", function (snapshot) {
-        if (snapshot.val() === null) {
-          setHeightFeet(0);
-          setHeightInch(0);
-          setWeight(0);
-          setAge(0);
-          setGender("");
-          setBMI(0);
-          setBMR(0);
-        } else {
+      .once("value")
+      .then((snapshot) => {
+        if (snapshot.val() !== null) {
           setHeightFeet(snapshot.val().heightFeet);
           setHeightInch(snapshot.val().heightInch);
           setWeight(snapshot.val().weight);
@@ -56,6 +55,12 @@ const ProfileScreen = (props) => {
           setGoal(snapshot.val().goal);
           setbmrPlusExcer(snapshot.val().bmrPlusExcer);
         }
+      })
+      .then(() => {
+        setIsLoading(false);
+      })
+      .catch(() => {
+        Alert.alert("Oops", "Something when wrong");
       });
   }, []);
 
@@ -91,10 +96,12 @@ const ProfileScreen = (props) => {
   const calculateBMR = (gender, weight, heightFeet, heightInch, age) => {
     let heightCM = convertToCM(heightFeet, heightInch);
     let weightKG = convertToKg(weight);
+    let BMRWithoutGender = 10 * weightKG + 6.25 * heightCM - 5 * age;
+
     if (gender === "male") {
-      return 10 * weightKG + 6.25 * heightCM - 5 * age + 5;
+      return BMRWithoutGender + 5;
     } else if (gender === "female") {
-      return 10 * weightKG + 6.25 * heightCM - 5 * age - 161;
+      return BMRWithoutGender - 161;
     }
   };
 
@@ -128,11 +135,14 @@ const ProfileScreen = (props) => {
         })
         .then(() => {
           let BMI = calculateBMI(heightFeet, heightInch, weight);
-          setBMI(BMI.toFixed(2));
+          setBMI(BMI.toFixed(1));
+
           let BMR = calculateBMR(gender, weight, heightFeet, heightInch, age);
           setBMR(BMR.toFixed(0));
+
           let bmrPlusExcer = (BMR * activityLevel).toFixed(0);
           setbmrPlusExcer(bmrPlusExcer);
+
           firebase
             .database()
             .ref("users/" + props.displayName)
@@ -141,6 +151,15 @@ const ProfileScreen = (props) => {
               BMR: bmr,
               bmrPlusExcer: bmrPlusExcer,
             });
+
+          props.storeCalExpend(Number(bmrPlusExcer));
+          props.storeCalGoal(Number(bmrPlusExcer), goal);
+        })
+        .then(() => {
+          Alert.alert("Success", "Your submission has been saved!");
+        })
+        .catch((err) => {
+          Alert.alert("Error", `${err}`);
         });
       // to refresh gender on update
       props.fetchUser(props.displayName);
@@ -151,7 +170,6 @@ const ProfileScreen = (props) => {
   const genderList = [
     { label: "Male", value: "male" },
     { label: "Female", value: "female" },
-    // { label: "Non-Binary", value: "non-binary" },
   ];
 
   const goalList = [
@@ -172,7 +190,11 @@ const ProfileScreen = (props) => {
     { label: "Professional Athlete", value: 1.9 },
   ];
 
-  return (
+  return isLoading ? (
+    <SafeAreaView style={styles.centeredIndicator}>
+      <ActivityIndicator size={"large"} />
+    </SafeAreaView>
+  ) : (
     <SafeAreaView style={styles.containerProfile}>
       <FadeInView
         style={styles.userSumsProfile}
@@ -197,42 +219,32 @@ const ProfileScreen = (props) => {
         <View style={styles.userProfileRow}>
           <Text style={styles.profileGeneralText}>Gender</Text>
           <RNPickerSelect
-            selectedValue={gender}
-            placeholder={{}}
+            value={gender}
             items={genderList}
             onValueChange={(itemValue) => setGender(itemValue)}
-            // value={gender}
-            style={{
-              ...pickerSelectStyles,
-            }}
+            style={{ ...pickerSelectStyles }}
           />
         </View>
 
         <View style={styles.userProfileRow}>
           <Text style={styles.profileGeneralText}>Activity Level</Text>
           <RNPickerSelect
-            selectedValue={activityLevel}
+            value={activityLevel}
             placeholder={{}}
             items={activityLevelList}
             onValueChange={(itemValue) => setActivityLevel(itemValue)}
-            // value={activityLevel}
-            style={{
-              ...pickerSelectStyles,
-            }}
+            style={{ ...pickerSelectStyles }}
           />
         </View>
 
         <View style={styles.userProfileRow}>
           <Text style={styles.profileGeneralText}>Goal</Text>
           <RNPickerSelect
-            selectedValue={goal}
+            value={goal}
             placeholder={{}}
             items={goalList}
             onValueChange={(itemValue) => setGoal(itemValue)}
-            // value={goal}
-            style={{
-              ...pickerSelectStyles,
-            }}
+            style={{ ...pickerSelectStyles }}
           />
         </View>
 
@@ -283,6 +295,7 @@ const ProfileScreen = (props) => {
           <View style={styles.userProfileRow}>
             <TextInput
               placeholder="Age"
+              placeholderTextColor="#DBDBDB"
               maxLength={3}
               style={styles.profileInputBoxes}
               keyboardType={"numeric"}
@@ -340,6 +353,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     fetchUser: (name) => dispatch(getUserAuth(name)),
     fetchRDA: (gender) => dispatch(storeRDA(gender)),
+    storeCalExpend: (expenditure) => dispatch(storeCalExpend(expenditure)),
+    storeCalGoal: (expenditure, goal) =>
+      dispatch(storeCalGoal(expenditure, goal)),
   };
 };
 

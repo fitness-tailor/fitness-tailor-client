@@ -9,10 +9,12 @@ import {
   SafeAreaView,
   Image,
   TouchableOpacity,
+  Easing,
   Alert,
   SnapshotViewIOSComponent,
 } from "react-native";
 import { getUserAuth, getProfilePic } from "../redux/actions/authActions.js";
+import FadeInView from "./Animation_View_Comps/AuthView.js";
 import { storeRDA } from "../redux/actions/recipeListActions.js";
 import { LinearGradient } from "expo-linear-gradient";
 import * as ImagePicker from "expo-image-picker";
@@ -68,6 +70,13 @@ const HomeScreen = (props) => {
     }
   }, [props.user]);
 
+  useEffect(() => {
+    if (props.calGoalRedux && props.calExpenditureRedux) {
+      setCalGoal(props.calGoalRedux);
+      setCalExpenditure(props.calExpenditureRedux);
+    }
+  }, [props.calGoalRedux, props.calExpenditureRedux]);
+
   const uploadProfilePic = async (imageURI, { uid, displayName }) => {
     const response = await fetch(imageURI);
     const blob = await response.blob();
@@ -101,15 +110,23 @@ const HomeScreen = (props) => {
     firebase
       .database()
       .ref(`users/${displayName}`)
-      .on("value", (snapshot) => {
-        const bmrPlusExcer = snapshot.val().bmrPlusExcer;
-        const goal = snapshot.val().goal;
+      .once("value")
+      .then((snapshot) => {
+        let bmrPlusExcer = null;
+        let goal = null;
+
+        if (snapshot.val() && snapshot.val().bmrPlusExcer) {
+          bmrPlusExcer = snapshot.val().bmrPlusExcer;
+        }
+        if (snapshot.val() && snapshot.val().goal) {
+          goal = snapshot.val().goal;
+        }
 
         if (bmrPlusExcer) {
-          setCalExpenditure(parseInt(bmrPlusExcer));
+          setCalExpenditure(Number(bmrPlusExcer));
         }
-        if (typeof goal === "number") {
-          setCalGoal(parseInt(bmrPlusExcer) + parseInt(goal));
+        if (goal) {
+          setCalGoal(Number(bmrPlusExcer) + Number(goal));
         }
       });
   };
@@ -127,7 +144,7 @@ const HomeScreen = (props) => {
         } else {
           let calories = 0;
           Object.values(snapshot.val()).map((recipe) => {
-            calories += recipe.calories;
+            calories += Math.round(recipe.calories);
           });
           setCalIntake(calories);
         }
@@ -149,11 +166,6 @@ const HomeScreen = (props) => {
     />
   );
 
-  let profilePicError =
-    props.errFetchingProfPic === true
-      ? Alert.alert("Error getting your profile pics")
-      : null;
-
   let logOutModal = (
     <LogOutModal
       setLogOutModalVisible={setLogOutModalVisible}
@@ -174,7 +186,10 @@ const HomeScreen = (props) => {
       }}
     >
       <SafeAreaView style={{ flex: 1 }}>
-        <View style={styles.containerHome}>
+        <FadeInView
+          style={styles.containerHome}
+          easing={Easing.bezier(0.2, 0.2, 0.5, 1)}
+        >
           <TouchableOpacity
             activeOpacity={0.7}
             style={{
@@ -189,7 +204,6 @@ const HomeScreen = (props) => {
             onPress={pickProfilePic}
           >
             <View>{profilePic}</View>
-            {profilePicError}
           </TouchableOpacity>
 
           <View style={styles.userInfoHome}>
@@ -198,7 +212,7 @@ const HomeScreen = (props) => {
                 color: "#32b4be",
                 fontSize: 35,
                 textTransform: "uppercase",
-                fontFamily: "OpenSans_600SemiBold",
+                fontFamily: "Montserrat_500Medium",
               }}
             >
               {props.user.displayName}
@@ -244,15 +258,13 @@ const HomeScreen = (props) => {
             </TouchableOpacity>
           </View>
           {logOutModal}
-        </View>
+        </FadeInView>
       </SafeAreaView>
     </LinearGradient>
   );
 };
 
 const mapStateToProps = (state) => ({
-  isLoading: state.auth.isLoading,
-  isProfPicLoading: state.auth.isProfPicLoading,
   user: state.auth.user,
   displayName: state.auth.user.displayName,
   error: state.auth.error,
@@ -260,6 +272,8 @@ const mapStateToProps = (state) => ({
   RDA: state.recipeList.RDA,
   profilePic: state.auth.profilePic,
   errFetchingProfPic: state.auth.errFetchingProfPic,
+  calExpenditureRedux: state.auth.calExpenditureRedux,
+  calGoalRedux: state.auth.calGoalRedux,
 });
 
 const mapDispatchToProps = (dispatch) => {
