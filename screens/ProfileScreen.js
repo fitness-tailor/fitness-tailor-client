@@ -147,8 +147,8 @@ const ProfileScreen = (props) => {
             .database()
             .ref("users/" + props.displayName)
             .update({
-              BMI: bmi,
-              BMR: bmr,
+              BMI: BMI.toFixed(1),
+              BMR: BMR.toFixed(0),
               bmrPlusExcer: bmrPlusExcer,
             });
 
