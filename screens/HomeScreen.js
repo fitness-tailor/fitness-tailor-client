@@ -215,7 +215,7 @@ const HomeScreen = (props) => {
                 fontFamily: "Montserrat_500Medium",
               }}
             >
-              {props.initialDisplayName}
+              {props.user.displayName ? props.user.displayName : props.initialDisplayName}
             </Text>
 
             <View style={styles.calGoals}>
