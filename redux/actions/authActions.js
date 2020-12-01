@@ -1,4 +1,5 @@
 import {
+  STORE_DISPLAYNAME,
   FETCH_USER_AUTH,
   FETCH_USER_AUTH_SUCCESS,
   FETCH_USER_AUTH_ERROR,
@@ -10,6 +11,13 @@ import {
   STORE_CAL_GOAL,
 } from "./actionTypes.js";
 import firebase from "firebase";
+
+export const storeDisplayName = (initialDisplayName) => {
+  return {
+    type: STORE_DISPLAYNAME,
+    payload: initialDisplayName,
+  };
+};
 
 const fetchProfilePic = () => {
   return {

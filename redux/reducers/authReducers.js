@@ -2,6 +2,7 @@ let initialState = {
   isLoading: false,
   isProfPicLoading: false,
   user: {},
+  displayName: null,
   error: "",
   gender: "",
   profilePic: null,
@@ -12,6 +13,11 @@ let initialState = {
 
 const authReducers = (state = initialState, action) => {
   switch (action.type) {
+    case "STORE_DISPLAYNAME":
+      return {
+        ...state,
+        initialDisplayName: action.payload,
+      };
     case "FETCH_USER_AUTH":
       return {
         ...state,

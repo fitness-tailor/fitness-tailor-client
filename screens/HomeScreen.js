@@ -215,7 +215,7 @@ const HomeScreen = (props) => {
                 fontFamily: "Montserrat_500Medium",
               }}
             >
-              {props.user.displayName}
+              {props.initialDisplayName}
             </Text>
 
             <View style={styles.calGoals}>
@@ -266,7 +266,7 @@ const HomeScreen = (props) => {
 
 const mapStateToProps = (state) => ({
   user: state.auth.user,
-  displayName: state.auth.user.displayName,
+  initialDisplayName: state.auth.initialDisplayName,
   error: state.auth.error,
   gender: state.auth.gender,
   RDA: state.recipeList.RDA,
