@@ -18,16 +18,23 @@ import styles from "./styles.js";
 import { Fontisto, AntDesign } from "@expo/vector-icons";
 import FadeInView from "./Animation_View_Comps/AuthView.js";
 import AuthErrorModal from "./Modals/AuthErrorModal.js";
+import { connect } from "react-redux";
+import {
+  storeDisplayName,
+} from "../redux/actions/authActions.js";
 
 class SignUpScreen extends React.Component {
-  state = {
-    displayName: "",
-    email: "",
-    password: "",
-    error: "",
-    errorModalVisible: false,
-    loading: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      displayName: "",
+      email: "",
+      password: "",
+      error: "",
+      errorModalVisible: false,
+      loading: false,
+    };
+  }
 
   onLoginSuccess() {
     this.props.navigation.navigate("App");
@@ -50,6 +57,7 @@ class SignUpScreen extends React.Component {
       .auth()
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then((result) => {
+        this.props.storeDisplayName(this.state.displayName)
         const user = firebase.auth().currentUser;
         return user.updateProfile({
           displayName: this.state.displayName,
@@ -65,6 +73,7 @@ class SignUpScreen extends React.Component {
           this.onLoginFailure.bind(this)(errorMessage);
         }
       });
+
     // Segment.identify(this.state.email);
     // Segment.trackWithProperties("User SignIn", {
     //   accountType: "CustomEmailAuth",
@@ -167,4 +176,16 @@ class SignUpScreen extends React.Component {
   }
 }
 
-export default SignUpScreen;
+// export default SignUpScreen;
+
+const mapStateToProps = (state) => ({
+  initialDisplayName: state.initialDisplayName,
+});
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    storeDisplayName: (name) => dispatch(storeDisplayName(name)),
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignUpScreen);
