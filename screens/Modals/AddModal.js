@@ -113,7 +113,7 @@ function AddModal({
                 <TextInput
                   value={calories}
                   placeholder={`${calories}`}
-                  style={styles.calorieInput}
+                  style={styles.input}
                   placeholderTextColor="black"
                   keyboardType={"numeric"}
                   maxLength={5}
@@ -133,15 +133,17 @@ function AddModal({
             >
               <View style={styles.inputArea}>
                 <Text style={styles.inputTitle}>Serving Size</Text>
-                <TextInput
-                  style={styles.input}
-                  value={inputSize}
-                  placeholder={`${inputSize}`}
-                  placeholderTextColor="black"
-                  keyboardType={"numeric"}
-                  maxLength={4}
-                  onChangeText={(val) => setInputSize(val)}
-                />
+                <View>
+                  <TextInput
+                    style={styles.input}
+                    value={inputSize}
+                    placeholder={`${inputSize}`}
+                    placeholderTextColor="black"
+                    keyboardType={"numeric"}
+                    maxLength={4}
+                    onChangeText={(val) => setInputSize(val)}
+                  />
+                </View>
               </View>
 
               <View style={styles.inputArea}>
@@ -283,17 +285,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#EEC16D",
     fontFamily: "OpenSans_400Regular",
   },
-  calorieInput: {
-    color: "black",
-    textAlign: "center",
-    marginHorizontal: 14,
-    paddingVertical: 10,
-    fontSize: 18,
-    width: 100,
-    borderBottomWidth: 1,
-    backgroundColor: "#EEC16D",
-    fontFamily: "OpenSans_400Regular",
-  },
   input: {
     color: "black",
     textAlign: "center",
@@ -310,35 +301,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
   },
-  displayMsg: {
-    textAlign: "center",
-    fontSize: 20,
-    padding: 20,
-    fontFamily: "OpenSans_400Regular",
-  },
-  mainPickerContainer: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    alignItems: "center",
-    width: "90%",
-    marginBottom: 30,
-  },
-  subPickerContainer: { alignItems: "center" },
-  dateTitle: {
-    fontFamily: "OpenSans_400Regular",
-    marginBottom: 4,
-    fontSize: 18,
-  },
-  // servingInput: {
-  //   fontSize: 22,
-  //   marginBottom: "8%",
-  //   width: "50%",
-  //   textAlign: "center",
-  //   borderBottomWidth: 1,
-  //   padding: 20,
-  //   backgroundColor: "#EEC16D",
-  //   fontFamily: "OpenSans_400Regular",
-  // },
   buttonsContainer: {
     flexDirection: "row",
     paddingHorizontal: 10,
