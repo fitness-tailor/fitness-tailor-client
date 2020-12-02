@@ -137,7 +137,7 @@ const HomeScreen = (props) => {
     let dd = moment().format("D");
     firebase
       .database()
-      .ref(`users/${props.displayName}/foodJournal/${yr}/${mm}/${dd}`)
+      .ref(`users/${props.user.displayName}/foodJournal/${yr}/${mm}/${dd}`)
       .on("value", function (snapshot) {
         if (snapshot.val() === null) {
           setCalIntake(null);
@@ -215,7 +215,9 @@ const HomeScreen = (props) => {
                 fontFamily: "Montserrat_500Medium",
               }}
             >
-              {props.user.displayName ? props.user.displayName : props.initialDisplayName}
+              {props.user.displayName
+                ? props.user.displayName
+                : props.initialDisplayName}
             </Text>
 
             <View style={styles.calGoals}>
