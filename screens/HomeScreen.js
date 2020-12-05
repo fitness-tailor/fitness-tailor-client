@@ -51,7 +51,7 @@ const HomeScreen = (props) => {
     if (props.user.displayName) {
       props.getProfilePic(props.user);
     }
-  }, [props.user]);
+  }, []);
 
   useEffect(() => {
     props.fetchRDA(props.gender);
@@ -66,8 +66,8 @@ const HomeScreen = (props) => {
   useEffect(() => {
     if (props.user.displayName) {
       getCalExpendAndGoal(props.user.displayName);
-      getCalIntake();
     }
+    getCalIntake();
   }, [props.user]);
 
   useEffect(() => {

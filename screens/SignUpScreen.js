@@ -19,9 +19,7 @@ import { Fontisto, AntDesign } from "@expo/vector-icons";
 import FadeInView from "./Animation_View_Comps/AuthView.js";
 import AuthErrorModal from "./Modals/AuthErrorModal.js";
 import { connect } from "react-redux";
-import {
-  storeDisplayName,
-} from "../redux/actions/authActions.js";
+import { storeDisplayName } from "../redux/actions/authActions.js";
 
 class SignUpScreen extends React.Component {
   constructor(props) {
@@ -57,7 +55,7 @@ class SignUpScreen extends React.Component {
       .auth()
       .createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then((result) => {
-        this.props.storeDisplayName(this.state.displayName)
+        this.props.storeDisplayName(this.state.displayName);
         const user = firebase.auth().currentUser;
         return user.updateProfile({
           displayName: this.state.displayName,
