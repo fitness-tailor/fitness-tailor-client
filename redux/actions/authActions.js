@@ -109,7 +109,6 @@ export const getUserAuth = (name) => {
     dispatch(fetchUserAuth());
 
     firebase.auth().onAuthStateChanged((user) => {
-      console.log(user);
       if (user != null) {
         dispatch(fetchUserAuthSuccess(user));
         dispatch(fetchGender(name));
