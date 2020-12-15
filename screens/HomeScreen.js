@@ -58,9 +58,7 @@ const HomeScreen = (props) => {
   }, [props.gender]);
 
   useEffect(() => {
-    if (props.profilePic) {
-      setImage(props.profilePic);
-    }
+    setImage(props.profilePic);
   }, [props.profilePic]);
 
   useEffect(() => {

@@ -15,9 +15,6 @@
   <p align="center">
     Eat terrific with Nutrific!
     <br />
-<!--
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo (click me to go to a demo vid on youtube)</a>
-    -->
   </p>
 </p>
 
@@ -28,6 +25,8 @@
 -->
 
 <!-- TABLE OF CONTENTS -->
+
+ <iframe width="560" height="315" src="https://www.youtube.com/embed/mnBOrFL3iZ8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## Table of Contents
 
