@@ -26,8 +26,6 @@
 
 <!-- TABLE OF CONTENTS -->
 
- <iframe width="560" height="315" src="https://www.youtube.com/embed/mnBOrFL3iZ8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
 ## Table of Contents
 
 - [About the Project](#about-the-project)
@@ -41,15 +39,16 @@
 
 ## About The Project
 
-Did you know that nutrition plays the biggest role towards your overall fitness? Believe it or not, health expert says that a healthy diet plays a staggering 80% role towards overall fitness.
+Did you know that nutrition plays a bigger role in fitness than exercise? Believe it or not, health expert says that a healthy diet plays a staggering 80% role towards overall fitness.
 
-Which is why we built Nutrific! We wanted to provide our users with an application that allows them to grow on their own unique nutritional journey.
+Which is why we built Nutrific! We wanted to give our users a way to learn about what is in their food while tracking important information about what they eat.
 
 Here's why:
 
-- Your time should be focused towards your unique nutritional goals. Let us worry journaling and displaying your goals and data for you.
-- We understand that nutrition can be hard, which is why we've built our easy-to-use, yet gorgeous interface with you, the users, in mind.
-- Let us work together to live your best life.
+- Understanding nutrition should be easy.
+- We want you to have the necessary information regarding your diet at your fingertips.
+- We've built our interface to be easy-to-use, and gorgeous. We kept you, the user, in mind when we built our app.
+- Let's work together to make your nutrition the best it can be. Let's eat terrific with Nutrific!
 
 <br>
 
