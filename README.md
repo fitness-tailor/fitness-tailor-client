@@ -1,16 +1,10 @@
 # Nutrific
 
 <br>
-<!--
 <p align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="images/logo.png" alt="click me to go to a demo vid on youtube" width="80" height="80">
-  </a>
-  -->
-
-  <h3 align="center">
+  <h2 align="center">
     <strong>Nutrific</strong>
-  </h3>
+  </h2>
 
   <p align="center">
     Eat terrific with Nutrific!
@@ -18,11 +12,16 @@
   </p>
 </p>
 
-<!--
-*** - [Getting Started](#getting-started)
-*** - [Prerequisites](#prerequisites)
-*** - [Installation](#installation)
--->
+<p align="center">
+  <a href="https://youtu.be/mnBOrFL3iZ8">
+    <img src="assets/thumbnail.png" alt="click me to go to a demo vid on youtube" width="200" height="420">
+  </a>
+
+  <a href="https://youtu.be/mnBOrFL3iZ8">
+    <p align="center">Click here to see Nutrific's Demo Video!</p>
+  </a>
+
+  <p align="center">
 
 <!-- TABLE OF CONTENTS -->
 
