@@ -51,23 +51,21 @@ const HomeScreen = (props) => {
     if (props.user.displayName) {
       props.getProfilePic(props.user);
     }
-  }, [props.user]);
+  }, []);
 
   useEffect(() => {
     props.fetchRDA(props.gender);
   }, [props.gender]);
 
   useEffect(() => {
-    if (props.profilePic) {
-      setImage(props.profilePic);
-    }
+    setImage(props.profilePic);
   }, [props.profilePic]);
 
   useEffect(() => {
     if (props.user.displayName) {
       getCalExpendAndGoal(props.user.displayName);
-      getCalIntake();
     }
+    getCalIntake(userDisplayName);
   }, [props.user]);
 
   useEffect(() => {
@@ -131,13 +129,13 @@ const HomeScreen = (props) => {
       });
   };
 
-  const getCalIntake = () => {
+  const getCalIntake = (name) => {
     let yr = moment().format("YYYY");
     let mm = moment().format("MM");
     let dd = moment().format("D");
     firebase
       .database()
-      .ref(`users/${props.user.displayName}/foodJournal/${yr}/${mm}/${dd}`)
+      .ref(`users/${name}/foodJournal/${yr}/${mm}/${dd}`)
       .on("value", function (snapshot) {
         if (snapshot.val() === null) {
           setCalIntake(null);
@@ -172,6 +170,10 @@ const HomeScreen = (props) => {
       logOutModalVisible={logOutModalVisible}
     />
   );
+
+  let userDisplayName = props.user.displayName
+    ? props.user.displayName
+    : props.initialDisplayName;
 
   return (
     <LinearGradient
@@ -215,9 +217,7 @@ const HomeScreen = (props) => {
                 fontFamily: "Montserrat_500Medium",
               }}
             >
-              {props.user.displayName
-                ? props.user.displayName
-                : props.initialDisplayName}
+              {userDisplayName}
             </Text>
 
             <View style={styles.calGoals}>

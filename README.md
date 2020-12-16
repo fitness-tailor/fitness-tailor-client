@@ -1,31 +1,27 @@
 # Nutrific
 
 <br>
-<!--
 <p align="center">
-  <a href="https://github.com/othneildrew/Best-README-Template">
-    <img src="images/logo.png" alt="click me to go to a demo vid on youtube" width="80" height="80">
-  </a>
-  -->
-
-  <h3 align="center">
+  <h2 align="center">
     <strong>Nutrific</strong>
-  </h3>
+  </h2>
 
   <p align="center">
     Eat terrific with Nutrific!
     <br />
-<!--
-    <a href="https://github.com/othneildrew/Best-README-Template">View Demo (click me to go to a demo vid on youtube)</a>
-    -->
   </p>
 </p>
 
-<!--
-*** - [Getting Started](#getting-started)
-*** - [Prerequisites](#prerequisites)
-*** - [Installation](#installation)
--->
+<p align="center">
+  <a href="https://youtu.be/mnBOrFL3iZ8">
+    <img src="assets/thumbnail.png" alt="click me to go to a demo vid on youtube" width="200" height="420">
+  </a>
+
+  <a href="https://youtu.be/mnBOrFL3iZ8">
+    <p align="center">Click here to see Nutrific's Demo Video!</p>
+  </a>
+
+  <p align="center">
 
 <!-- TABLE OF CONTENTS -->
 
@@ -42,15 +38,16 @@
 
 ## About The Project
 
-Did you know that nutrition plays the biggest role towards your overall fitness? Believe it or not, health expert says that a healthy diet plays a staggering 80% role towards overall fitness.
+Did you know that nutrition plays a bigger role in fitness than exercise? Believe it or not, health expert says that a healthy diet plays a staggering 80% role towards overall fitness.
 
-Which is why we built Nutrific! We wanted to provide our users with an application that allows them to grow on their own unique nutritional journey.
+Which is why we built Nutrific! We wanted to give our users a way to learn about what is in their food while tracking important information about what they eat.
 
 Here's why:
 
-- Your time should be focused towards your unique nutritional goals. Let us worry journaling and displaying your goals and data for you.
-- We understand that nutrition can be hard, which is why we've built our easy-to-use, yet gorgeous interface with you, the users, in mind.
-- Let us work together to live your best life.
+- Understanding nutrition should be easy.
+- We want you to have the necessary information regarding your diet at your fingertips.
+- We've built our interface to be easy-to-use, and gorgeous. We kept you, the user, in mind when we built our app.
+- Let's work together to make your nutrition the best it can be. Let's eat terrific with Nutrific!
 
 <br>
 
